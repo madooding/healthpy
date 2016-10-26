@@ -14,7 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.cengalabs.flatui.FlatUI;
 import com.example.madooding.healthpy.adapter.MainFragmentPagerAdapter;
 import com.example.madooding.healthpy.listener.MainViewPagerListener;
 
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        FlatUI.initDefaultValues(getApplicationContext());
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -37,12 +40,16 @@ public class MainActivity extends AppCompatActivity
 //            }
 //        });
 
+
+        //All about Drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+
+        //Set up navigation view
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -110,25 +117,23 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
         drawer.closeDrawer(GravityCompat.START);
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        if (id == R.id.nav_edit_profile) {
+            // Handle the camera action
+        } else if (id == R.id.nav_logout) {
+
+            item.setChecked(false);
+            navView.setElevation(40);
+            navView.setSelected(false);
+            Toast.makeText(MainActivity.this, "Logout nav is clicked", Toast.LENGTH_SHORT).show();
+
+        }
         return true;
     }
 }
