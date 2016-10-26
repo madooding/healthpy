@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.madooding.healthpy.adapter.MainFragmentPagerAdapter;
+import com.example.madooding.healthpy.listener.MainViewPagerListener;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -48,10 +49,20 @@ public class MainActivity extends AppCompatActivity
 
 
         //Set up view pager and tab segment
-        ViewPager mainViewPager = (ViewPager) findViewById(R.id.mainViewPager);
+        final ViewPager mainViewPager = (ViewPager) findViewById(R.id.mainViewPager);
         mainViewPager.setAdapter(new MainFragmentPagerAdapter(getSupportFragmentManager()));
+        setTitle(getResources().getStringArray(R.array.main_viewpager_title)[1]);
         mainViewPager.setCurrentItem(1); //Set to center page
+        mainViewPager.setOnPageChangeListener(new MainViewPagerListener(){
 
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                String[] mainViewPagerTitles = getResources().getStringArray(R.array.main_viewpager_title);
+                setTitle(mainViewPagerTitles[mainViewPager.getCurrentItem()]);
+            }
+        });
+
+        //This is about tab
         TabLayout mainViewSelectorTab = (TabLayout) findViewById(R.id.tab_on_actionbar);
         mainViewSelectorTab.setTabGravity(TabLayout.GRAVITY_FILL);
         mainViewSelectorTab.setupWithViewPager(mainViewPager);
