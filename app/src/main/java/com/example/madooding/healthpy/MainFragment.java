@@ -1,7 +1,6 @@
 package com.example.madooding.healthpy;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -40,7 +39,7 @@ public class MainFragment extends Fragment {
         carouselViewPager = (ViewPager) view.findViewById(R.id.carouselViewPager);
         carouselViewPager.setAdapter(new CarouselViewPagerAdapter(getActivity().getSupportFragmentManager()));
         carouselCircleIndicator = (CirclePageIndicator) view.findViewById(R.id.carouselCircleIndicator);
-        carouselCircleIndicator.setViewPager(carouselViewPager, 0);
+        carouselCircleIndicator.setViewPager(carouselViewPager);
         carouselCircleIndicator.setSnap(true);
 
     }
