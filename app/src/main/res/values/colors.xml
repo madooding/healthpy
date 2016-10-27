@@ -11,7 +11,9 @@
     <color name="navBarTextColor">#7D7D7D</color>
 
     <color name="colorFormHealthyBG">#F5F5F5</color>
-    <color name="colorFormHealthyText">#C4C4C4</color>
+    <color name="colorFormHealthyText">#c28989</color>
+
+    <color name="colorNormalText">#4D4D4D</color>
 
 
     <integer-array name="healthpy_form_theme">

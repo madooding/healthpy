@@ -5,11 +5,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.madooding.healthpy.adapter.CarouselViewPagerAdapter;
+import com.example.madooding.healthpy.adapter.CategoryRecyclerViewAdapter;
+import com.example.madooding.healthpy.model.FoodsCategory;
 import com.viewpagerindicator.CirclePageIndicator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -19,6 +26,13 @@ public class MainFragment extends Fragment {
 
     ViewPager carouselViewPager;
     CirclePageIndicator carouselCircleIndicator;
+    RecyclerView categoryRecyclerView;
+    RecyclerView.Adapter categoryRecyclerViewAdapter;
+    RecyclerView.LayoutManager categoryRecyclerViewLayoutMgr;
+
+    //Should retrive from server
+    List<FoodsCategory> foodsCategoryList = new ArrayList<FoodsCategory>();
+
 
     public MainFragment() {
         // Required empty public constructor
@@ -41,6 +55,24 @@ public class MainFragment extends Fragment {
         carouselCircleIndicator = (CirclePageIndicator) view.findViewById(R.id.carouselCircleIndicator);
         carouselCircleIndicator.setViewPager(carouselViewPager);
         carouselCircleIndicator.setSnap(true);
+
+
+        //Category Recycler View
+        categoryRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_foods_category);
+        categoryRecyclerView.setHasFixedSize(true);
+
+        categoryRecyclerViewLayoutMgr = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        categoryRecyclerView.setLayoutManager(categoryRecyclerViewLayoutMgr);
+
+        foodsCategoryList.add(new FoodsCategory("Normal", R.drawable.category_1));
+        foodsCategoryList.add(new FoodsCategory("Noodle", R.drawable.category_2));
+        foodsCategoryList.add(new FoodsCategory("Dessert", R.drawable.category_3));
+        foodsCategoryList.add(new FoodsCategory("Drink", R.drawable.category_4));
+
+        categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getContext(), foodsCategoryList);
+        categoryRecyclerView.setAdapter(categoryRecyclerViewAdapter);
+
+
 
     }
 
