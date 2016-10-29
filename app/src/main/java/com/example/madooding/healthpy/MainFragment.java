@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.madooding.healthpy.adapter.CarouselViewPagerAdapter;
 import com.example.madooding.healthpy.adapter.CategoryRecyclerViewAdapter;
+import com.example.madooding.healthpy.model.CarouselItem;
 import com.example.madooding.healthpy.model.FoodsCategory;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -32,7 +33,7 @@ public class MainFragment extends Fragment {
 
     //Should retrive from server
     List<FoodsCategory> foodsCategoryList = new ArrayList<FoodsCategory>();
-
+    List<CarouselItem> carouselItemList = new ArrayList<>();
 
     public MainFragment() {
         // Required empty public constructor
@@ -50,8 +51,13 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+        carouselItemList.add(new CarouselItem(R.drawable.image_1));
+        carouselItemList.add(new CarouselItem(R.drawable.image_2));
+
         carouselViewPager = (ViewPager) view.findViewById(R.id.carouselViewPager);
-        carouselViewPager.setAdapter(new CarouselViewPagerAdapter(getActivity().getSupportFragmentManager()));
+        carouselViewPager.setAdapter(new CarouselViewPagerAdapter(getActivity().getSupportFragmentManager(), carouselItemList));
         carouselCircleIndicator = (CirclePageIndicator) view.findViewById(R.id.carouselCircleIndicator);
         carouselCircleIndicator.setViewPager(carouselViewPager);
         carouselCircleIndicator.setSnap(true);
