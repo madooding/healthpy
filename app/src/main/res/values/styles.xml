@@ -22,18 +22,38 @@
     </style>
 
     <style name="TextTopic">
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">26dp</item>
         <item name="android:textColor">@color/colorNormalText</item>
-        <item name="fontPath">Prompt-Bold.ttf</item>
+        <item name="fontPath">DB HelvethaicaMon X Bd.ttf</item>
+    </style>
+
+    <style name="foodNameItem">
+        <item name="android:textSize">22sp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/colorNormalText</item>
+    </style>
+
+    <style name="foodDescriptionItem">
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:textColor">@color/colorSubStandardGrey</item>
+        <item name="fontPath">DB HelvethaicaMon X.ttf</item>
+        <item name="android:lineSpacingExtra">13sp</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+        
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">28sp</item>
+    </style>
 
     <style name="NavDrawerTextStyle">
         <item name="android:paddingLeft">80dp</item>
-        <item name="fontPath">Prompt-Bold.ttf</item>
+        <item name="fontPath">DB HelvethaicaMon X Bd.ttf</item>
     </style>
 
 </resources>

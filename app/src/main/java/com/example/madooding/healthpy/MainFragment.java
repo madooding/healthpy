@@ -7,9 +7,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
 import com.example.madooding.healthpy.adapter.CarouselViewPagerAdapter;
 import com.example.madooding.healthpy.adapter.CategoryRecyclerViewAdapter;
 import com.example.madooding.healthpy.model.CarouselItem;
@@ -64,21 +69,48 @@ public class MainFragment extends Fragment {
 
 
         //Category Recycler View
-        categoryRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_foods_category);
-        categoryRecyclerView.setHasFixedSize(true);
+//        categoryRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_foods_category);
+//        categoryRecyclerView.setHasFixedSize(true);
+//
+//        categoryRecyclerViewLayoutMgr = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+//        categoryRecyclerView.setLayoutManager(categoryRecyclerViewLayoutMgr);
+//
+//
+//        categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getContext(), foodsCategoryList);
+//        categoryRecyclerView.setAdapter(categoryRecyclerViewAdapter);
 
-        categoryRecyclerViewLayoutMgr = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        categoryRecyclerView.setLayoutManager(categoryRecyclerViewLayoutMgr);
 
+        setCategoryImage(view);
+
+
+
+    }
+
+    protected void setCategoryImage(View view){
         foodsCategoryList.add(new FoodsCategory("Normal", R.drawable.category_1));
         foodsCategoryList.add(new FoodsCategory("Noodle", R.drawable.category_2));
         foodsCategoryList.add(new FoodsCategory("Dessert", R.drawable.category_3));
         foodsCategoryList.add(new FoodsCategory("Drink", R.drawable.category_4));
 
-        categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getContext(), foodsCategoryList);
-        categoryRecyclerView.setAdapter(categoryRecyclerViewAdapter);
 
 
+        LinearLayout foodsCategoryLinearLayout = (LinearLayout) view.findViewById(R.id.foods_category_linear_layout);
+
+
+        for (int i = 0; i < foodsCategoryList.size(); i++) {
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            if(i != foodsCategoryList.size() - 1){
+                layoutParams.setMargins(0, 0, 16, 0);
+            }
+
+            layoutParams.gravity = Gravity.CENTER;
+            ImageView foodsCategoryItem = new ImageView(getActivity());
+            foodsCategoryItem.setImageResource(foodsCategoryList.get(i).getImgSrc());
+            foodsCategoryItem.setLayoutParams(layoutParams);
+
+            foodsCategoryLinearLayout.addView(foodsCategoryItem);
+
+        }
 
     }
 

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    card_view:cardCornerRadius="4dp"
+    card_view:contentPadding="6dp"
+    card_view:cardElevation="2dp"
+    card_view:cardUseCompatPadding="true"
+    tools:ignore="MissingPrefix">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="99dp"
+            android:layout_height="99dp"
+            android:layout_marginRight="10dp"
+            android:padding="4dp"
+            android:background="@drawable/rounded_corner">
+            <ImageView
+                android:layout_width="106dp"
+                android:layout_height="106dp"
+                android:layout_margin="0dp"
+                android:padding="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/food_pic_1"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:layout_marginRight="8dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/food_list_item_name"
+                style="@style/foodNameItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ขาหมูในตำนาน"/>
+            <TextView
+                android:id="@+id/food_list_item_description"
+                style="@style/foodDescriptionItem"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:text="อาหารง่ายๆ แต่ความหมายสุดลึกล้ำ คำง่ายๆ ที่เธอใช้ประจำ ซ้ำไป ซ้ำมา คิดจะพูด แต่ก็พูดอย่างไม่คิด รู้ไหมว่าหนึ่งชีวิต..."/>
+        </LinearLayout>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:background="#EEEEEE" />
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="360"
+                    android:lineSpacingExtra="0dp"
+                    android:id="@+id/food_list_item_calories"
+                    android:textStyle="bold"
+                    android:textSize="36sp"/>
+                <TextView
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-10dp"
+                    android:layout_below="@id/food_list_item_calories"
+                    android:text="Calories"
+                    android:textColor="@color/colorSubStandardGrey"
+                    fontPath="DB HelvethaicaMon X.ttf"/>
+            </LinearLayout>
+
+
+        </RelativeLayout>
+    </LinearLayout>
+
+
+
+</android.support.v7.widget.CardView>

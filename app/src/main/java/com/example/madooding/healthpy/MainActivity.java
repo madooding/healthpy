@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("Prompt-Bold.ttf")
+                .setDefaultFontPath("DB HelvethaicaMon X Bd.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
