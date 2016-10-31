@@ -1,6 +1,7 @@
 package com.example.madooding.healthpy;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,10 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.madooding.healthpy.adapter.CarouselViewPagerAdapter;
 import com.example.madooding.healthpy.adapter.CategoryRecyclerViewAdapter;
+import com.example.madooding.healthpy.adapter.FoodListViewAdapter;
 import com.example.madooding.healthpy.model.CarouselItem;
+import com.example.madooding.healthpy.model.FoodListItem;
 import com.example.madooding.healthpy.model.FoodsCategory;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -32,13 +38,12 @@ public class MainFragment extends Fragment {
 
     ViewPager carouselViewPager;
     CirclePageIndicator carouselCircleIndicator;
-    RecyclerView categoryRecyclerView;
-    RecyclerView.Adapter categoryRecyclerViewAdapter;
-    RecyclerView.LayoutManager categoryRecyclerViewLayoutMgr;
 
     //Should retrive from server
     List<FoodsCategory> foodsCategoryList = new ArrayList<FoodsCategory>();
     List<CarouselItem> carouselItemList = new ArrayList<>();
+    List<FoodListItem> foodListItems = new ArrayList<>();
+
 
     public MainFragment() {
         // Required empty public constructor
@@ -79,8 +84,22 @@ public class MainFragment extends Fragment {
 //        categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getContext(), foodsCategoryList);
 //        categoryRecyclerView.setAdapter(categoryRecyclerViewAdapter);
 
+        foodListItems.add(new FoodListItem(R.drawable.food_pic_1, "ขาหมู", "ยอดอาหาร", 369));
+        foodListItems.add(new FoodListItem(R.drawable.food_pic_1, "ขาหมูสูตร Low fat", "สูตรนี้จะลดไขมัน เหมาะกับผู้ที่ต้องการลดความอ้วน", 230));
+
+//        ListView foodItemsListView = (ListView) view.findViewById(R.id.food_item_list_view);
+//        foodItemsListView.setAdapter(new FoodListViewAdapter(getContext(), R.layout.food_list_item, foodListItems));
+
+        LinearLayout foodItemListViewReplacement = (LinearLayout) view.findViewById(R.id.food_item_list_view_replacement);
+        FoodListViewAdapter listViewAdapter = new FoodListViewAdapter(getContext(), R.layout.food_list_item, foodListItems);
+
+        for (int i = 0; i < listViewAdapter.getCount(); i++){
+            foodItemListViewReplacement.addView(listViewAdapter.getView(i, null, null));
+        }
 
         setCategoryImage(view);
+
+
 
 
 
@@ -95,6 +114,9 @@ public class MainFragment extends Fragment {
 
 
         LinearLayout foodsCategoryLinearLayout = (LinearLayout) view.findViewById(R.id.foods_category_linear_layout);
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService
+                (Context.LAYOUT_INFLATER_SERVICE);
+
 
 
         for (int i = 0; i < foodsCategoryList.size(); i++) {
@@ -103,12 +125,15 @@ public class MainFragment extends Fragment {
                 layoutParams.setMargins(0, 0, 16, 0);
             }
 
+            RelativeLayout categoryItemRelativeLayout = (RelativeLayout)inflater.inflate(R.layout.catagory_item, null);
             layoutParams.gravity = Gravity.CENTER;
-            ImageView foodsCategoryItem = new ImageView(getActivity());
-            foodsCategoryItem.setImageResource(foodsCategoryList.get(i).getImgSrc());
-            foodsCategoryItem.setLayoutParams(layoutParams);
+            ImageView foodsCategoryImage = (ImageView) categoryItemRelativeLayout.findViewById(R.id.category_image);
+            TextView foodsCategoryName = (TextView) categoryItemRelativeLayout.findViewById(R.id.category_name);
+            foodsCategoryImage.setImageResource(foodsCategoryList.get(i).getImgSrc());
+            foodsCategoryName.setText(foodsCategoryList.get(i).getName());
+            categoryItemRelativeLayout.setLayoutParams(layoutParams);
 
-            foodsCategoryLinearLayout.addView(foodsCategoryItem);
+            foodsCategoryLinearLayout.addView(categoryItemRelativeLayout);
 
         }
 
