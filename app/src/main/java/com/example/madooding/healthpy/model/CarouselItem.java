@@ -10,7 +10,7 @@ public class CarouselItem {
     private CarouselFragment Carousel;
 
     public CarouselItem(int imgResource){
-        this.imgResource= imgResource;
+        this.imgResource = imgResource;
 
     }
 
