@@ -2,13 +2,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".CarouselFragment">
+    tools:context=".CarouselFragment"
+    tools:ignore="MissingPrefix">
 
     <!-- TODO: Update blank fragment layout -->
-    <ImageView
-        android:id="@+id/carousel_image_view"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/image_1"/>
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/carousel_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/image_1"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/black_to_transparent_gradient"/>
+        <TextView
+            android:id="@+id/carousel_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/colorWhite"
+            android:textSize="60sp"
+            android:text="Sample"
+            fontPath="DB HelvethaicaMon X Bd.ttf"/>
+    </RelativeLayout>
+
 
 </FrameLayout>

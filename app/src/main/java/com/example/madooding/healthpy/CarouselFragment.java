@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 
 /**
@@ -15,6 +18,7 @@ import android.widget.ImageView;
  */
 public class CarouselFragment extends Fragment {
     private int imgResource;
+    private String name;
 
     public CarouselFragment() {
         // Required empty public constructor
@@ -34,17 +38,22 @@ public class CarouselFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         this.imgResource = getArguments().getInt("ImgResource");
+        this.name = getArguments().getString("Name");
         ImageView imgView = (ImageView) getActivity().findViewById(R.id.carousel_image_view);
         imgView.setImageResource(this.imgResource);
+
+        TextView carouselTextView = (TextView) view.findViewById(R.id.carousel_text_view);
+        carouselTextView.setText(this.name);
     }
 
 
 
-    public static CarouselFragment newInstance(int imgResource){
+    public static CarouselFragment newInstance(int imgResource, String name){
         CarouselFragment carousel = new CarouselFragment();
 
         Bundle args = new Bundle();
         args.putInt("ImgResource", imgResource);
+        args.putString("Name", name);
         carousel.setArguments(args);
 
         return carousel;

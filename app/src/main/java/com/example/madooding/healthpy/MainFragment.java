@@ -6,21 +6,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.madooding.healthpy.adapter.CarouselViewPagerAdapter;
-import com.example.madooding.healthpy.adapter.CategoryRecyclerViewAdapter;
 import com.example.madooding.healthpy.adapter.FoodListViewAdapter;
 import com.example.madooding.healthpy.model.CarouselItem;
 import com.example.madooding.healthpy.model.FoodListItem;
@@ -63,8 +58,8 @@ public class MainFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        carouselItemList.add(new CarouselItem(R.drawable.image_1));
-        carouselItemList.add(new CarouselItem(R.drawable.image_2));
+        carouselItemList.add(new CarouselItem(R.drawable.image_1, "รวมเมนูชาวหอ"));
+        carouselItemList.add(new CarouselItem(R.drawable.image_2, "รวมเมนูไข่"));
 
         carouselViewPager = (ViewPager) view.findViewById(R.id.carouselViewPager);
         carouselViewPager.setAdapter(new CarouselViewPagerAdapter(getActivity().getSupportFragmentManager(), carouselItemList));

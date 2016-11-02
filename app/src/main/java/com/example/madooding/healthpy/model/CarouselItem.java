@@ -7,10 +7,12 @@ import com.example.madooding.healthpy.CarouselFragment;
  */
 public class CarouselItem {
     private int imgResource;
+    private String name;
     private CarouselFragment Carousel;
 
-    public CarouselItem(int imgResource){
+    public CarouselItem(int imgResource, String name){
         this.imgResource = imgResource;
+        this.name = name;
 
     }
 
@@ -18,8 +20,10 @@ public class CarouselItem {
         return this.imgResource;
     }
 
+    public String getName(){return this.name;}
+
     public CarouselFragment getCarouselFragment(){
-        return CarouselFragment.newInstance(this.imgResource);
+        return CarouselFragment.newInstance(this.imgResource, this.name);
     }
 
 }
