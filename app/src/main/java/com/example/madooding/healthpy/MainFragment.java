@@ -68,22 +68,9 @@ public class MainFragment extends Fragment {
         carouselCircleIndicator.setSnap(true);
 
 
-        //Category Recycler View
-//        categoryRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_foods_category);
-//        categoryRecyclerView.setHasFixedSize(true);
-//
-//        categoryRecyclerViewLayoutMgr = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-//        categoryRecyclerView.setLayoutManager(categoryRecyclerViewLayoutMgr);
-//
-//
-//        categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(getContext(), foodsCategoryList);
-//        categoryRecyclerView.setAdapter(categoryRecyclerViewAdapter);
-
         foodListItems.add(new FoodListItem(R.drawable.food_pic_1, "ขาหมู", "ยอดอาหาร", 369));
         foodListItems.add(new FoodListItem(R.drawable.food_pic_1, "ขาหมูสูตร Low fat", "สูตรนี้จะลดไขมัน เหมาะกับผู้ที่ต้องการลดความอ้วน", 230));
 
-//        ListView foodItemsListView = (ListView) view.findViewById(R.id.food_item_list_view);
-//        foodItemsListView.setAdapter(new FoodListViewAdapter(getContext(), R.layout.food_list_item, foodListItems));
 
         LinearLayout foodItemListViewReplacement = (LinearLayout) view.findViewById(R.id.food_item_list_view_replacement);
         FoodListViewAdapter listViewAdapter = new FoodListViewAdapter(getContext(), R.layout.food_list_item, foodListItems);
@@ -93,10 +80,6 @@ public class MainFragment extends Fragment {
         }
 
         setCategoryImage(view);
-
-
-
-
 
     }
 
