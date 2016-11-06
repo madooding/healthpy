@@ -89,12 +89,19 @@
                 style="@style/TextTopic"
                 android:text="เมนูที่แนะนำสำหรับคุณ"/>
 
-            <LinearLayout
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/food_list_item_recycler_view"
+                android:scrollbars="vertical">
+            </android.support.v7.widget.RecyclerView>
+
+            <ListView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:id="@+id/food_item_list_view_replacement">
-            </LinearLayout>
+            </ListView>
 
 
 

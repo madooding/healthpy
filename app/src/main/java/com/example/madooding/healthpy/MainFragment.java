@@ -2,20 +2,26 @@ package com.example.madooding.healthpy;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.madooding.healthpy.adapter.CarouselViewPagerAdapter;
+import com.example.madooding.healthpy.adapter.FoodListRecyclerViewAdapter;
 import com.example.madooding.healthpy.adapter.FoodListViewAdapter;
 import com.example.madooding.healthpy.model.CarouselItem;
 import com.example.madooding.healthpy.model.FoodListItem;
@@ -38,6 +44,10 @@ public class MainFragment extends Fragment {
     List<FoodsCategory> foodsCategoryList = new ArrayList<FoodsCategory>();
     List<CarouselItem> carouselItemList = new ArrayList<>();
     List<FoodListItem> foodListItems = new ArrayList<>();
+
+    private RecyclerView foodListItemsRecyclerView;
+    private RecyclerView.Adapter foodListItemsRecyclerViewAdapter;
+    private RecyclerView.LayoutManager foodListItemsLayoutManager;
 
 
     public MainFragment() {
@@ -71,13 +81,23 @@ public class MainFragment extends Fragment {
         foodListItems.add(new FoodListItem(R.drawable.food_pic_1, "ขาหมู", "ยอดอาหาร", 369));
         foodListItems.add(new FoodListItem(R.drawable.food_pic_1, "ขาหมูสูตร Low fat", "สูตรนี้จะลดไขมัน เหมาะกับผู้ที่ต้องการลดความอ้วน", 230));
 
+        foodListItemsRecyclerView = (RecyclerView) view.findViewById(R.id.food_list_item_recycler_view);
+        foodListItemsRecyclerView.setHasFixedSize(true);
 
-        LinearLayout foodItemListViewReplacement = (LinearLayout) view.findViewById(R.id.food_item_list_view_replacement);
-        FoodListViewAdapter listViewAdapter = new FoodListViewAdapter(getContext(), R.layout.food_list_item, foodListItems);
+        foodListItemsLayoutManager = new LinearLayoutManager(getContext());
+        foodListItemsRecyclerView.setLayoutManager(foodListItemsLayoutManager);
 
-        for (int i = 0; i < listViewAdapter.getCount(); i++){
-            foodItemListViewReplacement.addView(listViewAdapter.getView(i, null, null));
-        }
+        foodListItemsRecyclerViewAdapter = new FoodListRecyclerViewAdapter(getContext(), foodListItems, new FoodListRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(FoodListItem item) {
+                Intent intent = new Intent(getActivity(), FoodDetailActivity.class);
+                startActivity(intent);
+            }
+        });
+        foodListItemsRecyclerView.setAdapter(foodListItemsRecyclerViewAdapter);
+
+
+
 
         setCategoryImage(view);
 

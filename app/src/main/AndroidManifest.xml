@@ -18,8 +18,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".FoodDetailActivity"
-            android:theme="@style/AppTheme.TranslucentStatusBar">
+        <activity
+            android:name=".FoodDetailActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity">
+            </meta-data>
         </activity>
     </application>
 

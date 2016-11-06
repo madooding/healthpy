@@ -9,5 +9,7 @@
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="food_detail_parallax_image_height">250dp</dimen>
+    <dimen name="action_bar_size">56dp</dimen>
+    <dimen name="food_detail_title_padding">72dp</dimen>
 
 </resources>
