@@ -41,7 +41,10 @@ public class FoodDetailActivity
     private int titleTextMargin;
     private LinearLayout titleContainer;
     private int screenWidth;
-
+    private int titleBigTextSize;
+    private String foodName;
+    private String foodDetail;
+    private int titleTextLeftIndentation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +73,8 @@ public class FoodDetailActivity
         titleContainer = (LinearLayout) findViewById(R.id.food_detail_title_container);
         titleTextMargin = (screenWidth - titleTextView.getMeasuredWidth()) / 2;
         titleContainer.setPadding(titleTextMargin, 0, 0, 0);
+        titleBigTextSize = (int)getResources().getDimensionPixelSize(R.dimen.food_detail_title_text_size);
+        titleTextLeftIndentation = getResources().getDimensionPixelSize(R.dimen.food_detail_title_padding);
 
         appBar = (AppBarLayout) findViewById(R.id.food_detail_app_bar);
         appBar.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, getResources().getColor(R.color.colorPrimary)));
@@ -90,6 +95,8 @@ public class FoodDetailActivity
         imageView.setTranslationY((float)scrollY/2);
         int baseColor = getResources().getColor(R.color.colorPrimary);
         float alpha = Math.min(1, (float) scrollY / (parallaxImageHeight - actionBarSize));
+        titleTextView.measure(0,0);
+        titleTextMargin = (screenWidth - titleTextView.getMeasuredWidth()) / 2;
         if(alpha == 1){
             setTitle("สวัสดี");
             titleTextView.setText(null);
@@ -100,7 +107,7 @@ public class FoodDetailActivity
         appBar.setBackgroundColor(ScrollUtils.getColorWithAlpha(alpha, baseColor));
         appBar.setMinimumHeight(Math.max(actionBarSize,parallaxImageHeight - (scrollY)));
         titleTextView.setMinimumHeight(Math.max(actionBarSize,parallaxImageHeight - (scrollY)));
-        int titleTextLeftIndentation = getResources().getDimensionPixelSize(R.dimen.food_detail_title_padding);
+        titleTextView.setTextSize(28 + (int)((72 - 28) * (1 - alpha)));
         titleContainer.setPadding(Math.max(titleTextLeftIndentation,
                 titleTextLeftIndentation + (int)((titleTextMargin - titleTextLeftIndentation) * (1 - alpha))), 0, 0, 0);
 

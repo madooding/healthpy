@@ -11,5 +11,7 @@
     <dimen name="food_detail_parallax_image_height">250dp</dimen>
     <dimen name="action_bar_size">56dp</dimen>
     <dimen name="food_detail_title_padding">72dp</dimen>
+    <dimen name="food_detail_title_text_size">72sp</dimen>
+    <dimen name="food_detail_content_text_size">26sp</dimen>
 
 </resources>
