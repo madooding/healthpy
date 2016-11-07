@@ -21,6 +21,12 @@
     <color name="colorNormalText">#4D4D4D</color>
 
 
+    <color name="colorProtein">#F8B290</color>
+    <color name="colorFat">#FCF5C7</color>
+    <color name="colorCholesterol">#FFEE93</color>
+    <color name="colorCarbohydrate">#B6D7B9</color>
+    <color name="colorSodium">#A0CED9</color>
+
     <integer-array name="healthpy_form_theme">
         <item>@color/colorPrimaryDarker</item> <!-- really much darker color of main color -->
         <item>@color/colorPrimaryDark</item> <!-- a bit darker color of your main color -->
