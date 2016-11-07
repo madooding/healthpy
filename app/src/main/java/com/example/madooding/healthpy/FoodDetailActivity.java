@@ -2,19 +2,27 @@ package com.example.madooding.healthpy;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.os.Build;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewPropertyAnimator;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.madooding.healthpy.adapter.NutritionListRecyclerViewAdapter;
+import com.example.madooding.healthpy.model.NutritionType;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
@@ -27,6 +35,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -49,10 +58,15 @@ public class FoodDetailActivity
     private String foodName;
     private String foodDetail;
     private int foodCalories;
-    private HashMap<String, Integer> nutrition;
+    private HashMap<String, Float> nutrition;
     private int titleTextLeftIndentation;
     private PieChart pieChart;
-    private ListView nutritionTable;
+    private RecyclerView nutritionTable;
+    private RecyclerView.Adapter nutritionTableAdapter;
+    private RecyclerView.LayoutManager nutrionTableLayoutManager;
+    private FloatingActionButton addFoodFab;
+    private boolean fabIsShown;
+    private int fabLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,15 +117,16 @@ public class FoodDetailActivity
         pieChart.setDescription("");
 
         nutrition = new HashMap<>();
-        nutrition.put("fat", 30);
-        nutrition.put("carbohydrate", 20);
-        nutrition.put("protein", 28);
-        nutrition.put("cholesterol", 40);
-        nutrition.put("sodium", 32);
+        nutrition.put("fat", (float)30.2);
+        nutrition.put("carbohydrate", (float)20.3);
+        nutrition.put("protein", (float)28);
+        nutrition.put("cholesterol", (float)40.3);
+        nutrition.put("sodium", (float)32.1);
 
         ArrayList<Entry> yVals = new ArrayList<>();
         ArrayList<String> xVals = new ArrayList<>();
         ArrayList<Integer> colors = new ArrayList<>();
+        List<NutritionType> nutritionTypeList = new ArrayList<>();
         int count = 0;
         for(String key : nutrition.keySet()){
             yVals.add(new Entry(nutrition.get(key), count));
@@ -128,6 +143,7 @@ public class FoodDetailActivity
                 case "sodium": colors.add(getResources().getColor(R.color.colorSodium));
                             break;
             }
+            nutritionTypeList.add(new NutritionType(key, nutrition.get(key), colors.get(count)));
             count++;
         }
 
@@ -139,6 +155,17 @@ public class FoodDetailActivity
         PieData data = new PieData(xVals, dataSet);
         pieChart.setData(data);
         pieChart.invalidate();
+
+        nutritionTable = (RecyclerView) findViewById(R.id.food_detail_nutrition_table);
+        nutrionTableLayoutManager = new LinearLayoutManager(this);
+        nutritionTable.setLayoutManager(nutrionTableLayoutManager);
+        nutritionTableAdapter = new NutritionListRecyclerViewAdapter(this, nutritionTypeList);
+        nutritionTable.setAdapter(nutritionTableAdapter);
+
+        addFoodFab = (FloatingActionButton) findViewById(R.id.food_detail_add_fab);
+        fabLocation = (parallaxImageHeight - actionBarSize + getResources().getDimensionPixelSize(R.dimen.activity_vertical_margin) - 10) - (addFoodFab.getHeight());
+        addFoodFab.setTranslationY(fabLocation);
+        showFab();
 
         scrollView = (ObservableScrollView) findViewById(R.id.food_detail_scroll_view);
         scrollView.setScrollViewCallbacks(this);
@@ -168,6 +195,37 @@ public class FoodDetailActivity
         titleContainer.setPadding(Math.max(titleTextLeftIndentation,
                 titleTextLeftIndentation + (int)((titleTextMargin - titleTextLeftIndentation) * (1 - alpha))), 0, 0, 0);
 
+        int fabTranslationY = fabLocation - scrollY;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) addFoodFab.getLayoutParams();
+            lp.topMargin = (int) fabTranslationY;
+            addFoodFab.requestLayout();
+        } else {
+            addFoodFab.setTranslationY(fabTranslationY);
+        }
+
+        if(alpha >= 0.8){
+            hideFab();
+        }else{
+            showFab();
+        }
+
+    }
+
+    private void showFab() {
+        if (!fabIsShown) {
+            addFoodFab.animate().cancel();
+            addFoodFab.animate().scaleX(1).scaleY(1).setDuration(200).start();
+            fabIsShown = true;
+        }
+    }
+
+    private void hideFab() {
+        if (fabIsShown) {
+            addFoodFab.animate().cancel();
+            addFoodFab.animate().scaleX(0).scaleY(0).setDuration(200).start();
+            fabIsShown = false;
+        }
     }
 
     @Override
