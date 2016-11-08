@@ -29,7 +29,10 @@ import com.example.madooding.healthpy.model.FoodsCategory;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -44,6 +47,7 @@ public class MainFragment extends Fragment {
     List<FoodsCategory> foodsCategoryList = new ArrayList<FoodsCategory>();
     List<CarouselItem> carouselItemList = new ArrayList<>();
     List<FoodListItem> foodListItems = new ArrayList<>();
+    HashMap<String, Float> nutrition = new HashMap<>();
 
     private RecyclerView foodListItemsRecyclerView;
     private RecyclerView.Adapter foodListItemsRecyclerViewAdapter;
@@ -77,9 +81,12 @@ public class MainFragment extends Fragment {
         carouselCircleIndicator.setViewPager(carouselViewPager);
         carouselCircleIndicator.setSnap(true);
 
+        nutrition.put("fat", (float)30.2);
+        nutrition.put("carbohydrate", (float)20.3);
+        nutrition.put("protein", (float)28);
 
-        foodListItems.add(new FoodListItem(R.drawable.food_pic_1, "ขาหมู", "ยอดอาหาร", 369));
-        foodListItems.add(new FoodListItem(R.drawable.food_pic_1, "ขาหมูสูตร Low fat", "สูตรนี้จะลดไขมัน เหมาะกับผู้ที่ต้องการลดความอ้วน", 230));
+        foodListItems.add(new FoodListItem(R.drawable.food_pic_1, "ขาหมู", "ยอดอาหาร", 369, nutrition));
+        foodListItems.add(new FoodListItem(R.drawable.food_pic_1, "ข้าวผัดพริกเผาหมู", "สูตรนี้จะลดไขมัน เหมาะกับผู้ที่ต้องการลดความอ้วน", 230, nutrition));
 
         foodListItemsRecyclerView = (RecyclerView) view.findViewById(R.id.food_list_item_recycler_view);
         foodListItemsRecyclerView.setHasFixedSize(true);
@@ -91,7 +98,8 @@ public class MainFragment extends Fragment {
             @Override
             public void onItemClick(FoodListItem item) {
                 Intent intent = new Intent(getActivity(), FoodDetailActivity.class);
-                startActivity(intent);
+                intent.putExtra("food_info", item);
+                startActivityForResult(intent, FoodDetailActivity.RequestCode.CALL_ACTIVITY_WITH_INFORMATION);
             }
         });
         foodListItemsRecyclerView.setAdapter(foodListItemsRecyclerViewAdapter);
@@ -137,4 +145,18 @@ public class MainFragment extends Fragment {
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case FoodDetailActivity.RequestCode.CALL_ACTIVITY_WITH_INFORMATION:
+                if(resultCode == FoodDetailActivity.ResponseCode.ADD_FOOD){
+                    String foodName = ((FoodListItem)data.getSerializableExtra("food_info")).getName();
+                    Toast.makeText(getContext(), foodName + " has been added to a list completely.", Toast.LENGTH_SHORT).show();
+                }else{
+
+                }
+                break;
+        }
+    }
 }

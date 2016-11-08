@@ -21,6 +21,7 @@
                 android:id="@+id/food_detail_image"
                 android:layout_width="match_parent"
                 android:scaleType="centerCrop"
+                android:foreground="@drawable/black_to_transparent_gradient"
                 android:layout_height="@dimen/food_detail_parallax_image_height"
                 android:src="@drawable/image_1"/>
 
@@ -66,6 +67,7 @@
                         </LinearLayout>
 
                         <TextView
+                            android:id="@+id/food_detail_description"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/food_detail_content_text_size"
@@ -107,6 +109,7 @@
                                 style="@style/TextTopic" />
                         </LinearLayout>
                         <TextView
+                            android:id="@+id/food_detail_calories"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="พลังงานทั้งหมด : 180 กิโลแคลลอรี่"
@@ -178,7 +181,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorWhite"
                     android:gravity="center_vertical"
-                    android:textSize="72sp"
+                    android:textSize="@dimen/food_detail_title_text_size"
                     fontPath="DB HelvethaicaMon X Bd.ttf"
                     android:text="สวัสดี"/>
             </LinearLayout>

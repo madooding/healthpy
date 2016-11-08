@@ -1,6 +1,7 @@
 package com.example.madooding.healthpy;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Build;
 import android.support.design.widget.AppBarLayout;
@@ -12,16 +13,20 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Display;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.madooding.healthpy.adapter.NutritionListRecyclerViewAdapter;
+import com.example.madooding.healthpy.model.FoodListItem;
 import com.example.madooding.healthpy.model.NutritionType;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
@@ -51,13 +56,15 @@ public class FoodDetailActivity
     private AppBarLayout appBar;
     Display display;
     Point size = new Point();
+    private FoodListItem food_info;
     private int titleTextMargin;
     private LinearLayout titleContainer;
     private int screenWidth;
     private int titleBigTextSize;
     private String foodName;
-    private String foodDetail;
+    private String foodDescription;
     private int foodCalories;
+    private int foodImgSrc;
     private HashMap<String, Float> nutrition;
     private int titleTextLeftIndentation;
     private PieChart pieChart;
@@ -65,8 +72,20 @@ public class FoodDetailActivity
     private RecyclerView.Adapter nutritionTableAdapter;
     private RecyclerView.LayoutManager nutrionTableLayoutManager;
     private FloatingActionButton addFoodFab;
+    private ImageView foodImageView;
+    private TextView foodDescriptionTextView;
+    private TextView foodCaloriesTextView;
     private boolean fabIsShown;
     private int fabLocation;
+
+
+    public static class RequestCode{
+        public static final int CALL_ACTIVITY_WITH_INFORMATION = 100;
+    }
+
+    public static class ResponseCode{
+        public static final int ADD_FOOD = 100;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +96,19 @@ public class FoodDetailActivity
                 .build()
         );
         setContentView(R.layout.activity_food_detail);
+
+        //Get bundle data from intent object
+        final Intent intent = new Intent();
+        Bundle bundle = getIntent().getExtras();
+        food_info = (FoodListItem) bundle.getSerializable("food_info");
+
+        //Food information define
+        foodName = food_info.getName();
+        foodCalories = food_info.getCalories();
+        foodDescription = food_info.getDescription();
+        foodImgSrc = food_info.getImageSrc();
+        nutrition = food_info.getNutrition();
+
 
         setSupportActionBar((Toolbar) findViewById(R.id.food_detail_toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -90,6 +122,7 @@ public class FoodDetailActivity
         actionBarSize = getResources().getDimensionPixelSize(R.dimen.action_bar_size);
 
         titleTextView = (TextView) findViewById(R.id.food_detail_title);
+        titleTextView.setText(foodName);
         titleTextView.measure(0,0);
         titleTextView.setMinimumHeight(parallaxImageHeight);
         titleContainer = (LinearLayout) findViewById(R.id.food_detail_title_container);
@@ -98,11 +131,20 @@ public class FoodDetailActivity
         titleBigTextSize = (int)getResources().getDimensionPixelSize(R.dimen.food_detail_title_text_size);
         titleTextLeftIndentation = getResources().getDimensionPixelSize(R.dimen.food_detail_title_padding);
 
+
         appBar = (AppBarLayout) findViewById(R.id.food_detail_app_bar);
         appBar.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, getResources().getColor(R.color.colorPrimary)));
         appBar.setMinimumHeight(parallaxImageHeight);
 
         imageView = findViewById(R.id.food_detail_image);
+        foodImageView = (ImageView) imageView;
+        foodImageView.setImageResource(foodImgSrc);
+
+        foodDescriptionTextView = (TextView) findViewById(R.id.food_detail_description);
+        foodDescriptionTextView.setText(foodDescription);
+
+        foodCaloriesTextView = (TextView) findViewById(R.id.food_detail_calories);
+        foodCaloriesTextView.setText("พลังงานทั้งหมด : " + foodCalories + " กิโลแคลลอรี่");
 
         pieChart = (PieChart) findViewById(R.id.food_detail_nutrition_pie_chart);
         // enable hole and configure
@@ -116,12 +158,6 @@ public class FoodDetailActivity
         pieChart.getLegend().setEnabled(false);
         pieChart.setDescription("");
 
-        nutrition = new HashMap<>();
-        nutrition.put("fat", (float)30.2);
-        nutrition.put("carbohydrate", (float)20.3);
-        nutrition.put("protein", (float)28);
-        nutrition.put("cholesterol", (float)40.3);
-        nutrition.put("sodium", (float)32.1);
 
         ArrayList<Entry> yVals = new ArrayList<>();
         ArrayList<String> xVals = new ArrayList<>();
@@ -167,6 +203,19 @@ public class FoodDetailActivity
         addFoodFab.setTranslationY(fabLocation);
         showFab();
 
+        addFoodFab.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(fabIsShown) {
+                    intent.putExtra("food_info", food_info);
+                    setResult(ResponseCode.ADD_FOOD, intent);
+                    finish();
+                    Toast.makeText(FoodDetailActivity.this, "Fab touched", Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+        });
+
         scrollView = (ObservableScrollView) findViewById(R.id.food_detail_scroll_view);
         scrollView.setScrollViewCallbacks(this);
 
@@ -182,18 +231,17 @@ public class FoodDetailActivity
         float alpha = Math.min(1, (float) scrollY / (parallaxImageHeight - actionBarSize));
         titleTextView.measure(0,0);
         if(alpha == 1){
-            setTitle("สวัสดี");
+            setTitle(foodName);
             titleTextView.setText(null);
         }else{
             setTitle(null);
-            titleTextView.setText("สวัสดี");
+            titleTextView.setText(foodName);
         }
         appBar.setBackgroundColor(ScrollUtils.getColorWithAlpha(alpha, baseColor));
         appBar.setMinimumHeight(Math.max(actionBarSize,parallaxImageHeight - (scrollY)));
         titleTextView.setMinimumHeight(Math.max(actionBarSize,parallaxImageHeight - (scrollY)));
-        titleTextView.setTextSize(28 + (int)((72 - 28) * (1 - alpha)));
-        titleContainer.setPadding(Math.max(titleTextLeftIndentation,
-                titleTextLeftIndentation + (int)((titleTextMargin - titleTextLeftIndentation) * (1 - alpha))), 0, 0, 0);
+        titleTextView.setTextSize(28 + (int)((64  - 28) * (1 - alpha)));
+        titleContainer.setPadding(titleTextLeftIndentation + (int)((titleTextMargin - titleTextLeftIndentation) * (1 - alpha)), 0, 0, 0);
 
         int fabTranslationY = fabLocation - scrollY;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {

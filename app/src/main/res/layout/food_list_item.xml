@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="120dp"
     xmlns:tools="http://schemas.android.com/tools"
+    android:foreground="@drawable/food_item_card_view_background_selector"
+    android:foregroundTintMode="multiply"
     android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp"
     card_view:cardCornerRadius="4dp"

@@ -1,23 +1,25 @@
 package com.example.madooding.healthpy.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
  * Created by madooding on 10/31/2016 AD.
  */
-public class FoodListItem {
+public class FoodListItem implements Serializable {
+    private String id;
     private int imageSrc;
     private String name;
     private String description;
     private int calories;
-    private HashMap<String, Integer> nutrition;
+    private HashMap<String, Float> nutrition;
 
-    public FoodListItem(int imageSrc, String name, String description, int calories){
+    public FoodListItem(int imageSrc, String name, String description, int calories, HashMap<String, Float> nutrition){
         this.setImageSrc(imageSrc);
         this.setName(name);
         this.setDescription(description);
         this.setCalories(calories);
-        //this.nutrition = nutrition;
+        this.nutrition = nutrition;
     }
 
 
@@ -53,7 +55,7 @@ public class FoodListItem {
         this.calories = calories;
     }
 
-    public HashMap<String, Integer> getNutrition(){
+    public HashMap<String, Float> getNutrition(){
         return nutrition;
     }
 }
