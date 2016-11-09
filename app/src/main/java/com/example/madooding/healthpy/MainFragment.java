@@ -26,6 +26,8 @@ import com.example.madooding.healthpy.adapter.FoodListViewAdapter;
 import com.example.madooding.healthpy.model.CarouselItem;
 import com.example.madooding.healthpy.model.FoodListItem;
 import com.example.madooding.healthpy.model.FoodsCategory;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
@@ -58,6 +60,12 @@ public class MainFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getContext());
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,6 +79,7 @@ public class MainFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Toast.makeText(getContext(), "Welcome back!, " + Profile.getCurrentProfile().getName(), Toast.LENGTH_SHORT).show();
 
         carouselItemList.add(new CarouselItem(R.drawable.image_1, "รวมเมนูชาวหอ"));
         carouselItemList.add(new CarouselItem(R.drawable.image_2, "รวมเมนูไข่"));

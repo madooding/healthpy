@@ -14,6 +14,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/temp_logo"/>
+        android:src="@drawable/formal_logo"/>
 
 </RelativeLayout>
