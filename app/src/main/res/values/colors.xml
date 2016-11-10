@@ -42,4 +42,18 @@
         <item>@color/colorPrimary</item>
     </integer-array>
 
+    <integer-array name="information_gathering_edittext">
+        <item>@color/colorPrimaryDarker</item> <!-- really much darker color of main color -->
+        <item>@color/colorPrimaryDark</item> <!-- a bit darker color of your main color -->
+        <item>@color/colorWhite</item> <!-- main color of your theme -->
+        <item>@color/colorSubStandardGrey</item>
+    </integer-array>
+
+    <integer-array name="information_gathering_element">
+        <item>@color/colorPrimaryDarker</item> <!-- really much darker color of main color -->
+        <item>@color/colorPrimaryDark</item> <!-- a bit darker color of your main color -->
+        <item>@color/colorPrimary</item> <!-- main color of your theme -->
+        <item>@color/colorSubStandardGrey</item>
+    </integer-array>
+
 </resources>

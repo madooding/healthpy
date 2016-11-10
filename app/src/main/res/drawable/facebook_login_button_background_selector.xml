@@ -3,5 +3,4 @@
     <item android:drawable="@drawable/light_primary_color_rounded_corner" android:state_selected="true"></item>
     <item android:drawable="@drawable/light_primary_color_rounded_corner" android:state_pressed="true"></item>
     <item android:drawable="@android:color/transparent"></item>
-
 </selector>
