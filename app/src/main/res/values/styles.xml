@@ -85,4 +85,18 @@
         <item name="android:elevation">1dp</item>
     </style>
 
+    <style name="primary_color_button">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:background">@drawable/primary_color_button_selector</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="stroke_primary_color_button">
+        <item name="android:textColor">@color/primary_stroke_rounded_button_textcolor_selector</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:background">@drawable/primary_stroke_rounded_button_selector</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
 </resources>

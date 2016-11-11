@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:background="@color/appBGcolor"
+    xmlns:flatui="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.madooding.healthpy.InformationGatheringActivity">
     <android.support.design.widget.AppBarLayout
         android:id="@+id/information_gathering_appbar"
@@ -35,15 +36,23 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:padding="@dimen/activity_horizontal_margin">
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight=".5"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:enabled="false"
+            style="@style/stroke_primary_color_button"
+            android:text="ย้อนกลับ" />
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight=".5"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
-            android:textColor="@color/colorWhite"
-            android:textSize="26sp"
-            android:background="@drawable/primary_color_button_selector"
-            android:padding="10dp"
+            android:layout_marginLeft="10dp"
+            style="@style/primary_color_button"
             android:text="ถัดไป"/>
     </LinearLayout>
 

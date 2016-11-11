@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="คุณบริโภคอาหารมังสวิรัติใช่หรือไม่ ?"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="8dp"
             style="@style/InformationGatheringHeadingText"/>
 
         <RadioGroup

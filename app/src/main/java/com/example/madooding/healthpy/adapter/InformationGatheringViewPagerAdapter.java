@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.madooding.healthpy.AreYouVegetarianFormFragment;
+import com.example.madooding.healthpy.CongenitalDiseaseFormFragment;
 import com.example.madooding.healthpy.KindOfAnimalCantEatFormFragment;
 import com.example.madooding.healthpy.PersonalInfoFormFragment;
 
@@ -22,8 +23,8 @@ public class InformationGatheringViewPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch(position){
             case 0: return new PersonalInfoFormFragment();
-            case 1: return new AreYouVegetarianFormFragment();
-            case 2: return new KindOfAnimalCantEatFormFragment();
+            case 1: return new KindOfAnimalCantEatFormFragment();
+            case 2: return new CongenitalDiseaseFormFragment();
         }
         return null;
     }

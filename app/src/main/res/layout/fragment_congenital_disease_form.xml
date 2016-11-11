@@ -5,9 +5,8 @@
     xmlns:flatui="http://schemas.android.com/apk/res-auto"
     android:background="@color/appBGcolor"
     android:padding="@dimen/activity_horizontal_margin"
-    tools:context="com.example.madooding.healthpy.KindOfAnimalCantEatFormFragment">
+    tools:context="com.example.madooding.healthpy.CongenitalDiseaseFormFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,7 +14,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="คุณไม่สามารถบริโภคเนื้อสัตว์ชนิดใดได้บ้าง ?"
+            android:text="คุณมีโรคประจำตัวอะไรบ้าง ?"
             android:layout_marginBottom="8dp"
             style="@style/InformationGatheringHeadingText"/>
         <LinearLayout
@@ -24,43 +23,35 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:orientation="vertical">
             <com.cengalabs.flatui.views.FlatCheckBox
-                android:id="@+id/uneatable_pig"
+                android:id="@+id/disease_high_blood_pressure"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:textSize="26sp"
-                android:text="หมู"
+                android:text="โรคความดันโลหิตสูง"
                 flatui:fl_size="14dp"
                 flatui:fl_theme="@array/information_gathering_element"/>
             <com.cengalabs.flatui.views.FlatCheckBox
-                android:id="@+id/uneatable_cow"
+                android:id="@+id/disease_heart_and_kidney_disease"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:textSize="26sp"
-                android:text="วัว"
+                android:text="โรคหัวใจหรือโรคไต"
                 flatui:fl_size="14dp"
                 flatui:fl_theme="@array/information_gathering_element"/>
             <com.cengalabs.flatui.views.FlatCheckBox
-                android:id="@+id/uneatable_chicken"
+                android:id="@+id/disease_diabetes"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:textSize="26sp"
-                android:text="ไก่"
+                android:text="โรคเบาหวาน"
                 flatui:fl_size="14dp"
                 flatui:fl_theme="@array/information_gathering_element"/>
             <com.cengalabs.flatui.views.FlatCheckBox
-                android:id="@+id/uneatable_shrimp"
+                android:id="@+id/disease_gout"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:textSize="26sp"
-                android:text="กุ้ง"
-                flatui:fl_size="14dp"
-                flatui:fl_theme="@array/information_gathering_element"/>
-            <com.cengalabs.flatui.views.FlatCheckBox
-                android:id="@+id/uneatable_squid"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:textSize="26sp"
-                android:text="ปลาหมึก"
+                android:text="โรคเก๊าท์"
                 flatui:fl_size="14dp"
                 flatui:fl_theme="@array/information_gathering_element"/>
         </LinearLayout>
