@@ -9,28 +9,28 @@ import com.example.madooding.healthpy.CongenitalDiseaseFormFragment;
 import com.example.madooding.healthpy.KindOfAnimalCantEatFormFragment;
 import com.example.madooding.healthpy.PersonalInfoFormFragment;
 
+import java.util.List;
+
 /**
  * Created by madooding on 11/10/2016 AD.
  */
 
 public class InformationGatheringViewPagerAdapter extends FragmentPagerAdapter {
 
-    public InformationGatheringViewPagerAdapter(FragmentManager fm) {
+    private List<Fragment> fragmentList;
+
+    public InformationGatheringViewPagerAdapter(FragmentManager fm, List<Fragment> fragmentList) {
         super(fm);
+        this.fragmentList = fragmentList;
     }
 
     @Override
     public Fragment getItem(int position) {
-        switch(position){
-            case 0: return new PersonalInfoFormFragment();
-            case 1: return new KindOfAnimalCantEatFormFragment();
-            case 2: return new CongenitalDiseaseFormFragment();
-        }
-        return null;
+        return fragmentList.get(position);
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return fragmentList.size();
     }
 }
