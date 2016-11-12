@@ -87,7 +87,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="น้ำหนัก"
+                    android:text="น้ำหนัก (กก.)"
                     android:layout_marginBottom="4dp"
                     style="@style/InformationGatheringHeadingText"/>
                 <com.cengalabs.flatui.views.FlatEditText
@@ -113,7 +113,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="ส่วนสูง"
+                    android:text="ส่วนสูง (ซม.)"
                     android:layout_marginBottom="4dp"
                     style="@style/InformationGatheringHeadingText"/>
                 <com.cengalabs.flatui.views.FlatEditText
