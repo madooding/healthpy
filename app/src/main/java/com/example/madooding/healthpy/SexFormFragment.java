@@ -64,6 +64,8 @@ public class SexFormFragment extends Fragment {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                } catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         });

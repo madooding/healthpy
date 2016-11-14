@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.cengalabs.flatui.FlatUI;
+import com.example.madooding.healthpy.model.UserData;
 import com.example.madooding.healthpy.utility.DBUtils;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -104,13 +105,21 @@ public class FacebookLoginActivity extends AppCompatActivity {
 
 
     private void doRegister(){
-        boolean isRegisterd = getIntent().getBooleanExtra("isRegistered", false);
-        if(!isRegisterd){
+        boolean isRegistered = DBUtils.isRegistered(Profile.getCurrentProfile().getId());
+        if(!isRegistered){
             intent = new Intent(this, InformationGatheringActivity.class);
+            startActivityForResult(intent, InformationGatheringActivity.RequestCode.REGISTRATION_REQUEST);
         }else{
             intent = new Intent(this, MainActivity.class);
+            bundle = new Bundle();
+
+            //Must send user information in this intent
+            startActivity(intent);
         }
-        startActivity(intent);
+    }
+
+    private void callFacebookLogin(){
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email", "user_birthday"));
     }
 
 
@@ -118,6 +127,21 @@ public class FacebookLoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode){
+            case InformationGatheringActivity.RequestCode.REGISTRATION_REQUEST:
+                if(resultCode == InformationGatheringActivity.ResponseCode.REGISTRATION_COMPLETE){
+                    UserData userData = (UserData)data.getSerializableExtra("UserData");
+                    intent = new Intent(this, MainActivity.class);
+                    intent.putExtra("UserData", userData);
+                    startActivity(intent);
+                    finish();
+                }else if(resultCode == InformationGatheringActivity.ResponseCode.REGISTRATION_CANCEL){
+                    Toast.makeText(this, "Cancel", Toast.LENGTH_SHORT).show();
+                }else if(resultCode == InformationGatheringActivity.ResponseCode.REGISTRATION_ERROR){
+                    Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
     }
 
     @Override
@@ -125,13 +149,12 @@ public class FacebookLoginActivity extends AppCompatActivity {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
-    private void callFacebookLogin(){
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email", "user_birthday"));
-    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         profileTracker.stopTracking();
     }
+
+
 }

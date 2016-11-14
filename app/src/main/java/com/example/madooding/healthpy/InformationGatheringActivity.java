@@ -1,6 +1,7 @@
 package com.example.madooding.healthpy;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -11,9 +12,13 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.madooding.healthpy.adapter.InformationGatheringViewPagerAdapter;
+import com.example.madooding.healthpy.model.UserData;
+import com.example.madooding.healthpy.utility.DBUtils;
 import com.example.madooding.healthpy.utility.NonSwipeableViewPager;
+import com.facebook.Profile;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,8 +35,20 @@ public class InformationGatheringActivity extends AppCompatActivity {
     private String name, lastName, email, sex;
     private int birthDay, birthMonth, birthYear, weight, height;
     private List<String> uneatableMeats, congenitalDiseasesList;
+    private String profileImgURI;
+    private UserData userData;
+    private Date birthDate;
+    private Intent intent;
 
+    public static class RequestCode {
+        public static final int REGISTRATION_REQUEST = 200;
+    }
 
+    public static class ResponseCode {
+        public static final int REGISTRATION_COMPLETE = 200;
+        public static final int REGISTRATION_CANCEL = 210;
+        public static final int REGISTRATION_ERROR = 220;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +62,8 @@ public class InformationGatheringActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.information_gathering_toolbar);
         setSupportActionBar(toolbar);
         setTitle("เก็บข้อมูลเพิ่มเติม");
+
+        intent = new Intent();
 
         //Button variable initialization
         nextButton = (Button) findViewById(R.id.information_gathering_next_button);
@@ -93,6 +112,14 @@ public class InformationGatheringActivity extends AppCompatActivity {
                     setButtonState();
                 }else{
                     //Thing to do when user answer question complete
+                    birthDate = new Date(birthYear, birthMonth, birthDay);
+                    userData = new UserData(name, lastName, email, sex, birthDay, birthMonth, birthYear, weight, height, uneatableMeats, congenitalDiseasesList, Profile.getCurrentProfile().getId(), Profile.getCurrentProfile().getProfilePictureUri(100, 100).toString());
+                    userData.setRegistered(true);
+                    DBUtils.regisUser(userData);
+                    intent.putExtra("UserData", userData);
+                    setResult(ResponseCode.REGISTRATION_COMPLETE, intent);
+                    finish();
+                    Toast.makeText(InformationGatheringActivity.this, birthDate.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -127,5 +154,12 @@ public class InformationGatheringActivity extends AppCompatActivity {
     public Fragment getActiveFragment(ViewPager container, int position) {
         String name = "android:switcher:" + container.getId() + ":" + position;
         return getSupportFragmentManager().findFragmentByTag(name);
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(ResponseCode.REGISTRATION_CANCEL);
+        finish();
+        super.onBackPressed();
     }
 }

@@ -2,6 +2,7 @@ package com.example.madooding.healthpy;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.os.TokenWatcher;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -37,13 +38,22 @@ public class Splash extends AppCompatActivity {
                 .server(DBUtils.SERVER_URL)
                 .build()
         );
+
         handler = new Handler();
 
         runnable = new Runnable() {
             public void run() {
                 Intent intent;
+                AccessToken.refreshCurrentAccessTokenAsync();
                 AccessToken accessToken = AccessToken.getCurrentAccessToken();
-                boolean isUserRegistered = DBUtils.isRegistered(Profile.getCurrentProfile().getId());
+
+                boolean isUserRegistered = false;
+                try{
+                    isUserRegistered = DBUtils.isRegistered(Profile.getCurrentProfile().getId());
+                }catch (Exception e){
+                    isUserRegistered = false;
+                }
+
                 Bundle bundle = new Bundle();
                 if(accessToken == null || accessToken.isExpired() || !isUserRegistered){
                     if(accessToken == null){
@@ -51,16 +61,16 @@ public class Splash extends AppCompatActivity {
                     }else{
                         bundle.putCharSequence("isAccessTokenNull", "NotNull");
                     }
-                    bundle.putBoolean("isUserRegisted", isUserRegistered);
+                    bundle.putBoolean("isRegistered", isUserRegistered);
                     intent = new Intent(Splash.this, FacebookLoginActivity.class);
                 }else{
                     intent = new Intent(Splash.this, MainActivity.class);
 
-                    if(DBUtils.isRegistered(Profile.getCurrentProfile().getId())){
-                        Toast.makeText(Splash.this, "Registered", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(Splash.this, "Unregistered", Toast.LENGTH_SHORT).show();
-                    }
+//                    if(DBUtils.isRegistered(Profile.getCurrentProfile().getId())){
+//                        Toast.makeText(Splash.this, "Registered", Toast.LENGTH_SHORT).show();
+//                    }else{
+//                        Toast.makeText(Splash.this, "Unregistered", Toast.LENGTH_SHORT).show();
+//                    }
                 }
                 startActivity(intent, bundle);
                 finish();

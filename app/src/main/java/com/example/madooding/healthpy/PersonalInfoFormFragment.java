@@ -92,6 +92,8 @@ public class PersonalInfoFormFragment extends DialogFragment {
                     year_x = Integer.parseInt(splitedBirthday[2]);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                } catch (Exception e){
+                    e.printStackTrace();
                 }
 
             }
@@ -132,6 +134,7 @@ public class PersonalInfoFormFragment extends DialogFragment {
             month_x = month + 1;
             day_x = day;
             birthday.setText(day+"/"+(month + 1)+"/"+year);
+            Toast.makeText(getContext(), year_x + ", " + month_x + ", " + day_x, Toast.LENGTH_SHORT).show();
             validateForm();
 
         }
@@ -166,6 +169,6 @@ public class PersonalInfoFormFragment extends DialogFragment {
         return Integer.parseInt(weight.getText().toString());
     }
     public int getHeight(){
-        return Integer.parseInt(weight.getText().toString());
+        return Integer.parseInt(height.getText().toString());
     }
 }

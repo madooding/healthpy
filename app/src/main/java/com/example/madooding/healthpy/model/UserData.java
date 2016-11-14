@@ -1,12 +1,16 @@
 package com.example.madooding.healthpy.model;
 
+import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by madooding on 11/14/2016 AD.
  */
 
-public class UserData {
+public class UserData implements Serializable{
     private String name;
     private String lastName;
     private String email;
@@ -21,6 +25,23 @@ public class UserData {
     private boolean isRegistered = false;
     private boolean isVegetarian = false;
     private List<String> uneatable, congenitalDisease;
+    private Date birthDate;
+
+    public UserData(String name, String lastName, String email, String sex, int birthDay, int birthMonth, int birthYear, int weight, int height, List<String> uneatable, List<String> congenitalDisease, String fb_id, String profileImgURI){
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.sex = sex;
+        this.birthDay = birthDay;
+        this.birthMonth = birthMonth;
+        this.birthYear = birthYear;
+        this.weight = weight;
+        this.height = height;
+        this.uneatable = uneatable;
+        this.congenitalDisease = congenitalDisease;
+        this.fb_id = fb_id;
+        this.profileImgURI = profileImgURI;
+    }
 
 
     public String getName() {
@@ -118,4 +139,35 @@ public class UserData {
     public void setRegistered(boolean registered) {
         isRegistered = registered;
     }
+
+    public boolean isVegetarian() {return isVegetarian; }
+
+    public void setVegetarian(boolean vegetarian){ isVegetarian = vegetarian; }
+
+    public Date getBirthDate(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            return simpleDateFormat.parse(Integer.toString(birthDay + 1) + "/" + Integer.toString(birthMonth) + "/" + Integer.toString(birthYear));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return new Date();
+    }
+
+    public List<String> getUneatable(){
+        return uneatable;
+    }
+
+    public void setUneatable(List<String> uneatableList){
+        this.uneatable = uneatableList;
+    }
+
+    public List<String> getCongenitalDisease(){
+        return  congenitalDisease;
+    }
+
+    public void setCongenitalDisease(List<String> congenitalDiseaseList){
+        this.congenitalDisease = congenitalDiseaseList;
+    }
+
 }
