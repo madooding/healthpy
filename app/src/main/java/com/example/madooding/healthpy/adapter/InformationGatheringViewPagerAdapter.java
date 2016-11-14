@@ -4,11 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.madooding.healthpy.AreYouVegetarianFormFragment;
-import com.example.madooding.healthpy.CongenitalDiseaseFormFragment;
-import com.example.madooding.healthpy.KindOfAnimalCantEatFormFragment;
-import com.example.madooding.healthpy.PersonalInfoFormFragment;
-
 import java.util.List;
 
 /**

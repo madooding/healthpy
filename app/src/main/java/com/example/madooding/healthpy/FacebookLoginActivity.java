@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.cengalabs.flatui.FlatUI;
+import com.example.madooding.healthpy.utility.DBUtils;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -18,6 +19,7 @@ import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.parse.Parse;
 
 import java.util.Arrays;
 
@@ -30,6 +32,10 @@ public class FacebookLoginActivity extends AppCompatActivity {
     private String name = "Ding";
     private ProfileTracker profileTracker;
     protected AccessToken accessToken;
+    private  Intent intent;
+    private  Bundle bundle;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,14 +45,15 @@ public class FacebookLoginActivity extends AppCompatActivity {
                 .build()
         );
         setContentView(R.layout.activity_facebook_login);
+
+
         FlatUI.initDefaultValues(getApplicationContext());
         facebookLoginButton = (Button) findViewById(R.id.facebook_login_button);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
-
-
         accessToken = AccessToken.getCurrentAccessToken();
+
 
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
@@ -54,6 +61,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
                     public void onSuccess(LoginResult loginResult) {
                         Toast.makeText(FacebookLoginActivity.this, "Success!, Hello, " + name, Toast.LENGTH_SHORT).show();
                         accessToken = AccessToken.getCurrentAccessToken();
+                        doRegister();
 
                     }
 
@@ -84,6 +92,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
                     callFacebookLogin();
                 }else{
                     Toast.makeText(FacebookLoginActivity.this, "You are already logged in.", Toast.LENGTH_SHORT).show();
+                    doRegister();
                 }
 
             }
@@ -91,7 +100,17 @@ public class FacebookLoginActivity extends AppCompatActivity {
 
 
 
+    }
 
+
+    private void doRegister(){
+        boolean isRegisterd = getIntent().getBooleanExtra("isRegistered", false);
+        if(!isRegisterd){
+            intent = new Intent(this, InformationGatheringActivity.class);
+        }else{
+            intent = new Intent(this, MainActivity.class);
+        }
+        startActivity(intent);
     }
 
 
@@ -107,7 +126,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
     }
 
     private void callFacebookLogin(){
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email", "user_birthday"));
     }
 
     @Override

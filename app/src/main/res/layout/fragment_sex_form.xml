@@ -5,7 +5,7 @@
     xmlns:flatui="http://schemas.android.com/apk/res-auto"
     android:background="@color/appBGcolor"
     android:padding="@dimen/activity_horizontal_margin"
-    tools:context="com.example.madooding.healthpy.AreYouVegetarianFormFragment">
+    tools:context="com.example.madooding.healthpy.SexFormFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="คุณบริโภคอาหารมังสวิรัติใช่หรือไม่ ?"
+            android:text="ระบุเพศ"
             android:layout_marginBottom="8dp"
             style="@style/InformationGatheringHeadingText"/>
 
@@ -25,17 +25,18 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:orientation="vertical">
             <com.cengalabs.flatui.views.FlatRadioButton
-                android:id="@+id/information_gathering_vegetarian"
+                android:id="@+id/information_gathering_sex_male"
                 android:textSize="26sp"
-                android:text="ใช่"
+                android:checked="true"
+                android:text="ชาย"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 flatui:fl_size="14dp"
                 flatui:fl_theme="@array/information_gathering_element"/>
             <com.cengalabs.flatui.views.FlatRadioButton
-                android:id="@+id/information_gathering_not_vegetarian"
+                android:id="@+id/information_gathering_sex_female"
                 android:textSize="26sp"
-                android:text="ไม่ใช่"
+                android:text="หญิง"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 flatui:fl_size="14dp"

@@ -8,11 +8,13 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.madooding.healthpy.adapter.InformationGatheringViewPagerAdapter;
 import com.example.madooding.healthpy.utility.NonSwipeableViewPager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -25,6 +27,9 @@ public class InformationGatheringActivity extends AppCompatActivity {
     private Button previousButton;
     private int currentFragmentPosition = 0;
     private List<Fragment> fragmentArrayList = new ArrayList<>();
+    private String name, lastName, email, sex;
+    private int birthDay, birthMonth, birthYear, weight, height;
+    private List<String> uneatableMeats, congenitalDiseasesList;
 
 
 
@@ -47,15 +52,42 @@ public class InformationGatheringActivity extends AppCompatActivity {
         setButtonState();
 
         //Set Fragment
-        fragmentArrayList.add(new PersonalInfoFormFragment());
-        fragmentArrayList.add(new KindOfAnimalCantEatFormFragment());
-        fragmentArrayList.add(new CongenitalDiseaseFormFragment());
+        fragmentArrayList.add(PersonalInfoFormFragment.newInstance());
+        fragmentArrayList.add(SexFormFragment.newInstance());
+        fragmentArrayList.add(KindOfAnimalCantEatFormFragment.newInstance());
+        fragmentArrayList.add(CongenitalDiseaseFormFragment.newInstance());
 
         viewPager = (NonSwipeableViewPager) findViewById(R.id.information_gathering_viewpager);
         viewPager.setAdapter(new InformationGatheringViewPagerAdapter(getSupportFragmentManager(), fragmentArrayList));
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                switch (currentFragmentPosition){
+                    case 0: PersonalInfoFormFragment personalInfoFormFragment = (PersonalInfoFormFragment)getActiveFragment(viewPager, currentFragmentPosition);
+                            if(!personalInfoFormFragment.validateForm()){
+                                return;
+                            }else{
+                                name = personalInfoFormFragment.getName();
+                                lastName = personalInfoFormFragment.getLastName();
+                                email = personalInfoFormFragment.getEmail();
+                                HashMap<String, Integer> birthdate = personalInfoFormFragment.getBirthDay();
+                                birthDay = birthdate.get("day");
+                                birthMonth = birthdate.get("month");
+                                birthYear = birthdate.get("year");
+                                weight = personalInfoFormFragment.getWeight();
+                                height = personalInfoFormFragment.getHeight();
+                            }
+                            break;
+                    case 1: SexFormFragment sexFormFragment = (SexFormFragment) getActiveFragment(viewPager, currentFragmentPosition);
+                            sex = sexFormFragment.getSex();
+                            break;
+                    case 2: KindOfAnimalCantEatFormFragment kindOfAnimalCantEatFormFragment = (KindOfAnimalCantEatFormFragment)getActiveFragment(viewPager, currentFragmentPosition);
+                            uneatableMeats = kindOfAnimalCantEatFormFragment.getUneatableMeatsList();
+                            break;
+                    case 3: CongenitalDiseaseFormFragment congenitalDiseaseFormFragment = (CongenitalDiseaseFormFragment) getActiveFragment(viewPager, currentFragmentPosition);
+                            congenitalDiseasesList = congenitalDiseaseFormFragment.getCongenitalDiseasesList();
+                            break;
+                }
                 if(currentFragmentPosition < fragmentArrayList.size() - 1) {
                     viewPager.setCurrentItem(++currentFragmentPosition);
                     setButtonState();
@@ -90,5 +122,10 @@ public class InformationGatheringActivity extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    public Fragment getActiveFragment(ViewPager container, int position) {
+        String name = "android:switcher:" + container.getId() + ":" + position;
+        return getSupportFragmentManager().findFragmentByTag(name);
     }
 }
