@@ -15,6 +15,7 @@ import com.example.madooding.healthpy.adapter.InformationGatheringViewPagerAdapt
 import com.example.madooding.healthpy.model.UserData;
 import com.example.madooding.healthpy.utility.DBUtils;
 import com.example.madooding.healthpy.utility.NonSwipeableViewPager;
+import com.facebook.AccessToken;
 import com.facebook.Profile;
 
 import java.util.ArrayList;
@@ -116,6 +117,7 @@ public class InformationGatheringActivity extends AppCompatActivity {
                     userData = new UserData(name, lastName, email, sex, birthDay, birthMonth, birthYear, weight, height, uneatableMeats, congenitalDiseasesList, Profile.getCurrentProfile().getId(), Profile.getCurrentProfile().getProfilePictureUri(100, 100).toString());
                     userData.setRegistered(true);
                     DBUtils.regisUser(userData);
+                    userData = DBUtils.getUserData(AccessToken.getCurrentAccessToken().getUserId());
                     intent.putExtra("UserData", userData);
                     setResult(ResponseCode.REGISTRATION_COMPLETE, intent);
                     finish();

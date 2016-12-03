@@ -13,6 +13,16 @@
         </item>
     </style>
 
+    <style name="AppTheme.WithActionBar" parent="AppTheme">
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">false</item>
+        <item name="android:titleTextAppearance">@style/Toolbar.TitleText</item>
+    </style>
+
+    <style name="AppTheme.WithActionBar.TitleTextStyle" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">50sp</item>
+    </style>
+
     <style name="AppTheme.TranslucentStatusBar" parent="@style/AppTheme">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>

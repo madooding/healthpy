@@ -68,7 +68,7 @@ public class DBUtils {
     public static UserData getUserData(String fid){
         UserData userData;
         Calendar cal = Calendar.getInstance();
-        String name, lastName, email, sex, profileImgURI;
+        String objectId, name, lastName, email, sex, profileImgURI;
         int weight, height;
         boolean isRegistered, isVegetarian;
         List<String> uneatable, congenitalDisease;
@@ -77,6 +77,7 @@ public class DBUtils {
         query.whereEqualTo("fb_id", fid);
         try {
             ParseObject object = query.getFirst();
+            objectId = object.getObjectId();
             name = object.getString("name");
             lastName = object.getString("lastName");
             email = object.getString("email");
@@ -90,7 +91,7 @@ public class DBUtils {
             uneatable = object.getList("cannotEat");
             congenitalDisease = object.getList("congenitalDisease");
             cal.setTime(birthdate);
-            userData = new UserData(name, lastName, email, sex, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH), cal.get(Calendar.YEAR), weight, height, uneatable, congenitalDisease, fid, profileImgURI);
+            userData = new UserData(objectId, name, lastName, email, sex, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH), cal.get(Calendar.YEAR), weight, height, uneatable, congenitalDisease, fid, profileImgURI);
             userData.setRegistered(isRegistered);
             userData.setVegetarian(isVegetarian);
             return userData;
@@ -160,5 +161,26 @@ public class DBUtils {
             e.printStackTrace();
         }
         return foodListItem;
+    }
+
+    public static List<FoodListItem> getFoodDataByObjectIds(List<String> objectIds){
+        final List<FoodListItem> foodListItems = new ArrayList<>();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(ObjectCollections.FOOD_DATA);
+        query.whereContainedIn("objectId", objectIds);
+        query.addAscendingOrder("calories");
+        try {
+            List<ParseObject> objects = query.find();
+            for(ParseObject object : objects){
+                try {
+                    foodListItems.add(new FoodListItem(object.getParseFile("picture").getUrl(), object.getString("name"), object.getString("description"), object.getInt("calories"), object.getJSONArray("nutrient").getJSONObject(0)));
+                } catch (JSONException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return foodListItems;
     }
 }

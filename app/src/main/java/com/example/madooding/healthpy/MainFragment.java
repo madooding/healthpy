@@ -9,20 +9,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.madooding.healthpy.adapter.CarouselViewPagerAdapter;
 import com.example.madooding.healthpy.adapter.FoodListRecyclerViewAdapter;
-import com.example.madooding.healthpy.adapter.FoodListViewAdapter;
 import com.example.madooding.healthpy.interfaces.Observer;
 import com.example.madooding.healthpy.model.CarouselItem;
 import com.example.madooding.healthpy.model.FoodListItem;
@@ -30,14 +30,11 @@ import com.example.madooding.healthpy.model.FoodsCategory;
 import com.example.madooding.healthpy.utility.AppEnv;
 import com.example.madooding.healthpy.utility.DBUtils;
 import com.facebook.FacebookSdk;
-import com.facebook.Profile;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -47,7 +44,7 @@ public class MainFragment extends Fragment implements Observer{
 
     ViewPager carouselViewPager;
     CirclePageIndicator carouselCircleIndicator;
-
+    GestureDetector tapGestureDetector;
 
     //Should retrive from server
     List<FoodsCategory> foodsCategoryList = new ArrayList<FoodsCategory>();
@@ -88,17 +85,30 @@ public class MainFragment extends Fragment implements Observer{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-
-
+        tapGestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                Toast.makeText(getContext(), "Clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), FoodListActivity.class);
+                intent.putExtra("FoodList", carouselItemList.get(carouselViewPager.getCurrentItem()));
+                startActivity(intent);
+                return false;
+            }
+        });
 
         Toast.makeText(getContext(), "food list size " + carouselItemList.size(), Toast.LENGTH_SHORT).show();
         carouselViewPager = (ViewPager) view.findViewById(R.id.carouselViewPager);
         carouselViewPager.setAdapter(new CarouselViewPagerAdapter(getActivity().getSupportFragmentManager(), carouselItemList));
+        carouselViewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                tapGestureDetector.onTouchEvent(motionEvent);
+                return false;
+            }
+        });
         carouselCircleIndicator = (CirclePageIndicator) view.findViewById(R.id.carouselCircleIndicator);
         carouselCircleIndicator.setViewPager(carouselViewPager);
         carouselCircleIndicator.setSnap(true);
-
 
         foodListItemsRecyclerView = (RecyclerView) view.findViewById(R.id.food_list_item_recycler_view);
         foodListItemsRecyclerView.setHasFixedSize(true);
@@ -191,4 +201,5 @@ public class MainFragment extends Fragment implements Observer{
         });
         foodListItemsRecyclerView.setAdapter(foodListItemsRecyclerViewAdapter);
     }
+
 }

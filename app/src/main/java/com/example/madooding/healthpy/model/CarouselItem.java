@@ -2,12 +2,13 @@ package com.example.madooding.healthpy.model;
 
 import com.example.madooding.healthpy.CarouselFragment;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by madooding on 10/30/2016 AD.
  */
-public class CarouselItem {
+public class CarouselItem implements Serializable {
     private int imgResource;
     private String name;
     private CarouselFragment Carousel;

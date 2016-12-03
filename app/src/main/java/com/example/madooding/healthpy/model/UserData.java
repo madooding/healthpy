@@ -11,6 +11,7 @@ import java.util.List;
  */
 
 public class UserData implements Serializable{
+    private String objectId;
     private String name;
     private String lastName;
     private String email;
@@ -27,7 +28,8 @@ public class UserData implements Serializable{
     private List<String> uneatable, congenitalDisease;
     private Date birthDate;
 
-    public UserData(String name, String lastName, String email, String sex, int birthDay, int birthMonth, int birthYear, int weight, int height, List<String> uneatable, List<String> congenitalDisease, String fb_id, String profileImgURI){
+    public UserData(String objectId, String name, String lastName, String email, String sex, int birthDay, int birthMonth, int birthYear, int weight, int height, List<String> uneatable, List<String> congenitalDisease, String fb_id, String profileImgURI){
+        this.objectId = objectId;
         this.name = name;
         this.lastName = lastName;
         this.email = email;
@@ -43,6 +45,25 @@ public class UserData implements Serializable{
         this.profileImgURI = profileImgURI;
     }
 
+    public UserData(String name, String lastName, String email, String sex, int birthDay, int birthMonth, int birthYear, int weight, int height, List<String> uneatable, List<String> congenitalDisease, String fb_id, String profileImgURI){
+        this.objectId = objectId;
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.sex = sex;
+        this.birthDay = birthDay;
+        this.birthMonth = birthMonth;
+        this.birthYear = birthYear;
+        this.weight = weight;
+        this.height = height;
+        this.uneatable = uneatable;
+        this.congenitalDisease = congenitalDisease;
+        this.fb_id = fb_id;
+        this.profileImgURI = profileImgURI;
+    }
+
+
+    public String getObjectId(){return objectId;}
 
     public String getName() {
         return name;
