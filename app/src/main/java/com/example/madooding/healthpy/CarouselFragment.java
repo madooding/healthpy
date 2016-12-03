@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.w3c.dom.Text;
 
 
@@ -40,7 +42,7 @@ public class CarouselFragment extends Fragment {
         this.imgResource = getArguments().getInt("ImgResource");
         this.name = getArguments().getString("Name");
         ImageView imgView = (ImageView) getActivity().findViewById(R.id.carousel_image_view);
-        imgView.setImageResource(this.imgResource);
+        Picasso.with(getContext()).load(getArguments().getString("ImgUrl")).into(imgView);
 
         TextView carouselTextView = (TextView) view.findViewById(R.id.carousel_text_view);
         carouselTextView.setText(this.name);
@@ -48,11 +50,11 @@ public class CarouselFragment extends Fragment {
 
 
 
-    public static CarouselFragment newInstance(int imgResource, String name){
+    public static CarouselFragment newInstance(String imgUrl, String name){
         CarouselFragment carousel = new CarouselFragment();
 
         Bundle args = new Bundle();
-        args.putInt("ImgResource", imgResource);
+        args.putString("ImgUrl", imgUrl);
         args.putString("Name", name);
         carousel.setArguments(args);
 

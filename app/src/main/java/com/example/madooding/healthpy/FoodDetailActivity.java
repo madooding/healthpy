@@ -36,6 +36,7 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.squareup.picasso.Picasso;
 
 
 import java.util.ArrayList;
@@ -121,6 +122,8 @@ public class FoodDetailActivity
         parallaxImageHeight = getResources().getDimensionPixelOffset(R.dimen.food_detail_parallax_image_height);
         actionBarSize = getResources().getDimensionPixelSize(R.dimen.action_bar_size);
 
+
+
         titleTextView = (TextView) findViewById(R.id.food_detail_title);
         titleTextView.setText(foodName);
         titleTextView.measure(0,0);
@@ -138,7 +141,7 @@ public class FoodDetailActivity
 
         imageView = findViewById(R.id.food_detail_image);
         foodImageView = (ImageView) imageView;
-        foodImageView.setImageResource(foodImgSrc);
+        Picasso.with(this).load(food_info.getImageUrl()).into(foodImageView);
 
         foodDescriptionTextView = (TextView) findViewById(R.id.food_detail_description);
         foodDescriptionTextView.setText(foodDescription);

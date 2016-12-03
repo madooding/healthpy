@@ -23,9 +23,12 @@ import android.widget.Toast;
 import com.example.madooding.healthpy.adapter.CarouselViewPagerAdapter;
 import com.example.madooding.healthpy.adapter.FoodListRecyclerViewAdapter;
 import com.example.madooding.healthpy.adapter.FoodListViewAdapter;
+import com.example.madooding.healthpy.interfaces.Observer;
 import com.example.madooding.healthpy.model.CarouselItem;
 import com.example.madooding.healthpy.model.FoodListItem;
 import com.example.madooding.healthpy.model.FoodsCategory;
+import com.example.madooding.healthpy.utility.AppEnv;
+import com.example.madooding.healthpy.utility.DBUtils;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.viewpagerindicator.CirclePageIndicator;
@@ -40,10 +43,11 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements Observer{
 
     ViewPager carouselViewPager;
     CirclePageIndicator carouselCircleIndicator;
+
 
     //Should retrive from server
     List<FoodsCategory> foodsCategoryList = new ArrayList<FoodsCategory>();
@@ -55,6 +59,8 @@ public class MainFragment extends Fragment {
     private RecyclerView.Adapter foodListItemsRecyclerViewAdapter;
     private RecyclerView.LayoutManager foodListItemsLayoutManager;
 
+    String currentPeriod;
+    AppEnv appEnv = AppEnv.getInstance();
 
     public MainFragment() {
         // Required empty public constructor
@@ -64,7 +70,10 @@ public class MainFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getContext());
-
+        currentPeriod = AppEnv.getAppropriateTimePeriod();
+        appEnv.registerObserver(this);
+        foodListItems = appEnv.getFoodListItems();
+        carouselItemList = DBUtils.getFeaturedFoodList();
     }
 
     @Override
@@ -79,23 +88,17 @@ public class MainFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Toast.makeText(getContext(), "Welcome back!, " + Profile.getCurrentProfile().getName(), Toast.LENGTH_SHORT).show();
 
-        carouselItemList.add(new CarouselItem(R.drawable.image_1, "รวมเมนูชาวหอ"));
-        carouselItemList.add(new CarouselItem(R.drawable.image_2, "รวมเมนูไข่"));
 
+
+
+        Toast.makeText(getContext(), "food list size " + carouselItemList.size(), Toast.LENGTH_SHORT).show();
         carouselViewPager = (ViewPager) view.findViewById(R.id.carouselViewPager);
         carouselViewPager.setAdapter(new CarouselViewPagerAdapter(getActivity().getSupportFragmentManager(), carouselItemList));
         carouselCircleIndicator = (CirclePageIndicator) view.findViewById(R.id.carouselCircleIndicator);
         carouselCircleIndicator.setViewPager(carouselViewPager);
         carouselCircleIndicator.setSnap(true);
 
-        nutrition.put("fat", (float)30.2);
-        nutrition.put("carbohydrate", (float)20.3);
-        nutrition.put("protein", (float)28);
-
-        foodListItems.add(new FoodListItem(R.drawable.food_pic_1, "ขาหมู", "ยอดอาหาร", 369, nutrition));
-        foodListItems.add(new FoodListItem(R.drawable.food_pic_1, "ข้าวผัดพริกเผาหมู", "สูตรนี้จะลดไขมัน เหมาะกับผู้ที่ต้องการลดความอ้วน", 230, nutrition));
 
         foodListItemsRecyclerView = (RecyclerView) view.findViewById(R.id.food_list_item_recycler_view);
         foodListItemsRecyclerView.setHasFixedSize(true);
@@ -103,20 +106,18 @@ public class MainFragment extends Fragment {
         foodListItemsLayoutManager = new LinearLayoutManager(getContext());
         foodListItemsRecyclerView.setLayoutManager(foodListItemsLayoutManager);
 
-        foodListItemsRecyclerViewAdapter = new FoodListRecyclerViewAdapter(getContext(), foodListItems, new FoodListRecyclerViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(FoodListItem item) {
-                Intent intent = new Intent(getActivity(), FoodDetailActivity.class);
-                intent.putExtra("food_info", item);
-                startActivityForResult(intent, FoodDetailActivity.RequestCode.CALL_ACTIVITY_WITH_INFORMATION);
-            }
-        });
-        foodListItemsRecyclerView.setAdapter(foodListItemsRecyclerViewAdapter);
-
-
+        renderFoodList();
 
 
         setCategoryImage(view);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        appEnv.checkForUpdate();
+        Toast.makeText(getContext(), currentPeriod, Toast.LENGTH_SHORT).show();
 
     }
 
@@ -167,5 +168,27 @@ public class MainFragment extends Fragment {
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onTimeUpdate() {
+        if(!currentPeriod.equals(appEnv.getCurrentPeriod())){
+            Toast.makeText(getContext(), "onTimeUpdated", Toast.LENGTH_SHORT).show();
+            currentPeriod = appEnv.getCurrentPeriod();
+            foodListItems = appEnv.getFoodListItems();
+            renderFoodList();
+        }
+    }
+
+    public void renderFoodList(){
+        foodListItemsRecyclerViewAdapter = new FoodListRecyclerViewAdapter(getContext(), foodListItems, new FoodListRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(FoodListItem item) {
+                Intent intent = new Intent(getActivity(), FoodDetailActivity.class);
+                intent.putExtra("food_info", item);
+                startActivityForResult(intent, FoodDetailActivity.RequestCode.CALL_ACTIVITY_WITH_INFORMATION);
+            }
+        });
+        foodListItemsRecyclerView.setAdapter(foodListItemsRecyclerViewAdapter);
     }
 }

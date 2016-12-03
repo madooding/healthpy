@@ -20,12 +20,17 @@ import android.widget.Toast;
 import com.cengalabs.flatui.FlatUI;
 import com.example.madooding.healthpy.adapter.MainFragmentPagerAdapter;
 import com.example.madooding.healthpy.listener.MainViewPagerListener;
+import com.example.madooding.healthpy.model.UserData;
+import com.example.madooding.healthpy.utility.AppEnv;
+import com.facebook.Profile;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    UserData userData;
+    AppEnv appEnv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +44,13 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FlatUI.initDefaultValues(getApplicationContext());
+        Bundle bundle = getIntent().getExtras();
+        userData = (UserData)bundle.getSerializable("UserData");
 
+        appEnv = AppEnv.getInstance(userData);
+        Toast.makeText(this, appEnv.getUserData().getFb_id(), Toast.LENGTH_SHORT).show();
+
+//        Toast.makeText(this, "now is time for " + AppEnv.getAppropriateTimePeriod(),  Toast.LENGTH_SHORT).show();
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override

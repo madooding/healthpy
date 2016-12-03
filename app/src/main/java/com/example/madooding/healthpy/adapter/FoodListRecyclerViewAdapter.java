@@ -1,6 +1,8 @@
 package com.example.madooding.healthpy.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +15,14 @@ import android.widget.Toast;
 import com.example.madooding.healthpy.MainActivity;
 import com.example.madooding.healthpy.R;
 import com.example.madooding.healthpy.model.FoodListItem;
+import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
+
+import static com.example.madooding.healthpy.R.id.imageView;
 
 /**
  * Created by madooding on 11/6/2016 AD.
@@ -69,10 +77,12 @@ public class FoodListRecyclerViewAdapter extends RecyclerView.Adapter<FoodListRe
     public void onBindViewHolder(ViewHolder holder, int position) {
         FoodListItem foodListItem = foodListItems.get(position);
 
+        Picasso.with(context).load(foodListItem.getImageUrl()).into(holder.foodImg);
+
         holder.foodName.setText(foodListItem.getName());
         holder.foodDescription.setText(foodListItem.getDescription());
         holder.foodCalories.setText(Integer.toString(foodListItem.getCalories()));
-        holder.foodImg.setImageResource(foodListItem.getImageSrc());
+
 
         holder.bind(foodListItem, listener);
 

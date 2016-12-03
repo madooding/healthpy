@@ -1,6 +1,8 @@
 package com.example.madooding.healthpy.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,9 @@ import com.example.madooding.healthpy.model.FoodListItem;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +67,20 @@ public class FoodListViewAdapter extends ArrayAdapter<FoodListItem> {
 
         viewHolder.foodCalories.setText(Integer.toString(foodListItem.getCalories()));
 
-        viewHolder.foodImg.setImageResource(foodListItem.getImageSrc());
+        URL url = null;
+        try {
+            url = new URL(foodListItem.getImageUrl());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Bitmap bmp = null;
+        try {
+            bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        viewHolder.foodImg.setImageBitmap(bmp);
 
         return convertView;
     }

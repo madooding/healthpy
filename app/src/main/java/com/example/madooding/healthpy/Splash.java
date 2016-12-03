@@ -49,10 +49,11 @@ public class Splash extends AppCompatActivity {
 
                 boolean isUserRegistered = false;
                 try{
-                    isUserRegistered = DBUtils.isRegistered(Profile.getCurrentProfile().getId());
+                    isUserRegistered = DBUtils.isRegistered(accessToken.getUserId());
                 }catch (Exception e){
                     isUserRegistered = false;
                 }
+
 
                 Bundle bundle = new Bundle();
                 if(accessToken == null || accessToken.isExpired() || !isUserRegistered){
@@ -65,7 +66,7 @@ public class Splash extends AppCompatActivity {
                     intent = new Intent(Splash.this, FacebookLoginActivity.class);
                 }else{
                     intent = new Intent(Splash.this, MainActivity.class);
-
+                    intent.putExtra("UserData", DBUtils.getUserData(accessToken.getUserId()));
 //                    if(DBUtils.isRegistered(Profile.getCurrentProfile().getId())){
 //                        Toast.makeText(Splash.this, "Registered", Toast.LENGTH_SHORT).show();
 //                    }else{

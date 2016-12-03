@@ -25,12 +25,12 @@
         </activity>
         <activity
             android:name=".FacebookLoginActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity android:name=".MainActivity" />
         <activity android:name=".FoodDetailActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"></meta-data>
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name="com.facebook.CustomTabActivity"
@@ -46,8 +46,8 @@
         </activity>
         <activity
             android:name=".InformationGatheringActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
+        <activity android:name=".FoodListActivity"></activity>
     </application>
 
 </manifest>

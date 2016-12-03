@@ -1,5 +1,10 @@
 package com.example.madooding.healthpy.model;
 
+import com.example.madooding.healthpy.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.HashMap;
 
@@ -9,6 +14,7 @@ import java.util.HashMap;
 public class FoodListItem implements Serializable {
     private String id;
     private int imageSrc;
+    private String imageURL;
     private String name;
     private String description;
     private int calories;
@@ -22,6 +28,29 @@ public class FoodListItem implements Serializable {
         this.nutrition = nutrition;
     }
 
+    public FoodListItem(String imageURL, String name, String description, int calories, JSONObject nutrition){
+        this.setImageSrc(R.drawable.food_pic_1);
+        this.setImageURL(imageURL);
+        this.setName(name);
+        this.setDescription(description);
+        this.setCalories(calories);
+        this.nutrition = new HashMap<>();
+        try {
+            this.nutrition.put("fat", (float)nutrition.getDouble("fat"));
+            this.nutrition.put("carbohydrate", (float)nutrition.getDouble("carbohydrate"));
+            this.nutrition.put("protein", (float)nutrition.getDouble("protein"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setImageURL(String imageURL){
+        this.imageURL = imageURL;
+    }
+
+    public String getImageUrl(){
+        return imageURL;
+    }
 
     public int getImageSrc() {
         return imageSrc;

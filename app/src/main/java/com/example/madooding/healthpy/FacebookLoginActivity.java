@@ -105,17 +105,24 @@ public class FacebookLoginActivity extends AppCompatActivity {
 
 
     private void doRegister(){
-        boolean isRegistered = DBUtils.isRegistered(Profile.getCurrentProfile().getId());
+        boolean isRegistered;
+        try{
+            isRegistered = DBUtils.isRegistered(accessToken.getUserId());
+        }catch (Exception e){
+            isRegistered = false;
+        }
+
         if(!isRegistered){
             intent = new Intent(this, InformationGatheringActivity.class);
             startActivityForResult(intent, InformationGatheringActivity.RequestCode.REGISTRATION_REQUEST);
         }else{
-            intent = new Intent(this, MainActivity.class);
-            bundle = new Bundle();
-
+            //Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+            intent = new Intent(FacebookLoginActivity.this, MainActivity.class);
+            intent.putExtra("UserData", DBUtils.getUserData(AccessToken.getCurrentAccessToken().getUserId()));
             //Must send user information in this intent
             startActivity(intent);
         }
+        finish();
     }
 
     private void callFacebookLogin(){
@@ -141,6 +148,8 @@ public class FacebookLoginActivity extends AppCompatActivity {
                     Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
                 }
                 break;
+            default:
+                Toast.makeText(this, "Nothing", Toast.LENGTH_SHORT).show();
         }
     }
 
