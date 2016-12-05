@@ -206,18 +206,18 @@ public class FoodDetailActivity
         addFoodFab.setTranslationY(fabLocation);
         showFab();
 
-        addFoodFab.setOnTouchListener(new View.OnTouchListener() {
+        addFoodFab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+            public void onClick(View view) {
                 if(fabIsShown) {
                     intent.putExtra("food_info", food_info);
                     setResult(ResponseCode.ADD_FOOD, intent);
                     finish();
                     Toast.makeText(FoodDetailActivity.this, "Fab touched", Toast.LENGTH_SHORT).show();
                 }
-                return false;
             }
         });
+
 
         scrollView = (ObservableScrollView) findViewById(R.id.food_detail_scroll_view);
         scrollView.setScrollViewCallbacks(this);

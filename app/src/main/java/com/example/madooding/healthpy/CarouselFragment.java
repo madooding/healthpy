@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.madooding.healthpy.utility.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -41,7 +42,7 @@ public class CarouselFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_carousel, container,
                 false);
         imgView = (ImageView)view.findViewById(R.id.carousel_image_view);
-        Picasso.with(getContext()).load(imgUrl).into(imgView);
+        Picasso.with(getContext()).load(imgUrl).transform(new CircleTransform()).into(imgView);
 
         return view;
     }

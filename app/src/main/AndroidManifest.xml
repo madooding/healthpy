@@ -26,7 +26,9 @@
         <activity
             android:name=".FacebookLoginActivity"
             android:exported="true" />
-        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity android:name=".FoodDetailActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

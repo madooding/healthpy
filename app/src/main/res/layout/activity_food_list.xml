@@ -50,7 +50,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/black_to_transparent_gradient"/>
+                    android:src="@drawable/black_to_transparent_gradient_rounded"/>
                 <TextView
                     android:id="@+id/food_list_activity_text_view"
                     android:singleLine="true"

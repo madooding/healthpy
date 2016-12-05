@@ -47,18 +47,11 @@ public class MainActivity extends AppCompatActivity
         Bundle bundle = getIntent().getExtras();
         userData = (UserData)bundle.getSerializable("UserData");
 
-        appEnv = AppEnv.getInstance(userData);
-        Toast.makeText(this, appEnv.getUserData().getFb_id(), Toast.LENGTH_SHORT).show();
+        appEnv = AppEnv.newInstance(userData);
+
 
 //        Toast.makeText(this, "now is time for " + AppEnv.getAppropriateTimePeriod(),  Toast.LENGTH_SHORT).show();
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+
 
 
         //All about Drawer

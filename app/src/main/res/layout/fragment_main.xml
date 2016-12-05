@@ -26,6 +26,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:descendantFocusability="beforeDescendants"
                 android:drawableLeft="@drawable/search"
                 android:drawableTint="@color/colorFormHealthyText"
                 android:hint="ค้นหาจาก ชื่ออาหาร, ร้านอาหาร"
@@ -111,6 +114,13 @@
 
     </android.support.v4.widget.NestedScrollView>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/random_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/dice" />
 
 
 </FrameLayout>

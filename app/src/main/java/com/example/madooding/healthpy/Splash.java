@@ -33,11 +33,15 @@ public class Splash extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         FacebookSdk.sdkInitialize(getApplicationContext());
 
-        Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-                .applicationId(DBUtils.APPLICATION_ID)
-                .server(DBUtils.SERVER_URL)
-                .build()
-        );
+        try {
+            Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
+                    .applicationId(DBUtils.APPLICATION_ID)
+                    .server(DBUtils.SERVER_URL)
+                    .build()
+            );
+        }catch (RuntimeException e){
+            e.printStackTrace();
+        }
 
         handler = new Handler();
 

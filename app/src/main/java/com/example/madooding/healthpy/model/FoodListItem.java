@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Created by madooding on 10/31/2016 AD.
@@ -20,29 +21,35 @@ public class FoodListItem implements Serializable {
     private int calories;
     private HashMap<String, Float> nutrition;
 
-    public FoodListItem(int imageSrc, String name, String description, int calories, HashMap<String, Float> nutrition){
-        this.setImageSrc(imageSrc);
-        this.setName(name);
-        this.setDescription(description);
-        this.setCalories(calories);
-        this.nutrition = nutrition;
-    }
 
-    public FoodListItem(String imageURL, String name, String description, int calories, JSONObject nutrition){
+    public FoodListItem(String objectId, String imageURL, String name, String description, int calories, JSONObject nutrition){
+        this.id = objectId;
         this.setImageSrc(R.drawable.food_pic_1);
         this.setImageURL(imageURL);
         this.setName(name);
         this.setDescription(description);
         this.setCalories(calories);
         this.nutrition = new HashMap<>();
-        try {
-            this.nutrition.put("fat", (float)nutrition.getDouble("fat"));
-            this.nutrition.put("carbohydrate", (float)nutrition.getDouble("carbohydrate"));
-            this.nutrition.put("protein", (float)nutrition.getDouble("protein"));
-        } catch (JSONException e) {
-            e.printStackTrace();
+        String key;
+        Iterator<String> keys = nutrition.keys();
+        while(keys.hasNext()){
+            key = keys.next();
+            switch (key){
+                case "fat":
+                case "carbohydrate":
+                case "protein":
+                case "cholesterol":
+                case "sodium":
+                    try {
+                        this.nutrition.put(key, (float)nutrition.getDouble(key));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+            }
         }
     }
+
+    public String getObjectId(){ return id; }
 
     public void setImageURL(String imageURL){
         this.imageURL = imageURL;

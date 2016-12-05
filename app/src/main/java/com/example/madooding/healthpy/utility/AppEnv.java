@@ -3,6 +3,7 @@ package com.example.madooding.healthpy.utility;
 import com.example.madooding.healthpy.interfaces.AppEnvSubject;
 import com.example.madooding.healthpy.interfaces.Observer;
 import com.example.madooding.healthpy.model.FoodListItem;
+import com.example.madooding.healthpy.model.FoodListItemMinimal;
 import com.example.madooding.healthpy.model.UserData;
 
 import android.text.format.DateFormat;
@@ -16,6 +17,7 @@ import java.util.List;
 
 public class AppEnv implements AppEnvSubject{
     private List<Observer> observers;
+    private List<FoodListItemMinimal> todayEaten;
     private static AppEnv instance;
     private UserData userData;
     private String[] timePeriod = {"อาหารเช้า", "อาหารกลางวัน", "อาหารเย็น", "อาหารดึก"};
@@ -29,9 +31,10 @@ public class AppEnv implements AppEnvSubject{
         this.userData = userData;
         this.currentPeriod = getAppropriateTimePeriod();
         foodListItems = DBUtils.getFoodListByUserData(userData);
+        todayEaten = DBUtils.getEatingListByDate(userData.getObjectId(), new Date(System.currentTimeMillis()));
     }
 
-    public static AppEnv getInstance(UserData userData){
+    public static AppEnv newInstance(UserData userData){
         if(instance == null){
             instance = new AppEnv(userData);
         }
@@ -62,6 +65,12 @@ public class AppEnv implements AppEnvSubject{
         }
         return timePeriod;
     }
+
+
+    public List<FoodListItemMinimal> getTodayEatenFoodList(){
+        return todayEaten;
+    }
+
 
     public void checkForUpdate(){
         String timePeriod = getAppropriateTimePeriod();

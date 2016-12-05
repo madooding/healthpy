@@ -1,6 +1,7 @@
 package com.example.madooding.healthpy;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,9 +17,12 @@ import android.widget.Toast;
 import com.example.madooding.healthpy.adapter.FoodListRecyclerViewAdapter;
 import com.example.madooding.healthpy.model.CarouselItem;
 import com.example.madooding.healthpy.model.FoodListItem;
+import com.example.madooding.healthpy.model.FoodsCategory;
+import com.example.madooding.healthpy.utility.CircleTransform;
 import com.example.madooding.healthpy.utility.DBUtils;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -27,14 +31,27 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class FoodListActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private CarouselItem carouselItem;
+    private FoodsCategory foodsCategory;
     private ImageView imageView;
     private RecyclerView foodListItemsRecyclerView;
     private RecyclerView.Adapter foodListItemsRecyclerViewAdapter;
     private RecyclerView.LayoutManager foodListItemsLayoutManager;
     private TextView title;
 
+    private String titleText;
+    private String coverImgUrl;
+
+    private Intent intent;
     private List<FoodListItem> foodListItems;
 
+    public static class RequestCode{
+        public static final int CALL_ACTIVITY_WITH_FEATURED_FOOD = 300;
+        public static final int CALL_ACTIVITY_WITH_CATEGORY_TAG = 310;
+    }
+
+    public static class ResponseCode{
+        public static final int ADD_FOOD = 300;
+    }
 
 
     @Override
@@ -46,21 +63,39 @@ public class FoodListActivity extends AppCompatActivity {
                 .build()
         );
         setContentView(R.layout.activity_food_list);
-        carouselItem = (CarouselItem) getIntent().getSerializableExtra("FoodList");
-        foodListItems = DBUtils.getFoodDataByObjectIds(carouselItem.getFoodObjectIds());
+        intent = getIntent();
+        int action  = intent.getExtras().getInt("RequestCode");
+        switch(action){
+            case RequestCode.CALL_ACTIVITY_WITH_FEATURED_FOOD:
+                carouselItem = (CarouselItem) getIntent().getSerializableExtra("FoodList");
+                foodListItems = DBUtils.getFoodDataByObjectIds(carouselItem.getFoodObjectIds());
+                titleText = carouselItem.getName();
+                coverImgUrl = carouselItem.getImgUrl();
+                break;
+            case RequestCode.CALL_ACTIVITY_WITH_CATEGORY_TAG:
+                foodsCategory = (FoodsCategory) getIntent().getSerializableExtra("FoodsCategory");
+                foodListItems = DBUtils.getFoodDataByObjectTag(foodsCategory.getLinker());
+                titleText = foodsCategory.getName();
+                coverImgUrl = foodsCategory.getImgUrl();
+                break;
+            default:
+                foodListItems = new ArrayList<>();
+        }
+
         toolbar = (Toolbar)findViewById(R.id.food_list_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle(carouselItem.getName());
+        setTitle(titleText);
 
 
         imageView = (ImageView) findViewById(R.id.food_list_activity_image);
-        Picasso.with(this).load(carouselItem.getImgUrl()).into(imageView);
+        Picasso.with(this).load(coverImgUrl).transform(new CircleTransform()).into(imageView);
 
         title = (TextView) findViewById(R.id.food_list_activity_text_view);
-        title.setText(carouselItem.getName());
+        title.setText(titleText);
 
         foodListItemsRecyclerView = (RecyclerView) findViewById(R.id.food_list_activity_recycler_view);
+        foodListItemsRecyclerView.setFocusable(false);
         foodListItemsRecyclerView.setHasFixedSize(true);
 
         foodListItemsLayoutManager = new LinearLayoutManager(this);
@@ -92,9 +127,23 @@ public class FoodListActivity extends AppCompatActivity {
         foodListItemsRecyclerViewAdapter = new FoodListRecyclerViewAdapter(this, foodListItems, new FoodListRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(FoodListItem item) {
-
+                Intent intent = new Intent(FoodListActivity.this, FoodDetailActivity.class);
+                intent.putExtra("food_info", item);
+                startActivityForResult(intent, FoodDetailActivity.RequestCode.CALL_ACTIVITY_WITH_INFORMATION);
             }
         });
         foodListItemsRecyclerView.setAdapter(foodListItemsRecyclerViewAdapter);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case FoodDetailActivity.RequestCode.CALL_ACTIVITY_WITH_INFORMATION:
+                if(resultCode == FoodDetailActivity.ResponseCode.ADD_FOOD){
+                    setResult(FoodDetailActivity.ResponseCode.ADD_FOOD, data);
+                    finish();
+                }
+        }
     }
 }

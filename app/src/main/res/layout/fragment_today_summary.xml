@@ -2,15 +2,77 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_horizontal_margin"
-    android:background="@color/colorMintCream"
+    android:background="@color/appBGcolor"
+    tools:ignore="MissingPrefix"
     tools:context="com.example.madooding.healthpy.TodaySummaryFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="This is a right fragment." />
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:fadeScrollbars="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:text="วันนี้คุณกินไปแล้วทั้งหมด"
+                style="@style/TextTopic"
+                android:paddingTop="26dp"
+                android:paddingBottom="26dp"
+                fontPath="DB HelvethaicaMon X Bd.ttf"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="64dp"
+                android:paddingRight="64dp">
+                <com.github.mikephil.charting.charts.PieChart
+                    android:layout_gravity="top"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:clickable="false"
+                    android:id="@+id/today_summary_pie_chart">
+                </com.github.mikephil.charting.charts.PieChart>
+            </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:textSize="22sp"
+                android:lineSpacingExtra="12sp"
+                android:textColor="@color/colorSubStandardGrey"
+                android:text="* 2000 กิโลแคลอรี่ เป็นปริมาณการบริโภคต่อวันที่แนะนำสำหรับคุณ"
+                fontPath="DB HelvethaicaMon X.ttf" />
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:paddingLeft="32dp"
+                style="@style/TextTopic"
+                android:text="รายการอาหารทั้งหมด"/>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:id="@+id/today_summary_recycler_view">
+            </android.support.v7.widget.RecyclerView>
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></ListView>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 
 </FrameLayout>
