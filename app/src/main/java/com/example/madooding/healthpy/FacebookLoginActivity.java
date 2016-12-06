@@ -125,8 +125,8 @@ public class FacebookLoginActivity extends AppCompatActivity {
             appEnv = AppEnv.newInstance(userData);
             //Must send user information in this intent
             startActivity(intent);
+            finish();
         }
-        finish();
     }
 
     private void callFacebookLogin(){

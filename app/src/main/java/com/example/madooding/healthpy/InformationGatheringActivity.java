@@ -121,7 +121,6 @@ public class InformationGatheringActivity extends AppCompatActivity {
                     intent.putExtra("UserData", userData);
                     setResult(ResponseCode.REGISTRATION_COMPLETE, intent);
                     finish();
-                    Toast.makeText(InformationGatheringActivity.this, birthDate.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         });

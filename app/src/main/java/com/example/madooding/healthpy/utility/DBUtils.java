@@ -4,6 +4,7 @@ import android.support.v4.view.ViewPager;
 import android.text.format.DateFormat;
 import android.util.Log;
 
+import com.example.madooding.healthpy.adapter.FoodListRecyclerViewAdapter;
 import com.example.madooding.healthpy.model.CarouselItem;
 import com.example.madooding.healthpy.model.FoodListItem;
 import com.example.madooding.healthpy.model.FoodListItemMinimal;
@@ -179,45 +180,51 @@ public class DBUtils {
         return foodListItem;
     }
 
-    public static List<FoodListItem> getFoodDataByObjectIds(List<String> objectIds){
-        final List<FoodListItem> foodListItems = new ArrayList<>();
+    public static List<FoodListItem> getFoodDataByObjectIds(final FoodListRecyclerViewAdapter adapter, final List<FoodListItem> foodListItems, List<String> objectIds){
         ParseQuery<ParseObject> query = ParseQuery.getQuery(ObjectCollections.FOOD_DATA);
         query.whereContainedIn("objectId", objectIds);
         query.addAscendingOrder("calories");
-        try {
-            List<ParseObject> objects = query.find();
-            for(ParseObject object : objects){
-                try {
-                    foodListItems.add(new FoodListItem(object.getObjectId(), object.getParseFile("picture").getUrl(), object.getString("name"), object.getString("description"), object.getInt("calories"), object.getJSONArray("nutrient").getJSONObject(0)));
-                } catch (JSONException e1) {
-                    e1.printStackTrace();
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if(e == null){
+                    for(ParseObject object : objects){
+                        try {
+                            foodListItems.add(new FoodListItem(object.getObjectId(), object.getParseFile("picture").getUrl(), object.getString("name"), object.getString("description"), object.getInt("calories"), object.getJSONArray("nutrient").getJSONObject(0)));
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
                 }
             }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
+        });
 
         return foodListItems;
     }
 
-    public static List<FoodListItem> getFoodDataByObjectTag(String tag){
-        List<FoodListItem> foodListItems = new ArrayList<>();
+    public static List<FoodListItem> getFoodDataByObjectTag(final FoodListRecyclerViewAdapter adapter, final List<FoodListItem> foodListItems, String tag){
         ArrayList<String> tags = new ArrayList<>();
         tags.add(tag);
         ParseQuery<ParseObject> query = ParseQuery.getQuery(ObjectCollections.FOOD_DATA);
         query.whereContainedIn("type", tags);
         query.addAscendingOrder("calories");
-        try {
-            List<ParseObject> objects = query.find();
-            for(ParseObject object : objects){
-                foodListItems.add(new FoodListItem(object.getObjectId(), object.getParseFile("picture").getUrl(), object.getString("name"), object.getString("description"), object.getInt("calories"), object.getJSONArray("nutrient").getJSONObject(0)));
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if(e == null){
+                    for(ParseObject object : objects){
+                        try {
+                            foodListItems.add(new FoodListItem(object.getObjectId(), object.getParseFile("picture").getUrl(), object.getString("name"), object.getString("description"), object.getInt("calories"), object.getJSONArray("nutrient").getJSONObject(0)));
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                }
             }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        });
+
         return foodListItems;
     }
 

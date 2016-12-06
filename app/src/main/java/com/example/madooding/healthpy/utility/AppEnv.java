@@ -8,6 +8,7 @@ import com.example.madooding.healthpy.model.UserData;
 
 import android.text.format.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class AppEnv implements AppEnvSubject{
         todayEaten = DBUtils.getEatingListByDate(userData.getObjectId(), new Date(System.currentTimeMillis()));
         currentDate = (String)DateFormat.format("yyyy-MM-dd", new Date(System.currentTimeMillis()));
         calulateEatenCalories();
+        this.recommendedCalories = calulateRecommendedCalories();
     }
 
     public static AppEnv newInstance(UserData userData){
@@ -103,13 +105,33 @@ public class AppEnv implements AppEnvSubject{
         }
     }
 
+    public int calulateRecommendedCalories(){
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+        int recommendedCalories;
+        dob.set(userData.getBirthYear(), userData.getBirthMonth(), userData.getBirthDay());
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
+            age--;
+        }
+        if(userData.getSex().equals("male")){
+            recommendedCalories =  (int) (66 + (13.7 * userData.getWeight()) + (5 * userData.getHeight()) - (6.8 * age));
+        }else{
+            recommendedCalories = (int) ((665 + (9.6 * userData.getWeight()) + (1.8 * userData.getHeight()) - (4.7 * age)));
+        }
+        return recommendedCalories;
+    }
+
+    public int getRecommendedCalories(){ return recommendedCalories; }
+
     public int getSumEatenCalories(){ return sumOfEatenCalories;}
 
     public void setSumEatenCalories(int calories){ sumOfEatenCalories = calories; }
 
     public void addEatenCalories(int calories) { sumOfEatenCalories += calories; }
 
-    public void subtrachEatenCalories(int calories){ sumOfEatenCalories -= calories; }
+    public void subtractEatenCalories(int calories){ sumOfEatenCalories -= calories; }
 
     public String getCurrentPeriod(){
         return currentPeriod;

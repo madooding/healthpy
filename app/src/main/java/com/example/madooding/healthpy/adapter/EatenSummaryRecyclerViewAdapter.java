@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.daimajia.swipe.SwipeLayout;
 import com.example.madooding.healthpy.R;
 import com.example.madooding.healthpy.model.FoodListItem;
 import com.example.madooding.healthpy.model.FoodListItemMinimal;
@@ -30,10 +31,11 @@ public class EatenSummaryRecyclerViewAdapter extends RecyclerView.Adapter<EatenS
     private AppEnv appEnv = AppEnv.getInstance();
 
     public interface OnItemDeleteListener{
-        void onItemDelete(String objectId);
+        void onItemDelete(FoodListItemMinimal foodListItemMinimal);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
+        public SwipeLayout swipeLayout;
         public TextView eatenTime;
         public TextView foodName;
         public TextView foodCalories;
@@ -48,6 +50,9 @@ public class EatenSummaryRecyclerViewAdapter extends RecyclerView.Adapter<EatenS
             this.foodCalories = (TextView) itemView.findViewById(R.id.eaten_summary_item_calories);
             this.deleteBtn = (ImageView) itemView.findViewById(R.id.eaten_summary_item_delete_btn);
             this.wrapper = (LinearLayout) itemView.findViewById(R.id.bottom_wrapper);
+            this.swipeLayout = (SwipeLayout) itemView.findViewById(R.id.swipe_layout);
+            this.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+            swipeLayout.setClickToClose(true);
 
         }
 
@@ -55,10 +60,11 @@ public class EatenSummaryRecyclerViewAdapter extends RecyclerView.Adapter<EatenS
             wrapper.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.onItemDelete(item.getObjectId());
-                    appEnv.subtrachEatenCalories(item.getCalories());
+                    ViewHolder.this.swipeLayout.close(true);
+                    appEnv.subtractEatenCalories(item.getCalories());
                     EatenSummaryRecyclerViewAdapter.this.list.remove(item);
                     EatenSummaryRecyclerViewAdapter.this.notifyDataSetChanged();
+                    listener.onItemDelete(item);
                 }
             });
         }
@@ -78,13 +84,13 @@ public class EatenSummaryRecyclerViewAdapter extends RecyclerView.Adapter<EatenS
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         FoodListItemMinimal foodListItem = list.get(position);
 
         String time = (String) DateFormat.format("HH:mm", foodListItem.getEatenDate());
         holder.foodName.setText(foodListItem.getName());
         holder.foodCalories.setText(Integer.toString(foodListItem.getCalories()) + " Kcal");
-        holder.eatenTime.setText(time+ " น.");
+        holder.eatenTime.setText(time + " น.");
         holder.bind(foodListItem, listener);
 
     }

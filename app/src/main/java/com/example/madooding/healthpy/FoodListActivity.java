@@ -34,7 +34,7 @@ public class FoodListActivity extends AppCompatActivity {
     private FoodsCategory foodsCategory;
     private ImageView imageView;
     private RecyclerView foodListItemsRecyclerView;
-    private RecyclerView.Adapter foodListItemsRecyclerViewAdapter;
+    private FoodListRecyclerViewAdapter foodListItemsRecyclerViewAdapter;
     private RecyclerView.LayoutManager foodListItemsLayoutManager;
     private TextView title;
 
@@ -42,7 +42,7 @@ public class FoodListActivity extends AppCompatActivity {
     private String coverImgUrl;
 
     private Intent intent;
-    private List<FoodListItem> foodListItems;
+    private List<FoodListItem> foodListItems = new ArrayList<>();
 
     public static class RequestCode{
         public static final int CALL_ACTIVITY_WITH_FEATURED_FOOD = 300;
@@ -68,13 +68,11 @@ public class FoodListActivity extends AppCompatActivity {
         switch(action){
             case RequestCode.CALL_ACTIVITY_WITH_FEATURED_FOOD:
                 carouselItem = (CarouselItem) getIntent().getSerializableExtra("FoodList");
-                foodListItems = DBUtils.getFoodDataByObjectIds(carouselItem.getFoodObjectIds());
                 titleText = carouselItem.getName();
                 coverImgUrl = carouselItem.getImgUrl();
                 break;
             case RequestCode.CALL_ACTIVITY_WITH_CATEGORY_TAG:
                 foodsCategory = (FoodsCategory) getIntent().getSerializableExtra("FoodsCategory");
-                foodListItems = DBUtils.getFoodDataByObjectTag(foodsCategory.getLinker());
                 titleText = foodsCategory.getName();
                 coverImgUrl = foodsCategory.getImgUrl();
                 break;
@@ -102,7 +100,7 @@ public class FoodListActivity extends AppCompatActivity {
         foodListItemsRecyclerView.setLayoutManager(foodListItemsLayoutManager);
 
         Toast.makeText(this, "food size : " + foodListItems.size(), Toast.LENGTH_SHORT).show();
-        renderFoodList();
+        renderFoodList(action);
 
     }
 
@@ -123,7 +121,7 @@ public class FoodListActivity extends AppCompatActivity {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
-    private void renderFoodList(){
+    private void renderFoodList(int action){
         foodListItemsRecyclerViewAdapter = new FoodListRecyclerViewAdapter(this, foodListItems, new FoodListRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(FoodListItem item) {
@@ -133,6 +131,14 @@ public class FoodListActivity extends AppCompatActivity {
             }
         });
         foodListItemsRecyclerView.setAdapter(foodListItemsRecyclerViewAdapter);
+        switch (action) {
+            case RequestCode.CALL_ACTIVITY_WITH_CATEGORY_TAG:
+                foodListItems = DBUtils.getFoodDataByObjectTag(foodListItemsRecyclerViewAdapter, foodListItems, foodsCategory.getLinker());
+                break;
+            case RequestCode.CALL_ACTIVITY_WITH_FEATURED_FOOD:
+                foodListItems = DBUtils.getFoodDataByObjectIds(foodListItemsRecyclerViewAdapter, foodListItems, carouselItem.getFoodObjectIds());
+                break;
+        }
     }
 
     @Override
