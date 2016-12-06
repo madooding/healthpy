@@ -77,7 +77,7 @@ public class DBUtils {
         parseObject.put("foodObjectId", foodObjectId);
         parseObject.put("foodName", foodName);
         parseObject.put("foodCalories", foodCalories);
-        parseObject.put("ateAt", DateFormat.format("yyyy-MM-dd hh:mm:ss", new Date(System.currentTimeMillis())));
+        parseObject.put("ateAt", DateFormat.format("yyyy-MM-dd HH:mm:ss", new Date(System.currentTimeMillis())));
         parseObject.saveInBackground();
     }
 
@@ -245,24 +245,40 @@ public class DBUtils {
         query.whereMatches("ateAt", "^"+dateStr);
         query.whereEqualTo("userObjectId", userObjectId);
         query.addAscendingOrder("createdAt");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-                for(ParseObject object : objects){
-                    s[0] = object.getString("ateAt");
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                    try {
-                        convertedDate[0] = simpleDateFormat.parse(s[0]);
-                    } catch (java.text.ParseException e1) {
-                        e1.printStackTrace();
-                        convertedDate[0] = new Date(System.currentTimeMillis());
+        try {
+            List<ParseObject> objects = query.find();
+            for(ParseObject object : objects){
+                s[0] = object.getString("ateAt");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                try {
+                    convertedDate[0] = simpleDateFormat.parse(s[0]);
+                } catch (java.text.ParseException e1) {
+                    e1.printStackTrace();
+                    convertedDate[0] = new Date(System.currentTimeMillis());
 
+                }
+                eatingList.add(new FoodListItemMinimal(object.getObjectId(), object.getString("userObjectId"), object.getString("foodName"), object.getInt("foodCalories"), convertedDate[0]));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return eatingList;
+    }
+
+    public static void deleteEatingItem(String objectId){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(ObjectCollections.EATEN_DATA);
+        query.getInBackground(objectId, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject object, ParseException e) {
+                if(e == null){
+                    try {
+                        object.delete();
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
                     }
-                    eatingList.add(new FoodListItemMinimal(object.getObjectId(), object.getString("userObjectId"), object.getString("foodName"), object.getInt("foodCalories"), convertedDate[0]));
                 }
             }
         });
-        return eatingList;
     }
 
 }

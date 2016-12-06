@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.madooding.healthpy.R;
 import com.example.madooding.healthpy.model.FoodListItem;
 import com.example.madooding.healthpy.model.FoodListItemMinimal;
+import com.example.madooding.healthpy.utility.AppEnv;
 
 import java.util.List;
 
@@ -26,12 +27,13 @@ public class EatenSummaryRecyclerViewAdapter extends RecyclerView.Adapter<EatenS
     private List<FoodListItemMinimal> list;
     private Context context;
     private OnItemDeleteListener listener;
+    private AppEnv appEnv = AppEnv.getInstance();
 
     public interface OnItemDeleteListener{
         void onItemDelete(String objectId);
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView eatenTime;
         public TextView foodName;
         public TextView foodCalories;
@@ -54,6 +56,9 @@ public class EatenSummaryRecyclerViewAdapter extends RecyclerView.Adapter<EatenS
                 @Override
                 public void onClick(View view) {
                     listener.onItemDelete(item.getObjectId());
+                    appEnv.subtrachEatenCalories(item.getCalories());
+                    EatenSummaryRecyclerViewAdapter.this.list.remove(item);
+                    EatenSummaryRecyclerViewAdapter.this.notifyDataSetChanged();
                 }
             });
         }
@@ -76,7 +81,7 @@ public class EatenSummaryRecyclerViewAdapter extends RecyclerView.Adapter<EatenS
     public void onBindViewHolder(ViewHolder holder, int position) {
         FoodListItemMinimal foodListItem = list.get(position);
 
-        String time = (String) DateFormat.format("hh:mm", foodListItem.getEatenDate());
+        String time = (String) DateFormat.format("HH:mm", foodListItem.getEatenDate());
         holder.foodName.setText(foodListItem.getName());
         holder.foodCalories.setText(Integer.toString(foodListItem.getCalories()) + " Kcal");
         holder.eatenTime.setText(time+ " น.");

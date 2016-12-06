@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.cengalabs.flatui.FlatUI;
 import com.example.madooding.healthpy.model.UserData;
+import com.example.madooding.healthpy.utility.AppEnv;
 import com.example.madooding.healthpy.utility.DBUtils;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -35,6 +36,8 @@ public class FacebookLoginActivity extends AppCompatActivity {
     protected AccessToken accessToken;
     private  Intent intent;
     private  Bundle bundle;
+    private UserData userData;
+    private AppEnv appEnv;
 
 
     @Override
@@ -118,7 +121,8 @@ public class FacebookLoginActivity extends AppCompatActivity {
         }else{
             //Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
             intent = new Intent(FacebookLoginActivity.this, MainActivity.class);
-            intent.putExtra("UserData", DBUtils.getUserData(AccessToken.getCurrentAccessToken().getUserId()));
+            userData = DBUtils.getUserData(AccessToken.getCurrentAccessToken().getUserId());
+            appEnv = AppEnv.newInstance(userData);
             //Must send user information in this intent
             startActivity(intent);
         }
@@ -139,7 +143,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
                 if(resultCode == InformationGatheringActivity.ResponseCode.REGISTRATION_COMPLETE){
                     UserData userData = (UserData)data.getSerializableExtra("UserData");
                     intent = new Intent(this, MainActivity.class);
-                    intent.putExtra("UserData", userData);
+                    appEnv = AppEnv.newInstance(userData);
                     startActivity(intent);
                     finish();
                 }else if(resultCode == InformationGatheringActivity.ResponseCode.REGISTRATION_CANCEL){

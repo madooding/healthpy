@@ -28,6 +28,7 @@ public class TodaySummaryFragment extends Fragment {
     private LinearLayoutManager eatenListViewLayoutManager;
     private AppEnv appEnv = AppEnv.getInstance();
     private List<FoodListItemMinimal> eatenList;
+    private EatenSummaryRecyclerViewAdapter eatenSummaryRecyclerViewAdapter;
     public TodaySummaryFragment() {
         // Required empty public constructor
     }
@@ -51,6 +52,15 @@ public class TodaySummaryFragment extends Fragment {
         eatenListViewLayoutManager = new LinearLayoutManager(getContext());
         eatenListView.setLayoutManager(eatenListViewLayoutManager);
 
+        eatenSummaryRecyclerViewAdapter = new EatenSummaryRecyclerViewAdapter(getContext(), appEnv.getTodayEatenFoodList(), new EatenSummaryRecyclerViewAdapter.OnItemDeleteListener(){
+            @Override
+            public void onItemDelete(String objectId) {
+                Toast.makeText(getContext(), "food objectid " + objectId, Toast.LENGTH_SHORT).show();
+                DBUtils.deleteEatingItem(objectId);
+            }
+        });
+        eatenListView.setAdapter(eatenSummaryRecyclerViewAdapter);
+
 
 
     }
@@ -59,13 +69,9 @@ public class TodaySummaryFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if(isVisibleToUser){
-            eatenListView.setAdapter(new EatenSummaryRecyclerViewAdapter(getContext(), appEnv.getTodayEatenFoodList(), new EatenSummaryRecyclerViewAdapter.OnItemDeleteListener(){
-                @Override
-                public void onItemDelete(String objectId) {
-                    Toast.makeText(getContext(), "food objectid " + objectId, Toast.LENGTH_SHORT).show();
-                }
-            }));
-            Toast.makeText(getContext(), "tick signal detected!", Toast.LENGTH_SHORT).show();
+            appEnv.checkForUpdate();
+            eatenSummaryRecyclerViewAdapter.notifyDataSetChanged();
+            Toast.makeText(getContext(), "Eaten Calories Summary : " + appEnv.getSumEatenCalories() + " Kilo Calories", Toast.LENGTH_SHORT).show();
         }
     }
 }

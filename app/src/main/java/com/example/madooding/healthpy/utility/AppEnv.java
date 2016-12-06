@@ -22,6 +22,9 @@ public class AppEnv implements AppEnvSubject{
     private UserData userData;
     private String[] timePeriod = {"อาหารเช้า", "อาหารกลางวัน", "อาหารเย็น", "อาหารดึก"};
     private String currentPeriod;
+    private String currentDate;
+    private int sumOfEatenCalories = 0;
+    private int recommendedCalories = 0;
 
     private List<FoodListItem> foodListItems;
 
@@ -32,6 +35,8 @@ public class AppEnv implements AppEnvSubject{
         this.currentPeriod = getAppropriateTimePeriod();
         foodListItems = DBUtils.getFoodListByUserData(userData);
         todayEaten = DBUtils.getEatingListByDate(userData.getObjectId(), new Date(System.currentTimeMillis()));
+        currentDate = (String)DateFormat.format("yyyy-MM-dd", new Date(System.currentTimeMillis()));
+        calulateEatenCalories();
     }
 
     public static AppEnv newInstance(UserData userData){
@@ -74,12 +79,37 @@ public class AppEnv implements AppEnvSubject{
 
     public void checkForUpdate(){
         String timePeriod = getAppropriateTimePeriod();
+        String dateNow = (String) DateFormat.format("yyyy-MM-dd", new Date(System.currentTimeMillis()));
         if(!timePeriod.equals(currentPeriod)){
             currentPeriod = timePeriod;
             foodListItems = DBUtils.getFoodListByUserData(userData);
             notifyObservers();
         }
+        if(!currentDate.equals(dateNow)){
+            currentDate = dateNow;
+            todayEaten.clear();
+            todayEaten = DBUtils.getEatingListByDate(userData.getObjectId(), new Date(System.currentTimeMillis()));
+            calulateEatenCalories();
+        }
     }
+
+    public String getCurrentDate(){
+        return currentDate;
+    }
+
+    public void calulateEatenCalories(){
+        for(FoodListItemMinimal obj : todayEaten){
+            addEatenCalories(obj.getCalories());
+        }
+    }
+
+    public int getSumEatenCalories(){ return sumOfEatenCalories;}
+
+    public void setSumEatenCalories(int calories){ sumOfEatenCalories = calories; }
+
+    public void addEatenCalories(int calories) { sumOfEatenCalories += calories; }
+
+    public void subtrachEatenCalories(int calories){ sumOfEatenCalories -= calories; }
 
     public String getCurrentPeriod(){
         return currentPeriod;

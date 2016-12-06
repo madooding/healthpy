@@ -58,7 +58,6 @@ public class MainFragment extends Fragment implements Observer{
     //Should retrive from server
     List<FoodsCategory> foodsCategoryList;
     List<CarouselItem> carouselItemList;
-    List<FoodListItem> foodListItems;
 
     private RecyclerView foodListItemsRecyclerView;
     private RecyclerView.Adapter foodListItemsRecyclerViewAdapter;
@@ -78,7 +77,6 @@ public class MainFragment extends Fragment implements Observer{
         FacebookSdk.sdkInitialize(getContext());
         currentPeriod = AppEnv.getAppropriateTimePeriod();
         appEnv.registerObserver(this);
-        foodListItems = appEnv.getFoodListItems();
         carouselItemList = DBUtils.getFeaturedFoodList();
     }
 
@@ -127,7 +125,16 @@ public class MainFragment extends Fragment implements Observer{
         foodListItemsLayoutManager = new LinearLayoutManager(getContext());
         foodListItemsRecyclerView.setLayoutManager(foodListItemsLayoutManager);
 
-        renderFoodList();
+        foodListItemsRecyclerViewAdapter = new FoodListRecyclerViewAdapter(getContext(), appEnv.getFoodListItems(), new FoodListRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(FoodListItem item) {
+                Intent intent = new Intent(getActivity(), FoodDetailActivity.class);
+                intent.putExtra("food_info", item);
+                startActivityForResult(intent, FoodDetailActivity.RequestCode.CALL_ACTIVITY_WITH_INFORMATION);
+            }
+        });
+        foodListItemsRecyclerView.setAdapter(foodListItemsRecyclerViewAdapter);
+
 
 
         setCategoryImage(view);
@@ -136,9 +143,9 @@ public class MainFragment extends Fragment implements Observer{
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int randomNumber = rn.nextInt(foodListItems.size());
+                int randomNumber = rn.nextInt(appEnv.getFoodListItems().size());
                 Intent intent = new Intent(getContext(), FoodDetailActivity.class);
-                intent.putExtra("food_info", foodListItems.get(randomNumber));
+                intent.putExtra("food_info", appEnv.getFoodListItems().get(randomNumber));
                 startActivityForResult(intent, FoodDetailActivity.RequestCode.CALL_ACTIVITY_WITH_INFORMATION);
             }
         });
@@ -148,7 +155,6 @@ public class MainFragment extends Fragment implements Observer{
     @Override
     public void onResume() {
         super.onResume();
-        appEnv.checkForUpdate();
         Toast.makeText(getContext(), currentPeriod, Toast.LENGTH_SHORT).show();
 
     }
@@ -203,6 +209,7 @@ public class MainFragment extends Fragment implements Observer{
                     FoodListItem food = (FoodListItem)data.getSerializableExtra("food_info");
                     DBUtils.addEatenData(appEnv.getUserData().getObjectId(), food.getObjectId(), food.getName(), food.getCalories());
                     appEnv.getTodayEatenFoodList().add(new FoodListItemMinimal(food.getObjectId(), appEnv.getUserData().getObjectId(), food.getName(), food.getCalories(), new Date(System.currentTimeMillis())));
+                    appEnv.addEatenCalories(food.getCalories());
                     Toast.makeText(getContext(), food.getName() + " has been added to a list completely.", Toast.LENGTH_SHORT).show();
                 }else{
 
@@ -216,21 +223,20 @@ public class MainFragment extends Fragment implements Observer{
         if(!currentPeriod.equals(appEnv.getCurrentPeriod())){
             Toast.makeText(getContext(), "onTimeUpdated", Toast.LENGTH_SHORT).show();
             currentPeriod = appEnv.getCurrentPeriod();
-            foodListItems = appEnv.getFoodListItems();
-            renderFoodList();
+            foodListItemsRecyclerViewAdapter.notifyDataSetChanged();
         }
     }
 
-    public void renderFoodList(){
-        foodListItemsRecyclerViewAdapter = new FoodListRecyclerViewAdapter(getContext(), foodListItems, new FoodListRecyclerViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(FoodListItem item) {
-                Intent intent = new Intent(getActivity(), FoodDetailActivity.class);
-                intent.putExtra("food_info", item);
-                startActivityForResult(intent, FoodDetailActivity.RequestCode.CALL_ACTIVITY_WITH_INFORMATION);
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser){
+            appEnv.checkForUpdate();
+            try {
+                foodListItemsRecyclerViewAdapter.notifyDataSetChanged();
+            } catch (NullPointerException e){
+                e.printStackTrace();
             }
-        });
-        foodListItemsRecyclerView.setAdapter(foodListItemsRecyclerViewAdapter);
+        }
     }
-
 }

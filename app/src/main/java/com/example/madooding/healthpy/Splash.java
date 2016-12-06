@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.example.madooding.healthpy.model.UserData;
+import com.example.madooding.healthpy.utility.AppEnv;
 import com.example.madooding.healthpy.utility.DBUtils;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -23,7 +25,8 @@ public class Splash extends AppCompatActivity {
     private long time = 3000L;
     private CallbackManager callbackManager;
     private AccessToken accessToken;
-
+    private UserData userData;
+    private AppEnv appEnv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +73,8 @@ public class Splash extends AppCompatActivity {
                     intent = new Intent(Splash.this, FacebookLoginActivity.class);
                 }else{
                     intent = new Intent(Splash.this, MainActivity.class);
-                    intent.putExtra("UserData", DBUtils.getUserData(accessToken.getUserId()));
+                    userData = DBUtils.getUserData(accessToken.getUserId());
+                    appEnv = AppEnv.newInstance(userData);
 //                    if(DBUtils.isRegistered(Profile.getCurrentProfile().getId())){
 //                        Toast.makeText(Splash.this, "Registered", Toast.LENGTH_SHORT).show();
 //                    }else{

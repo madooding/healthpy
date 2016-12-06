@@ -45,9 +45,8 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         FlatUI.initDefaultValues(getApplicationContext());
         Bundle bundle = getIntent().getExtras();
-        userData = (UserData)bundle.getSerializable("UserData");
 
-        appEnv = AppEnv.newInstance(userData);
+        appEnv = AppEnv.getInstance();
 
 
 //        Toast.makeText(this, "now is time for " + AppEnv.getAppropriateTimePeriod(),  Toast.LENGTH_SHORT).show();
