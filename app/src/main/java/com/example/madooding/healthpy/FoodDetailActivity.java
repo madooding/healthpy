@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -243,7 +244,7 @@ public class FoodDetailActivity
         appBar.setBackgroundColor(ScrollUtils.getColorWithAlpha(alpha, baseColor));
         appBar.setMinimumHeight(Math.max(actionBarSize,parallaxImageHeight - (scrollY)));
         titleTextView.setMinimumHeight(Math.max(actionBarSize,parallaxImageHeight - (scrollY)));
-        titleTextView.setTextSize(28 + (int)((64  - 28) * (1 - alpha)));
+        titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28 + (int)((64  - 28) * (1 - alpha)));
         titleContainer.setPadding(titleTextLeftIndentation + (int)((titleTextMargin - titleTextLeftIndentation) * (1 - alpha)), 0, 0, 0);
 
         int fabTranslationY = fabLocation - scrollY;

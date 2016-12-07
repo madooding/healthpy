@@ -31,7 +31,7 @@ public class EatenSummaryRecyclerViewAdapter extends RecyclerView.Adapter<EatenS
     private AppEnv appEnv = AppEnv.getInstance();
 
     public interface OnItemDeleteListener{
-        void onItemDelete(FoodListItemMinimal foodListItemMinimal);
+        void onItemDelete(int position, FoodListItemMinimal foodListItemMinimal);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -41,6 +41,7 @@ public class EatenSummaryRecyclerViewAdapter extends RecyclerView.Adapter<EatenS
         public TextView foodCalories;
         public ImageView deleteBtn;
         public LinearLayout wrapper;
+        public int position;
 
 
         public ViewHolder(View itemView) {
@@ -64,7 +65,7 @@ public class EatenSummaryRecyclerViewAdapter extends RecyclerView.Adapter<EatenS
                     appEnv.subtractEatenCalories(item.getCalories());
                     EatenSummaryRecyclerViewAdapter.this.list.remove(item);
                     EatenSummaryRecyclerViewAdapter.this.notifyDataSetChanged();
-                    listener.onItemDelete(item);
+                    listener.onItemDelete(position, item);
                 }
             });
         }
@@ -91,6 +92,7 @@ public class EatenSummaryRecyclerViewAdapter extends RecyclerView.Adapter<EatenS
         holder.foodName.setText(foodListItem.getName());
         holder.foodCalories.setText(Integer.toString(foodListItem.getCalories()) + " Kcal");
         holder.eatenTime.setText(time + " น.");
+        holder.position = position;
         holder.bind(foodListItem, listener);
 
     }

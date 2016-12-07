@@ -82,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-10dp"
                     android:layout_below="@id/food_list_item_calories"
-                    android:text="Calories"
+                    android:text="kcal"
                     android:textColor="@color/colorSubStandardGrey"
                     fontPath="DB HelvethaicaMon X.ttf"/>
             </LinearLayout>

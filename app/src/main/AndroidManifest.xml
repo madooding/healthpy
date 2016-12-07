@@ -28,7 +28,7 @@
             android:exported="true" />
         <activity
             android:name=".MainActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".FoodDetailActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -48,11 +48,11 @@
         </activity>
         <activity
             android:name=".InformationGatheringActivity"
-            android:exported="true">
-        </activity>
-        <activity android:name=".FoodListActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
+        <activity
+            android:name=".FoodListActivity"
+            android:exported="true"></activity>
+        <activity android:name=".DaySummaryActivity"></activity>
     </application>
 
 </manifest>

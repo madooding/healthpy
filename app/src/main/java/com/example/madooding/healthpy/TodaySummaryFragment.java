@@ -75,7 +75,12 @@ public class TodaySummaryFragment extends Fragment {
         pieChart.setDescription("");
 
 
-
+        try {
+            renderPiechart();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        caloriesRatio.setText(appEnv.getSumEatenCalories() + "/" + appEnv.getRecommendedCalories());
 
         description = (TextView) view.findViewById(R.id.eaten_summary_description);
         description.setText("* " + appEnv.getRecommendedCalories() + " กิโลแคลอรี่ เป็นปริมาณการบริโภคต่อวันที่แนะนำสำหรับคุณ");
@@ -87,7 +92,7 @@ public class TodaySummaryFragment extends Fragment {
 
         eatenSummaryRecyclerViewAdapter = new EatenSummaryRecyclerViewAdapter(getContext(), appEnv.getTodayEatenFoodList(), new EatenSummaryRecyclerViewAdapter.OnItemDeleteListener(){
             @Override
-            public void onItemDelete(FoodListItemMinimal foodListItemMinimal) {
+            public void onItemDelete(int position, FoodListItemMinimal foodListItemMinimal) {
                 Toast.makeText(getContext(), "food objectid " + foodListItemMinimal.getObjectId(), Toast.LENGTH_SHORT).show();
                 DBUtils.deleteEatingItem(foodListItemMinimal.getObjectId());
                 caloriesRatio.setText(appEnv.getSumEatenCalories() + "/" + appEnv.getRecommendedCalories());

@@ -1,6 +1,7 @@
 package com.example.madooding.healthpy;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,6 +16,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cengalabs.flatui.FlatUI;
@@ -22,7 +25,11 @@ import com.example.madooding.healthpy.adapter.MainFragmentPagerAdapter;
 import com.example.madooding.healthpy.listener.MainViewPagerListener;
 import com.example.madooding.healthpy.model.UserData;
 import com.example.madooding.healthpy.utility.AppEnv;
+import com.example.madooding.healthpy.utility.CircularTransformation;
+import com.facebook.FacebookSdk;
 import com.facebook.Profile;
+import com.facebook.login.LoginManager;
+import com.squareup.picasso.Picasso;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -31,6 +38,10 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     UserData userData;
     AppEnv appEnv;
+    LoginManager loginManager;
+    private ImageView imageView;
+    private TextView navbarName;
+    private TextView email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +57,13 @@ public class MainActivity extends AppCompatActivity
         FlatUI.initDefaultValues(getApplicationContext());
         Bundle bundle = getIntent().getExtras();
 
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        loginManager = LoginManager.getInstance();
         appEnv = AppEnv.getInstance();
 
 
-//        Toast.makeText(this, "now is time for " + AppEnv.getAppropriateTimePeriod(),  Toast.LENGTH_SHORT).show();
 
+//        Toast.makeText(this, "now is time for " + AppEnv.getAppropriateTimePeriod(),  Toast.LENGTH_SHORT).show();
 
 
         //All about Drawer
@@ -65,6 +78,15 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View header = navigationView.getHeaderView(0);
+
+
+        imageView = (ImageView) header.findViewById(R.id.imageView);
+        navbarName = (TextView) header.findViewById(R.id.navbar_name);
+        email = (TextView) header.findViewById(R.id.textView);
+        navbarName.setText(appEnv.getUserData().getName() + " " + appEnv.getUserData().getLastName());
+        email.setText(appEnv.getUserData().getEmail());
+        Picasso.with(this).load(appEnv.getUserData().getProfileImgURI()).transform(new CircularTransformation()).into(imageView);
 
 
         //Set up view pager and tab segment
@@ -92,6 +114,7 @@ public class MainActivity extends AppCompatActivity
             int[] iconId = {R.drawable.calendar, R.drawable.lamp, R.drawable.today};
             mainViewSelectorTab.getTabAt(i).setIcon(iconId[i]);
         }
+
     }
 
     @Override
@@ -144,6 +167,10 @@ public class MainActivity extends AppCompatActivity
             navView.setElevation(40);
             navView.setSelected(false);
             Toast.makeText(MainActivity.this, "Logout nav is clicked", Toast.LENGTH_SHORT).show();
+            loginManager.logOut();
+            Intent intent = new Intent(this, FacebookLoginActivity.class);
+            startActivity(intent);
+            finish();
 
         }
         return true;
