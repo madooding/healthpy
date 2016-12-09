@@ -1,6 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#FF6B6B</color>
+    <color name="colorPrimaryTransperent">#33FF6B6B</color>
+    <color name="colorPrimaryDark">#CC5555</color>
+    <color name="colorPrimaryDarker">#FFB94040</color>
+    <color name="colorPrimaryLight">#FDD0D0</color>
+    <color name="colorAccent">@color/colorPrimary</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorMintCream">#F7FFF7</color>
+    <color name="navBarColorSelected">#F8F8F8</color>
+    <color name="navBarTextColor">#7D7D7D</color>
+
+    <color name="colorStandardGrey">#CCCCCC</color>
+    <color name="colorSubStandardGrey">#8B8B8B</color>
+
+    <color name="appBGcolor">#F5F5F5</color>
+
+    <color name="colorFormHealthyBG">@color/colorWhite</color>
+    <color name="colorFormHealthyText">#cf7c7c</color>
+
+    <color name="colorNormalText">#4D4D4D</color>
+
+
+    <color name="colorProtein">#F8B290</color>
+    <color name="colorFat">#FCF5C7</color>
+    <color name="colorCholesterol">#FFEE93</color>
+    <color name="colorCarbohydrate">#B6D7B9</color>
+    <color name="colorSodium">#A0CED9</color>
+
+    <integer-array name="healthpy_form_theme">
+        <item>@color/colorPrimaryDarker</item> <!-- really much darker color of main color -->
+        <item>@color/colorPrimaryDark</item> <!-- a bit darker color of your main color -->
+        <item>@color/colorFormHealthyBG</item> <!-- main color of your theme -->
+        <item>@color/colorFormHealthyText</item> <!-- really much lighter color of main color -->
+    </integer-array>
+
+    <integer-array name="healthpy_facebook_login_button">
+        <item>@color/colorPrimaryDarker</item> <!-- really much darker color of main color -->
+        <item>@color/colorPrimaryDark</item> <!-- a bit darker color of your main color -->
+        <item>@color/colorWhite</item> <!-- main color of your theme -->
+        <item>@color/colorPrimary</item>
+    </integer-array>
+
+    <integer-array name="information_gathering_edittext">
+        <item>@color/colorPrimaryDarker</item> <!-- really much darker color of main color -->
+        <item>@color/colorPrimaryDark</item> <!-- a bit darker color of your main color -->
+        <item>@color/colorWhite</item> <!-- main color of your theme -->
+        <item>@color/colorSubStandardGrey</item>
+    </integer-array>
+
+    <integer-array name="information_gathering_element">
+        <item>@color/colorPrimaryDarker</item> <!-- really much darker color of main color -->
+        <item>@color/colorPrimaryDark</item> <!-- a bit darker color of your main color -->
+        <item>@color/colorPrimary</item> <!-- main color of your theme -->
+        <item>@color/colorSubStandardGrey</item>
+    </integer-array>
+
+
+
 </resources>

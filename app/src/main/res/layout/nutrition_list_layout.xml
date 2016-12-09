@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="70dp"
+    android:padding="10dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingPrefix">
+    <LinearLayout
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:orientation="horizontal"
+        android:layout_centerVertical="true"
+        android:background="@color/colorProtein"
+        android:id="@+id/food_detail_nutrition_color"
+        android:layout_marginRight="@dimen/activity_horizontal_margin">
+    </LinearLayout>
+    <TextView
+        android:id="@+id/food_detail_nutrition_name"
+        android:layout_toRightOf="@id/food_detail_nutrition_color"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorSubStandardGrey"
+        android:text="โปรตีน"
+        android:textSize="@dimen/food_detail_content_text_size"
+        fontPath="DB HelvethaicaMon X.ttf"/>
+    <TextView
+        android:id="@+id/food_detail_nutrition_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/colorSubStandardGrey"
+        android:textSize="@dimen/food_detail_content_text_size"
+        android:text="56.0g"
+        fontPath="DB HelvethaicaMon X.ttf"/>
+</RelativeLayout>

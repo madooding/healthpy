@@ -1,0 +1,61 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:flatui="http://schemas.android.com/apk/res-auto"
+    android:background="@color/appBGcolor"
+    android:padding="@dimen/activity_horizontal_margin"
+    tools:context="com.example.madooding.healthpy.CongenitalDiseaseFormFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="คุณมีโรคประจำตัวอะไรบ้าง ?"
+            android:layout_marginBottom="8dp"
+            style="@style/InformationGatheringHeadingText"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:orientation="vertical">
+            <com.cengalabs.flatui.views.FlatCheckBox
+                android:id="@+id/disease_high_blood_pressure"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textSize="26sp"
+                android:text="โรคความดันโลหิตสูง"
+                flatui:fl_size="14dp"
+                flatui:fl_theme="@array/information_gathering_element"/>
+            <com.cengalabs.flatui.views.FlatCheckBox
+                android:id="@+id/disease_heart_and_kidney_disease"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textSize="26sp"
+                android:text="โรคหัวใจหรือโรคไต"
+                flatui:fl_size="14dp"
+                flatui:fl_theme="@array/information_gathering_element"/>
+            <com.cengalabs.flatui.views.FlatCheckBox
+                android:id="@+id/disease_diabetes"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textSize="26sp"
+                android:text="โรคเบาหวาน"
+                flatui:fl_size="14dp"
+                flatui:fl_theme="@array/information_gathering_element"/>
+            <com.cengalabs.flatui.views.FlatCheckBox
+                android:id="@+id/disease_gout"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textSize="26sp"
+                android:text="โรคเก๊าท์"
+                flatui:fl_size="14dp"
+                flatui:fl_theme="@array/information_gathering_element"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

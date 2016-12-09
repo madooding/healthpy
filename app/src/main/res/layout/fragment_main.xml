@@ -1,0 +1,126 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:flatui="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/activity_horizontal_margin"
+    android:background="@color/appBGcolor"
+    tools:context="com.example.madooding.healthpy.MainFragment"
+    tools:ignore="MissingPrefix">
+
+    <!-- TODO: Update blank fragment layout -->
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:fadeScrollbars="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.cengalabs.flatui.views.FlatEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:descendantFocusability="beforeDescendants"
+                android:drawableLeft="@drawable/search"
+                android:drawableTint="@color/colorFormHealthyText"
+                android:hint="ค้นหาจาก ชื่ออาหาร"
+                android:singleLine="true"
+                android:textStyle="bold"
+                android:textSize="26sp"
+                android:layout_marginBottom="8dp"
+                flatui:fl_theme="@array/healthpy_form_theme"
+                flatui:fl_cornerRadius="4dp"
+                flatui:fl_fontWeight="bold"
+                fontPath="DB HelvethaicaMon X Bd.ttf"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="156dp"
+                android:layout_marginBottom="6dp">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/carouselViewPager"
+                    android:layout_alignParentTop="true"
+                    android:background="@color/colorWhite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </android.support.v4.view.ViewPager>
+
+                <com.viewpagerindicator.CirclePageIndicator
+                    android:id="@+id/carouselCircleIndicator"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginBottom="6dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:padding="16dp"
+                style="@style/TextTopic"
+                android:text="เลือกตามหมวดหมู่"/>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/foods_category_linear_layout"
+                    android:orientation="horizontal">
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:padding="16dp"
+                style="@style/TextTopic"
+                android:text="เมนูที่แนะนำสำหรับคุณ"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/food_list_item_recycler_view"
+                android:scrollbars="vertical">
+            </android.support.v7.widget.RecyclerView>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/food_item_list_view_replacement">
+            </ListView>
+
+
+
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/random_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/dice" />
+
+
+</FrameLayout>
