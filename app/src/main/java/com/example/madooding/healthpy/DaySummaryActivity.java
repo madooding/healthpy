@@ -62,8 +62,11 @@ public class DaySummaryActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.day_summary_toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(dateStr);
-
-        eatingList = DBUtils.getEatingListByDate(appEnv.getUserData().getObjectId(), date);
+        if(dateStr.equals((String)DateFormat.format("dd/MM/yyyy", new Date(System.currentTimeMillis())))){
+            eatingList = appEnv.getTodayEatenFoodList();
+        }else {
+            eatingList = DBUtils.getEatingListByDate(appEnv.getUserData().getObjectId(), date);
+        }
         for(FoodListItemMinimal obj : eatingList){
             eatingCalories += obj.getCalories();
 
@@ -109,7 +112,7 @@ public class DaySummaryActivity extends AppCompatActivity {
                 }
                 caloriesRatio.setText(eatingCalories + "/" + appEnv.getRecommendedCalories());
                 if(dateStr.equals((String) DateFormat.format("dd/MM/yyyy", date))){
-                    Toast.makeText(DaySummaryActivity.this, "ตรงกันไอสัส", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(DaySummaryActivity.this, "ตรงกันไอสัส", Toast.LENGTH_SHORT).show();
                     appEnv.getTodayEatenFoodList().remove(position);
                 }
                 try {

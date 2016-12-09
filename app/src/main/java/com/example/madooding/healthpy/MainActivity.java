@@ -161,12 +161,15 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == R.id.nav_edit_profile) {
             // Handle the camera action
+            Intent intent = new Intent(this, InformationGatheringActivity.class);
+            intent.putExtra("RequestCode", InformationGatheringActivity.RequestCode.UPDATE_USER_INFORMATION);
+            startActivityForResult(intent, InformationGatheringActivity.RequestCode.UPDATE_USER_INFORMATION);
         } else if (id == R.id.nav_logout) {
 
             item.setChecked(false);
             navView.setElevation(40);
             navView.setSelected(false);
-            Toast.makeText(MainActivity.this, "Logout nav is clicked", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(MainActivity.this, "Logout nav is clicked", Toast.LENGTH_SHORT).show();
             loginManager.logOut();
             Intent intent = new Intent(this, FacebookLoginActivity.class);
             startActivity(intent);
@@ -174,6 +177,21 @@ public class MainActivity extends AppCompatActivity
 
         }
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case InformationGatheringActivity.RequestCode.UPDATE_USER_INFORMATION:
+                if(resultCode == InformationGatheringActivity.ResponseCode.UPDATE_USER_INFORMATION_COMPLETE){
+//                    Toast.makeText(this, "Update complete", Toast.LENGTH_SHORT).show();
+                    UserData userData = (UserData)data.getSerializableExtra("UserData");
+                    appEnv.setUserData(userData);
+                    appEnv.setUpdateSignal(true);
+                }
+                break;
+        }
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cengalabs.flatui.views.FlatRadioButton;
+import com.example.madooding.healthpy.utility.AppEnv;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
@@ -75,6 +76,16 @@ public class SexFormFragment extends Fragment {
         request.setParameters(bundle);
         request.executeAsync();
 
+        try {
+            AppEnv appEnv = AppEnv.getInstance();
+            if(appEnv.getUserData().getSex().equals("ชาย")){
+                male.setChecked(true);
+            }else{
+                female.setChecked(true);
+            }
+        } catch (Exception e){
+
+        }
 
     }
 

@@ -214,7 +214,7 @@ public class FoodDetailActivity
                     intent.putExtra("food_info", food_info);
                     setResult(ResponseCode.ADD_FOOD, intent);
                     finish();
-                    Toast.makeText(FoodDetailActivity.this, "Fab touched", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(FoodDetailActivity.this, "Fab touched", Toast.LENGTH_SHORT).show();
                 }
             }
         });

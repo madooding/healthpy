@@ -63,7 +63,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        Toast.makeText(FacebookLoginActivity.this, "Success!, Hello, " + name, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(FacebookLoginActivity.this, "Success!, Hello, " + name, Toast.LENGTH_SHORT).show();
                         accessToken = AccessToken.getCurrentAccessToken();
                         doRegister();
 
@@ -71,12 +71,12 @@ public class FacebookLoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancel() {
-                        Toast.makeText(FacebookLoginActivity.this, "Cancel", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(FacebookLoginActivity.this, "Cancel", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
-                        Toast.makeText(FacebookLoginActivity.this, "Error", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(FacebookLoginActivity.this, "Error", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -95,7 +95,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
                 if(accessToken == null || accessToken.isExpired()) {
                     callFacebookLogin();
                 }else{
-                    Toast.makeText(FacebookLoginActivity.this, "You are already logged in.", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(FacebookLoginActivity.this, "You are already logged in.", Toast.LENGTH_SHORT).show();
                     doRegister();
                 }
 
@@ -147,13 +147,13 @@ public class FacebookLoginActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }else if(resultCode == InformationGatheringActivity.ResponseCode.REGISTRATION_CANCEL){
-                    Toast.makeText(this, "Cancel", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "Cancel", Toast.LENGTH_SHORT).show();
                 }else if(resultCode == InformationGatheringActivity.ResponseCode.REGISTRATION_ERROR){
-                    Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:
-                Toast.makeText(this, "Nothing", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Nothing", Toast.LENGTH_SHORT).show();
         }
     }
 

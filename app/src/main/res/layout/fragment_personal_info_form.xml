@@ -97,6 +97,7 @@
                     android:singleLine="true"
                     android:textSize="26sp"
                     android:padding="12dp"
+                    android:inputType="number"
                     flatui:fl_theme="@array/information_gathering_edittext"/>
             </LinearLayout>
             <LinearLayout
@@ -123,6 +124,7 @@
                     android:singleLine="true"
                     android:textSize="26sp"
                     android:padding="12dp"
+                    android:inputType="number"
                     flatui:fl_theme="@array/information_gathering_edittext"/>
             </LinearLayout>
         </LinearLayout>

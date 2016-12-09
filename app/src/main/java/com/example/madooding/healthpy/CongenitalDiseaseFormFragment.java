@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 
+import com.example.madooding.healthpy.utility.AppEnv;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,6 +45,27 @@ public class CongenitalDiseaseFormFragment extends Fragment {
         heartAndKidney = (CheckBox) view.findViewById(R.id.disease_heart_and_kidney_disease);
         diabetes = (CheckBox) view.findViewById(R.id.disease_diabetes);
         gout = (CheckBox) view.findViewById(R.id.disease_gout);
+
+        try {
+            AppEnv appEnv = AppEnv.getInstance();
+            List<String> diseases = appEnv.getUserData().getCongenitalDisease();
+            for(String obj : diseases){
+                if(obj.equals("โรคความดันโลหิตสูง")){
+                    highBloodPressure.setChecked(true);
+                }
+                if(obj.equals("โรคหัวใจหรือโรคไต")){
+                    heartAndKidney.setChecked(true);
+                }
+                if(obj.equals("โรคเบาหวาน")){
+                    diabetes.setChecked(true);
+                }
+                if(obj.equals("โรคเก๊าท์")){
+                    gout.setChecked(true);
+                }
+            }
+        } catch (Exception e){
+
+        }
 
     }
 

@@ -31,7 +31,7 @@
                 android:descendantFocusability="beforeDescendants"
                 android:drawableLeft="@drawable/search"
                 android:drawableTint="@color/colorFormHealthyText"
-                android:hint="ค้นหาจาก ชื่ออาหาร, ร้านอาหาร"
+                android:hint="ค้นหาจาก ชื่ออาหาร"
                 android:singleLine="true"
                 android:textStyle="bold"
                 android:textSize="26sp"

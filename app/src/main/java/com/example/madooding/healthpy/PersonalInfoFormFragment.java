@@ -3,6 +3,7 @@ package com.example.madooding.healthpy;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
+import com.example.madooding.healthpy.utility.AppEnv;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
@@ -47,6 +49,7 @@ public class PersonalInfoFormFragment extends DialogFragment {
     private Calendar calendar;
     private Profile profile = Profile.getCurrentProfile();
     private AccessToken accessToken = AccessToken.getCurrentAccessToken();
+    private AppEnv appEnv;
     AwesomeValidation validator = new AwesomeValidation(ValidationStyle.BASIC);
 
     public PersonalInfoFormFragment() {
@@ -124,6 +127,12 @@ public class PersonalInfoFormFragment extends DialogFragment {
                 datePickerDialog.show();
             }
         });
+
+        try {
+            usingDataFromAppEnv();
+        } catch (Exception e){
+
+        }
     }
 
     private DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
@@ -143,6 +152,19 @@ public class PersonalInfoFormFragment extends DialogFragment {
     public boolean validateForm(){
         validator.clear();
         return validator.validate();
+    }
+
+    public void usingDataFromAppEnv(){
+        appEnv = AppEnv.getInstance();
+        name.setText(appEnv.getUserData().getName());
+        lastname.setText(appEnv.getUserData().getLastName());
+        email.setText(appEnv.getUserData().getEmail());
+        day_x = appEnv.getUserData().getBirthDay();
+        month_x = appEnv.getUserData().getBirthMonth();
+        year_x = appEnv.getUserData().getBirthYear();
+        birthday.setText((day_x - 1)+"/"+(month_x + 1)+"/"+year_x);
+        weight.setText(Integer.toString(appEnv.getUserData().getWeight()));
+        height.setText(Integer.toString(appEnv.getUserData().getHeight()));
     }
 
     public String getName(){
@@ -171,4 +193,5 @@ public class PersonalInfoFormFragment extends DialogFragment {
     public int getHeight(){
         return Integer.parseInt(height.getText().toString());
     }
+
 }

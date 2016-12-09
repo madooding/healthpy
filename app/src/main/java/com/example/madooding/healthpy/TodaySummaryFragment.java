@@ -93,7 +93,7 @@ public class TodaySummaryFragment extends Fragment {
         eatenSummaryRecyclerViewAdapter = new EatenSummaryRecyclerViewAdapter(getContext(), appEnv.getTodayEatenFoodList(), new EatenSummaryRecyclerViewAdapter.OnItemDeleteListener(){
             @Override
             public void onItemDelete(int position, FoodListItemMinimal foodListItemMinimal) {
-                Toast.makeText(getContext(), "food objectid " + foodListItemMinimal.getObjectId(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "food objectid " + foodListItemMinimal.getObjectId(), Toast.LENGTH_SHORT).show();
                 DBUtils.deleteEatingItem(foodListItemMinimal.getObjectId());
                 caloriesRatio.setText(appEnv.getSumEatenCalories() + "/" + appEnv.getRecommendedCalories());
                 try {
@@ -119,7 +119,7 @@ public class TodaySummaryFragment extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            Toast.makeText(getContext(), "Eaten Calories Summary : " + appEnv.getSumEatenCalories() + " Kilo Calories", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), "Eaten Calories Summary : " + appEnv.getSumEatenCalories() + " Kilo Calories", Toast.LENGTH_SHORT).show();
         }
     }
 

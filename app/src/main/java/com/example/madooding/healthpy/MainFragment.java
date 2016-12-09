@@ -93,7 +93,7 @@ public class MainFragment extends Fragment implements Observer{
         super.onViewCreated(view, savedInstanceState);
 
 
-        Toast.makeText(getContext(), "food list size " + carouselItemList.size(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "food list size " + carouselItemList.size(), Toast.LENGTH_SHORT).show();
         carouselViewPager = (ViewPager) view.findViewById(R.id.carouselViewPager);
         carouselViewPager.setAdapter(new CarouselViewPagerAdapter(getActivity().getSupportFragmentManager(), carouselItemList));
         carouselViewPager.setOnTouchListener(new View.OnTouchListener() {
@@ -110,7 +110,7 @@ public class MainFragment extends Fragment implements Observer{
         tapGestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
-                Toast.makeText(getContext(), "Clicked", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), FoodListActivity.class);
                 intent.putExtra("FoodList", carouselItemList.get(carouselViewPager.getCurrentItem()));
                 intent.putExtra("RequestCode", FoodListActivity.RequestCode.CALL_ACTIVITY_WITH_FEATURED_FOOD);
@@ -155,7 +155,7 @@ public class MainFragment extends Fragment implements Observer{
     @Override
     public void onResume() {
         super.onResume();
-        Toast.makeText(getContext(), currentPeriod, Toast.LENGTH_SHORT).show();
+        appEnv.checkForUpdate();
 
     }
 
@@ -210,7 +210,7 @@ public class MainFragment extends Fragment implements Observer{
                     DBUtils.addEatenData(appEnv.getUserData().getObjectId(), food.getObjectId(), food.getName(), food.getCalories());
                     appEnv.getTodayEatenFoodList().add(new FoodListItemMinimal(food.getObjectId(), appEnv.getUserData().getObjectId(), food.getName(), food.getCalories(), new Date(System.currentTimeMillis())));
                     appEnv.addEatenCalories(food.getCalories());
-                    Toast.makeText(getContext(), food.getName() + " has been added to a list completely.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), food.getName() + " ถูกเพิ่มในรายการกินแล้ว", Toast.LENGTH_SHORT).show();
                 }else{
 
                 }
@@ -219,12 +219,13 @@ public class MainFragment extends Fragment implements Observer{
     }
 
     @Override
-    public void onTimeUpdate() {
+    public void onDataUpdate() {
         if(!currentPeriod.equals(appEnv.getCurrentPeriod())){
-            Toast.makeText(getContext(), "onTimeUpdated", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(), "onTimeUpdated", Toast.LENGTH_SHORT).show();
             currentPeriod = appEnv.getCurrentPeriod();
-            foodListItemsRecyclerViewAdapter.notifyDataSetChanged();
         }
+        foodListItemsRecyclerViewAdapter.notifyDataSetChanged();
+        Toast.makeText(getContext(), "notify " + appEnv.getFoodListItems().size(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -232,11 +233,6 @@ public class MainFragment extends Fragment implements Observer{
         super.setUserVisibleHint(isVisibleToUser);
         if(isVisibleToUser){
             appEnv.checkForUpdate();
-            try {
-                foodListItemsRecyclerViewAdapter.notifyDataSetChanged();
-            } catch (NullPointerException e){
-                e.printStackTrace();
-            }
         }
     }
 }

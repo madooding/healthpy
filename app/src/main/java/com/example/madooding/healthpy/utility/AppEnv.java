@@ -25,20 +25,18 @@ public class AppEnv implements AppEnvSubject{
     private String currentPeriod;
     private String currentDate;
     private int sumOfEatenCalories = 0;
-    private int recommendedCalories = 0;
+    private boolean updateSignal = false;
 
     private List<FoodListItem> foodListItems;
 
+    public interface OnEnvironmentDataChangedListener{
+        void onUpdateCompleted(List<FoodListItem> foodListItems);
+    }
+
+
     private AppEnv(UserData userData){
-        this.observers = new ArrayList<>();
-        this.foodListItems = new ArrayList<>();
         this.userData = userData;
-        this.currentPeriod = getAppropriateTimePeriod();
-        foodListItems = DBUtils.getFoodListByUserData(userData);
-        todayEaten = DBUtils.getEatingListByDate(userData.getObjectId(), new Date(System.currentTimeMillis()));
-        currentDate = (String)DateFormat.format("yyyy-MM-dd", new Date(System.currentTimeMillis()));
-        calulateEatenCalories();
-        this.recommendedCalories = calulateRecommendedCalories();
+        resetDataState();
     }
 
     public static AppEnv newInstance(UserData userData){
@@ -48,6 +46,7 @@ public class AppEnv implements AppEnvSubject{
         return instance;
     }
 
+
     public static AppEnv getInstance(){
         return instance;
     }
@@ -55,6 +54,18 @@ public class AppEnv implements AppEnvSubject{
     public UserData getUserData(){
         return userData;
     }
+
+    public void resetDataState(){
+        this.observers = new ArrayList<>();
+        this.foodListItems = new ArrayList<>();
+        this.currentPeriod = getAppropriateTimePeriod();
+        foodListItems = DBUtils.getFoodListByUserData(userData);
+        todayEaten = DBUtils.getEatingListByDate(userData.getObjectId(), new Date(System.currentTimeMillis()));
+        currentDate = (String)DateFormat.format("yyyy-MM-dd", new Date(System.currentTimeMillis()));
+        calulateEatenCalories();
+    }
+
+    public void setUserData(UserData userData) { this.userData = userData; }
 
     public static String getAppropriateTimePeriod(){
         long currentTime = System.currentTimeMillis();
@@ -78,14 +89,22 @@ public class AppEnv implements AppEnvSubject{
         return todayEaten;
     }
 
+    public void setUpdateSignal(boolean signal){
+        updateSignal = signal;
+    }
 
     public void checkForUpdate(){
         String timePeriod = getAppropriateTimePeriod();
         String dateNow = (String) DateFormat.format("yyyy-MM-dd", new Date(System.currentTimeMillis()));
-        if(!timePeriod.equals(currentPeriod)){
+        if(!timePeriod.equals(currentPeriod) || updateSignal){
             currentPeriod = timePeriod;
-            foodListItems = DBUtils.getFoodListByUserData(userData);
-            notifyObservers();
+            updateSignal = false;
+            DBUtils.getFoodListByUserData(userData, this.foodListItems, new OnEnvironmentDataChangedListener(){
+                @Override
+                public void onUpdateCompleted(List<FoodListItem> foodListItems) {
+                    notifyObservers();
+                }
+            });
         }
         if(!currentDate.equals(dateNow)){
             currentDate = dateNow;
@@ -105,7 +124,7 @@ public class AppEnv implements AppEnvSubject{
         }
     }
 
-    public int calulateRecommendedCalories(){
+    public int getRecommendedCalories(){
         Calendar dob = Calendar.getInstance();
         Calendar today = Calendar.getInstance();
         int recommendedCalories;
@@ -123,7 +142,6 @@ public class AppEnv implements AppEnvSubject{
         return recommendedCalories;
     }
 
-    public int getRecommendedCalories(){ return recommendedCalories; }
 
     public int getSumEatenCalories(){ return sumOfEatenCalories;}
 
@@ -154,7 +172,7 @@ public class AppEnv implements AppEnvSubject{
     @Override
     public void notifyObservers() {
         for(Observer o : observers){
-            o.onTimeUpdate();
+            o.onDataUpdate();
         }
     }
 }

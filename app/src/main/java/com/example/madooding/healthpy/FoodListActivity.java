@@ -99,7 +99,7 @@ public class FoodListActivity extends AppCompatActivity {
         foodListItemsLayoutManager = new LinearLayoutManager(this);
         foodListItemsRecyclerView.setLayoutManager(foodListItemsLayoutManager);
 
-        Toast.makeText(this, "food size : " + foodListItems.size(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "food size : " + foodListItems.size(), Toast.LENGTH_SHORT).show();
         renderFoodList(action);
 
     }

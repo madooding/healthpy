@@ -5,5 +5,5 @@ package com.example.madooding.healthpy.interfaces;
  */
 
 public interface Observer {
-    public void onTimeUpdate();
+    public void onDataUpdate();
 }

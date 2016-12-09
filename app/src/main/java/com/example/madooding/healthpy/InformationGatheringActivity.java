@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.madooding.healthpy.adapter.InformationGatheringViewPagerAdapter;
 import com.example.madooding.healthpy.model.UserData;
+import com.example.madooding.healthpy.utility.AppEnv;
 import com.example.madooding.healthpy.utility.DBUtils;
 import com.example.madooding.healthpy.utility.NonSwipeableViewPager;
 import com.facebook.AccessToken;
@@ -40,12 +41,16 @@ public class InformationGatheringActivity extends AppCompatActivity {
     private UserData userData;
     private Date birthDate;
     private Intent intent;
+    private Bundle bundle;
+    private boolean isUpdateRequest = false;
 
     public static class RequestCode {
         public static final int REGISTRATION_REQUEST = 200;
+        public static final int UPDATE_USER_INFORMATION = 210;
     }
 
     public static class ResponseCode {
+        public static final int UPDATE_USER_INFORMATION_COMPLETE = 230;
         public static final int REGISTRATION_COMPLETE = 200;
         public static final int REGISTRATION_CANCEL = 210;
         public static final int REGISTRATION_ERROR = 220;
@@ -65,6 +70,13 @@ public class InformationGatheringActivity extends AppCompatActivity {
         setTitle("เก็บข้อมูลเพิ่มเติม");
 
         intent = new Intent();
+        try {
+            bundle = getIntent().getExtras();
+            isUpdateRequest = bundle.getInt("RequestCode") == RequestCode.UPDATE_USER_INFORMATION;
+        } catch (Exception e ){
+            e.printStackTrace();
+        }
+
 
         //Button variable initialization
         nextButton = (Button) findViewById(R.id.information_gathering_next_button);
@@ -79,6 +91,23 @@ public class InformationGatheringActivity extends AppCompatActivity {
 
         viewPager = (NonSwipeableViewPager) findViewById(R.id.information_gathering_viewpager);
         viewPager.setAdapter(new InformationGatheringViewPagerAdapter(getSupportFragmentManager(), fragmentArrayList));
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+//                Toast.makeText(InformationGatheringActivity.this, "You are now on page " + position, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,12 +143,19 @@ public class InformationGatheringActivity extends AppCompatActivity {
                 }else{
                     //Thing to do when user answer question complete
                     birthDate = new Date(birthYear, birthMonth, birthDay);
-                    userData = new UserData(name, lastName, email, sex, birthDay, birthMonth, birthYear, weight, height, uneatableMeats, congenitalDiseasesList, Profile.getCurrentProfile().getId(), Profile.getCurrentProfile().getProfilePictureUri(100, 100).toString());
-                    userData.setRegistered(true);
-                    DBUtils.regisUser(userData);
-                    userData = DBUtils.getUserData(AccessToken.getCurrentAccessToken().getUserId());
-                    intent.putExtra("UserData", userData);
-                    setResult(ResponseCode.REGISTRATION_COMPLETE, intent);
+                    if(isUpdateRequest){
+                        userData = new UserData(AppEnv.getInstance().getUserData().getObjectId(), name, lastName, email, sex, birthDay, birthMonth, birthYear, weight, height, uneatableMeats, congenitalDiseasesList, Profile.getCurrentProfile().getId(), Profile.getCurrentProfile().getProfilePictureUri(100, 100).toString());
+                        userData.setRegistered(true);
+                        intent.putExtra("UserData", userData);
+                        DBUtils.updateUserData(userData);
+                        setResult(ResponseCode.UPDATE_USER_INFORMATION_COMPLETE, intent);
+                    }else {
+                        userData = new UserData(name, lastName, email, sex, birthDay, birthMonth, birthYear, weight, height, uneatableMeats, congenitalDiseasesList, Profile.getCurrentProfile().getId(), Profile.getCurrentProfile().getProfilePictureUri(100, 100).toString());
+                        userData.setRegistered(true);
+                        DBUtils.regisUser(userData);
+                        intent.putExtra("UserData", userData);
+                        setResult(ResponseCode.REGISTRATION_COMPLETE, intent);
+                    }
                     finish();
                 }
             }
@@ -131,6 +167,7 @@ public class InformationGatheringActivity extends AppCompatActivity {
                 setButtonState();
             }
         });
+
 
     }
 
@@ -145,6 +182,11 @@ public class InformationGatheringActivity extends AppCompatActivity {
         }else{
             nextButton.setText("ถัดไป");
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override

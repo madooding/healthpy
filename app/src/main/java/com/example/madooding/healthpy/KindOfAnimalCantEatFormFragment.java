@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
+import com.example.madooding.healthpy.utility.AppEnv;
+
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -17,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 import static android.R.id.list;
+import static android.R.id.switch_widget;
 
 
 /**
@@ -50,6 +53,32 @@ public class KindOfAnimalCantEatFormFragment extends Fragment {
         chicken = (CheckBox) view.findViewById(R.id.uneatable_chicken);
         shrimp = (CheckBox) view.findViewById(R.id.uneatable_shrimp);
         squid = (CheckBox) view.findViewById(R.id.uneatable_squid);
+
+        try{
+            AppEnv appEnv = AppEnv.getInstance();
+            List<String> animal = appEnv.getUserData().getUneatable();
+            for(String obj : animal){
+                switch(obj){
+                    case "หมู":
+                        pig.setChecked(true);
+                        break;
+                    case "วัว":
+                        cow.setChecked(true);
+                        break;
+                    case "ไก่":
+                        chicken.setChecked(true);
+                        break;
+                    case "กุ้ง":
+                        shrimp.setChecked(true);
+                        break;
+                    case "ปลาหมึก":
+                        squid.setChecked(true);
+                        break;
+                }
+            }
+        } catch (Exception e){
+
+        }
 
     }
 

@@ -72,6 +72,32 @@ public class DBUtils {
         parseUserData.saveInBackground();
     }
 
+    public static void updateUserData(final UserData userData){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(ObjectCollections.USER_DATA);
+        query.getInBackground(userData.getObjectId(), new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject object, ParseException e) {
+                if(e == null){
+                    object.put("name", userData.getName());
+                    object.put("lastName", userData.getLastName());
+                    object.put("email", userData.getEmail());
+                    object.put("sex", userData.getSex());
+                    object.put("birthdate", userData.getBirthDate());
+                    object.put("weight", userData.getWeight());
+                    object.put("height", userData.getHeight());
+                    object.put("fb_id", userData.getFb_id());
+                    object.put("profileImgURI", userData.getProfileImgURI());
+                    object.put("isRegistered", userData.isRegistered());
+                    object.put("isVegetarian", userData.isVegetarian());
+                    object.put("cannotEat", userData.getUneatable());
+                    object.put("congenitalDisease", userData.getCongenitalDisease());
+                    object.saveInBackground();
+                }
+            }
+        });
+
+    }
+
     public static void addEatenData(String userObjectId, String foodObjectId, String foodName, int foodCalories){
         ParseObject parseObject = new ParseObject(ObjectCollections.EATEN_DATA);
         parseObject.put("userObjectId", userObjectId);
@@ -141,6 +167,33 @@ public class DBUtils {
         });
         return foodListItems;
     }
+
+    public static void getFoodListByUserData(UserData userData, final List<FoodListItem> foodListItems, final AppEnv.OnEnvironmentDataChangedListener listener){
+        foodListItems.clear();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(ObjectCollections.FOOD_DATA);
+        query.whereNotContainedIn("type", userData.getUneatable());
+        query.whereNotContainedIn("caution", userData.getCongenitalDisease());
+        query.orderByAscending("calories");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if(e == null){
+                    for(ParseObject object : objects){
+                        try {
+                            foodListItems.add(new FoodListItem(object.getObjectId(), object.getParseFile("picture").getUrl(), object.getString("name"), object.getString("description"), object.getInt("calories"), object.getJSONArray("nutrient").getJSONObject(0)));
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+                listener.onUpdateCompleted(foodListItems);
+            }
+        });
+
+    }
+
+
+
 
     public static List<CarouselItem> getFeaturedFoodList(){
         final List<CarouselItem> carouselItems = new ArrayList<>();
