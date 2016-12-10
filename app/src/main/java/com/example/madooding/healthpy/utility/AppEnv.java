@@ -24,7 +24,7 @@ public class AppEnv implements AppEnvSubject{
     private String[] timePeriod = {"อาหารเช้า", "อาหารกลางวัน", "อาหารเย็น", "อาหารดึก"};
     private String currentPeriod;
     private String currentDate;
-    private int sumOfEatenCalories = 0;
+    private Integer sumOfEatenCalories = 0;
     private boolean updateSignal = false;
 
     private List<FoodListItem> foodListItems;
@@ -143,7 +143,7 @@ public class AppEnv implements AppEnvSubject{
     }
 
 
-    public int getSumEatenCalories(){ return sumOfEatenCalories;}
+    public Integer getSumEatenCalories(){ return sumOfEatenCalories;}
 
     public void setSumEatenCalories(int calories){ sumOfEatenCalories = calories; }
 

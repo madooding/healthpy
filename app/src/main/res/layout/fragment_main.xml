@@ -22,7 +22,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+
             <com.cengalabs.flatui.views.FlatEditText
+                android:id="@+id/search_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
@@ -31,7 +33,7 @@
                 android:descendantFocusability="beforeDescendants"
                 android:drawableLeft="@drawable/search"
                 android:drawableTint="@color/colorFormHealthyText"
-                android:hint="ค้นหาจาก ชื่ออาหาร"
+                android:hint="ค้นหาจากชื่ออาหาร"
                 android:singleLine="true"
                 android:textStyle="bold"
                 android:textSize="26sp"

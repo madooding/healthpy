@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="คุณไม่สามารถบริโภคเนื้อสัตว์ชนิดใดได้บ้าง ?"
+            android:lineSpacingExtra="18dp"
             android:layout_marginBottom="8dp"
             style="@style/InformationGatheringHeadingText"/>
         <LinearLayout

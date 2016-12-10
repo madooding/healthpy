@@ -95,6 +95,7 @@ public class TodaySummaryFragment extends Fragment {
             public void onItemDelete(int position, FoodListItemMinimal foodListItemMinimal) {
 //                Toast.makeText(getContext(), "food objectid " + foodListItemMinimal.getObjectId(), Toast.LENGTH_SHORT).show();
                 DBUtils.deleteEatingItem(foodListItemMinimal.getObjectId());
+                appEnv.subtractEatenCalories(foodListItemMinimal.getCalories());
                 caloriesRatio.setText(appEnv.getSumEatenCalories() + "/" + appEnv.getRecommendedCalories());
                 try {
                     renderPiechart();

@@ -62,10 +62,10 @@ public class EatenSummaryRecyclerViewAdapter extends RecyclerView.Adapter<EatenS
                 @Override
                 public void onClick(View view) {
                     ViewHolder.this.swipeLayout.close(true);
-                    appEnv.subtractEatenCalories(item.getCalories());
-                    EatenSummaryRecyclerViewAdapter.this.list.remove(item);
-                    EatenSummaryRecyclerViewAdapter.this.notifyDataSetChanged();
                     listener.onItemDelete(position, item);
+                    EatenSummaryRecyclerViewAdapter.this.list.remove(item);
+                    EatenSummaryRecyclerViewAdapter.this.notifyItemRemoved(position);
+
                 }
             });
         }

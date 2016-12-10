@@ -17,8 +17,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="80dp">
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="40dp">
         <ImageView
             android:paddingLeft="65dp"
             android:paddingRight="65dp"
@@ -32,15 +32,15 @@
             android:id="@+id/facebook_login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="60dp"
+            android:minHeight="30dp"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_alignParentBottom="true"
             android:text="เข้าสู่ระบบด้วยเฟซบุ๊ค"
-            android:drawablePadding="@dimen/activity_horizontal_margin"
-            android:textSize="32sp"
-            android:drawableLeft="@drawable/facebook_logo"
+            android:drawablePadding="16dp"
+            android:textSize="28sp"
+            android:drawableLeft="@drawable/ic_facebook"
             style="@style/facebook_login_button"
             fontPath="DB HelvethaicaMon X Bd.ttf"/>
 

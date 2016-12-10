@@ -38,7 +38,7 @@ public class DaySummaryActivity extends AppCompatActivity {
     private LinearLayoutManager eatenListViewLayoutManager;
     private EatenSummaryRecyclerViewAdapter eatenSummaryRecyclerViewAdapter;
 
-    private int eatingCalories = 0;
+    private Integer eatingCalories = 0;
     private int remainingCalories;
 
     private List<FoodListItemMinimal> eatingList;
@@ -64,11 +64,13 @@ public class DaySummaryActivity extends AppCompatActivity {
         setTitle(dateStr);
         if(dateStr.equals((String)DateFormat.format("dd/MM/yyyy", new Date(System.currentTimeMillis())))){
             eatingList = appEnv.getTodayEatenFoodList();
+            eatingCalories = appEnv.getSumEatenCalories();
         }else {
             eatingList = DBUtils.getEatingListByDate(appEnv.getUserData().getObjectId(), date);
-        }
-        for(FoodListItemMinimal obj : eatingList){
-            eatingCalories += obj.getCalories();
+            for(FoodListItemMinimal obj : eatingList){
+                eatingCalories += obj.getCalories();
+
+            }
 
         }
 
@@ -105,15 +107,16 @@ public class DaySummaryActivity extends AppCompatActivity {
             @Override
             public void onItemDelete(int position, FoodListItemMinimal foodListItemMinimal) {
                 DBUtils.deleteEatingItem(foodListItemMinimal.getObjectId());
-                eatingCalories = 0;
-                for(FoodListItemMinimal obj : eatingList){
-                    eatingCalories += obj.getCalories();
 
-                }
                 caloriesRatio.setText(eatingCalories + "/" + appEnv.getRecommendedCalories());
                 if(dateStr.equals((String) DateFormat.format("dd/MM/yyyy", date))){
 //                    Toast.makeText(DaySummaryActivity.this, "ตรงกันไอสัส", Toast.LENGTH_SHORT).show();
-                    appEnv.getTodayEatenFoodList().remove(position);
+                    if(dateStr.equals((String)DateFormat.format("dd/MM/yyyy", new Date(System.currentTimeMillis())))) {
+                        appEnv.subtractEatenCalories(foodListItemMinimal.getCalories());
+                    }
+                    eatingCalories -= foodListItemMinimal.getCalories();
+                    caloriesRatio.setText(eatingCalories + "/" + appEnv.getRecommendedCalories());
+                    //eatingList.remove(position);
                 }
                 try {
                     renderPiechart();

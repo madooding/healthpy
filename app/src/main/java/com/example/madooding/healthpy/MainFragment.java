@@ -18,12 +18,14 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cengalabs.flatui.views.FlatEditText;
 import com.example.madooding.healthpy.adapter.CarouselViewPagerAdapter;
 import com.example.madooding.healthpy.adapter.FoodListRecyclerViewAdapter;
 import com.example.madooding.healthpy.interfaces.Observer;
@@ -54,6 +56,7 @@ public class MainFragment extends Fragment implements Observer{
     CirclePageIndicator carouselCircleIndicator;
     GestureDetector tapGestureDetector;
     FloatingActionButton fab;
+    FlatEditText searchBox;
 
     //Should retrive from server
     List<FoodsCategory> foodsCategoryList;
@@ -91,6 +94,9 @@ public class MainFragment extends Fragment implements Observer{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+        searchBox = (FlatEditText) view.findViewById(R.id.search_box);
 
 
         //Toast.makeText(getContext(), "food list size " + carouselItemList.size(), Toast.LENGTH_SHORT).show();
