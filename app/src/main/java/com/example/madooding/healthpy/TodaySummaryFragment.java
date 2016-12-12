@@ -115,6 +115,7 @@ public class TodaySummaryFragment extends Fragment {
             appEnv.checkForUpdate();
             eatenSummaryRecyclerViewAdapter.notifyDataSetChanged();
             caloriesRatio.setText(appEnv.getSumEatenCalories() + "/" + appEnv.getRecommendedCalories());
+            description.setText("* " + appEnv.getRecommendedCalories() + " กิโลแคลอรี่ เป็นปริมาณการบริโภคต่อวันที่แนะนำสำหรับคุณ");
             try {
                 renderPiechart();
             } catch (Exception e) {

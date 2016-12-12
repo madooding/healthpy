@@ -325,6 +325,48 @@ public class DBUtils {
         return eatingList;
     }
 
+    public static List<FoodListItem> searchByCharSequence(String str){
+        final List<FoodListItem> foods = new ArrayList<>();
+        final String[] s = new String[1];
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(ObjectCollections.FOOD_DATA);
+        query.whereContains("name", str);
+        List<ParseObject> objects = null;
+        try {
+            objects = query.find();
+            for(ParseObject object : objects){
+                foods.add(new FoodListItem(object.getObjectId(), object.getParseFile("picture").getUrl(), object.getString("name"), object.getString("description"), object.getInt("calories"), object.getJSONArray("nutrient").getJSONObject(0)));
+
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return foods;
+    }
+
+    public static List<FoodListItem> searchByCharSequence(final FoodListRecyclerViewAdapter adapter, final List<FoodListItem> items, String str){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(ObjectCollections.FOOD_DATA);
+        query.whereContains("name", str);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if(e == null){
+                    for(ParseObject object : objects){
+                        try {
+                            items.add(new FoodListItem(object.getObjectId(), object.getParseFile("picture").getUrl(), object.getString("name"), object.getString("description"), object.getInt("calories"), object.getJSONArray("nutrient").getJSONObject(0)));
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
+        return items;
+    }
+
     public static void deleteEatingItem(String objectId){
         ParseQuery<ParseObject> query = ParseQuery.getQuery(ObjectCollections.EATEN_DATA);
         query.getInBackground(objectId, new GetCallback<ParseObject>() {

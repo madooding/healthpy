@@ -22,26 +22,40 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
-            <com.cengalabs.flatui.views.FlatEditText
-                android:id="@+id/search_box"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:descendantFocusability="beforeDescendants"
-                android:drawableLeft="@drawable/search"
-                android:drawableTint="@color/colorFormHealthyText"
-                android:hint="ค้นหาจากชื่ออาหาร"
-                android:singleLine="true"
-                android:textStyle="bold"
-                android:textSize="26sp"
-                android:layout_marginBottom="8dp"
-                flatui:fl_theme="@array/healthpy_form_theme"
-                flatui:fl_cornerRadius="4dp"
-                flatui:fl_fontWeight="bold"
-                fontPath="DB HelvethaicaMon X Bd.ttf"/>
+                android:layout_height="wrap_content">
+                <com.example.madooding.healthpy.utility.DelayAutoCompleteTextView
+                    android:id="@+id/search_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:descendantFocusability="beforeDescendants"
+                    android:background="@drawable/white_rounded_corner"
+                    android:textColorHint="@color/colorFormHealthyText"
+                    android:textColor="@color/colorFormHealthyText"
+                    android:drawableLeft="@drawable/ic_search"
+                    android:drawableTint="@color/colorFormHealthyText"
+                    android:drawablePadding="8dp"
+                    android:hint="ค้นหาจากชื่ออาหาร"
+                    android:singleLine="true"
+                    android:textStyle="bold"
+                    android:textSize="26sp"
+                    android:layout_marginBottom="8dp"
+                    android:inputType="text"
+                    android:imeOptions="flagNoExtractUi|actionSearch"
+                    fontPath="DB HelvethaicaMon X Bd.ttf"/>
+                <ProgressBar
+                    android:id="@+id/pb_loading_indicator"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_marginRight="16dp"
+                    android:visibility="gone"/>
+            </FrameLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"

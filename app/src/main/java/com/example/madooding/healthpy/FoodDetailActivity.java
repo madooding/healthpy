@@ -131,7 +131,7 @@ public class FoodDetailActivity
         titleTextView.setMinimumHeight(parallaxImageHeight);
         titleContainer = (LinearLayout) findViewById(R.id.food_detail_title_container);
         titleTextMargin = (screenWidth - titleTextView.getMeasuredWidth()) / 2;
-        titleContainer.setPadding(titleTextMargin - 1, 0, 0, 0);
+        titleContainer.setPadding(Math.max(titleTextMargin - 1, 0), 0, 0, 0);
         titleBigTextSize = (int)getResources().getDimensionPixelSize(R.dimen.food_detail_title_text_size);
         titleTextLeftIndentation = getResources().getDimensionPixelSize(R.dimen.food_detail_title_padding);
 
@@ -245,7 +245,9 @@ public class FoodDetailActivity
         appBar.setMinimumHeight(Math.max(actionBarSize,parallaxImageHeight - (scrollY)));
         titleTextView.setMinimumHeight(Math.max(actionBarSize,parallaxImageHeight - (scrollY)));
         titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28 + (int)((64  - 28) * (1 - alpha)));
-        titleContainer.setPadding(titleTextLeftIndentation + (int)((titleTextMargin - titleTextLeftIndentation) * (1 - alpha)), 0, 0, 0);
+        titleTextView.setLineSpacing(titleTextView.getTextSize() * 1.35f, 0);
+        titleContainer.setPadding(Math.max(0, titleTextLeftIndentation + (int)((titleTextMargin - titleTextLeftIndentation) * (1 - alpha))), 0, 0, 0);
+
 
         int fabTranslationY = fabLocation - scrollY;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {

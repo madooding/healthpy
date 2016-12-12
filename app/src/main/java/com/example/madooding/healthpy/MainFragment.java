@@ -14,10 +14,13 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,6 +31,7 @@ import android.widget.Toast;
 import com.cengalabs.flatui.views.FlatEditText;
 import com.example.madooding.healthpy.adapter.CarouselViewPagerAdapter;
 import com.example.madooding.healthpy.adapter.FoodListRecyclerViewAdapter;
+import com.example.madooding.healthpy.adapter.SearchAutoCompleteAdapter;
 import com.example.madooding.healthpy.interfaces.Observer;
 import com.example.madooding.healthpy.model.CarouselItem;
 import com.example.madooding.healthpy.model.FoodListItem;
@@ -36,6 +40,7 @@ import com.example.madooding.healthpy.model.FoodsCategory;
 import com.example.madooding.healthpy.utility.AppEnv;
 import com.example.madooding.healthpy.utility.CircleTransform;
 import com.example.madooding.healthpy.utility.DBUtils;
+import com.example.madooding.healthpy.utility.DelayAutoCompleteTextView;
 import com.facebook.FacebookSdk;
 import com.squareup.picasso.Picasso;
 import com.viewpagerindicator.CirclePageIndicator;
@@ -56,7 +61,7 @@ public class MainFragment extends Fragment implements Observer{
     CirclePageIndicator carouselCircleIndicator;
     GestureDetector tapGestureDetector;
     FloatingActionButton fab;
-    FlatEditText searchBox;
+    DelayAutoCompleteTextView searchBox;
 
     //Should retrive from server
     List<FoodsCategory> foodsCategoryList;
@@ -96,7 +101,32 @@ public class MainFragment extends Fragment implements Observer{
         super.onViewCreated(view, savedInstanceState);
 
 
-        searchBox = (FlatEditText) view.findViewById(R.id.search_box);
+        //Toast.makeText(getContext(), "ข้าว " + DBUtils.searchByCharSequence("ข้าว").size(), Toast.LENGTH_SHORT).show();
+
+        searchBox = (DelayAutoCompleteTextView) view.findViewById(R.id.search_box);
+        searchBox.setThreshold(4);
+        searchBox.setAdapter(new SearchAutoCompleteAdapter(getContext()));
+        searchBox.setLoadingIndicator(
+                (android.widget.ProgressBar) view.findViewById(R.id.pb_loading_indicator));
+        searchBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                FoodListItem food = (FoodListItem) adapterView.getItemAtPosition(i);
+                searchBox.setText(food.getName());
+                callSearchResultActivity(food.getName());
+            }
+        });
+
+        searchBox.setOnEditorActionListener(new AutoCompleteTextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if(i == EditorInfo.IME_ACTION_SEARCH){
+                    callSearchResultActivity(searchBox.getText().toString());
+                    return true;
+                }
+                return false;
+            }
+        });
 
 
         //Toast.makeText(getContext(), "food list size " + carouselItemList.size(), Toast.LENGTH_SHORT).show();
@@ -211,6 +241,7 @@ public class MainFragment extends Fragment implements Observer{
             case FoodDetailActivity.RequestCode.CALL_ACTIVITY_WITH_INFORMATION:
             case FoodListActivity.RequestCode.CALL_ACTIVITY_WITH_CATEGORY_TAG:
             case FoodListActivity.RequestCode.CALL_ACTIVITY_WITH_FEATURED_FOOD:
+            case SearchResultActivity.RequestCode.CALL_ACTIVITY_WITH_STRING:
                 if(resultCode == FoodDetailActivity.ResponseCode.ADD_FOOD){
                     FoodListItem food = (FoodListItem)data.getSerializableExtra("food_info");
                     DBUtils.addEatenData(appEnv.getUserData().getObjectId(), food.getObjectId(), food.getName(), food.getCalories());
@@ -231,7 +262,7 @@ public class MainFragment extends Fragment implements Observer{
             currentPeriod = appEnv.getCurrentPeriod();
         }
         foodListItemsRecyclerViewAdapter.notifyDataSetChanged();
-        Toast.makeText(getContext(), "notify " + appEnv.getFoodListItems().size(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "notify " + appEnv.getFoodListItems().size(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -240,5 +271,11 @@ public class MainFragment extends Fragment implements Observer{
         if(isVisibleToUser){
             appEnv.checkForUpdate();
         }
+    }
+
+    private void callSearchResultActivity(String constraint){
+        Intent intent = new Intent(getContext(), SearchResultActivity.class);
+        intent.putExtra("Constraint", constraint);
+        startActivityForResult(intent, SearchResultActivity.RequestCode.CALL_ACTIVITY_WITH_STRING);
     }
 }

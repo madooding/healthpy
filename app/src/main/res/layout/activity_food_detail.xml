@@ -180,6 +180,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorWhite"
+                    android:textAlignment="center"
+                    android:lineSpacingExtra="32sp"
                     android:gravity="center_vertical"
                     android:textSize="@dimen/food_detail_title_text_size"
                     fontPath="DB HelvethaicaMon X Bd.ttf"
