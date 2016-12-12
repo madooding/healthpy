@@ -1,11 +1,13 @@
 package com.example.madooding.healthpy;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,6 +31,7 @@ import android.widget.Toast;
 import com.example.madooding.healthpy.adapter.NutritionListRecyclerViewAdapter;
 import com.example.madooding.healthpy.model.FoodListItem;
 import com.example.madooding.healthpy.model.NutritionType;
+import com.example.madooding.healthpy.utility.AppEnv;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
@@ -79,6 +82,7 @@ public class FoodDetailActivity
     private TextView foodCaloriesTextView;
     private boolean fabIsShown;
     private int fabLocation;
+    private AppEnv appEnv = AppEnv.getInstance();
 
 
     public static class RequestCode{
@@ -211,9 +215,30 @@ public class FoodDetailActivity
             @Override
             public void onClick(View view) {
                 if(fabIsShown) {
-                    intent.putExtra("food_info", food_info);
-                    setResult(ResponseCode.ADD_FOOD, intent);
-                    finish();
+                    if(food_info.getCalories() + appEnv.getSumEatenCalories() > appEnv.getRecommendedCalories()){
+                        new AlertDialog.Builder(FoodDetailActivity.this)
+                                .setTitle("คำเตือน")
+                                .setMessage("หากคุณรับประทาน \"" +food_info.getName() + "\" จะทำให้เกินจำนวนแคลอรี่\n\n\nที่คุณควรได้รับต่อวัน (" + appEnv.getRecommendedCalories() + " Kcal.) คุณแน่ใจที่รับประทานหรือไม่ ?")
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        intent.putExtra("food_info", food_info);
+                                        setResult(ResponseCode.ADD_FOOD, intent);
+                                        finish();
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    }else{
+                        intent.putExtra("food_info", food_info);
+                        setResult(ResponseCode.ADD_FOOD, intent);
+                        finish();
+                    }
+
 //                    Toast.makeText(FoodDetailActivity.this, "Fab touched", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -265,6 +290,8 @@ public class FoodDetailActivity
         }
 
     }
+
+
 
     private void showFab() {
         if (!fabIsShown) {
