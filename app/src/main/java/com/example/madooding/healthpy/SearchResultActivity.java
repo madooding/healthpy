@@ -8,8 +8,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.madooding.healthpy.adapter.FoodListRecyclerViewAdapter;
+import com.example.madooding.healthpy.listener.QueryListener;
 import com.example.madooding.healthpy.model.FoodListItem;
 import com.example.madooding.healthpy.utility.DBUtils;
 
@@ -28,6 +31,8 @@ public class SearchResultActivity extends AppCompatActivity {
     private RecyclerView foodListItemsRecyclerView;
     private LinearLayoutManager linearLayoutManager;
     private FoodListRecyclerViewAdapter foodListRecyclerViewAdapter;
+
+    private TextView notFoundTextView;
 
     private List<FoodListItem> foods = new ArrayList<>();
 
@@ -57,6 +62,8 @@ public class SearchResultActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("ผลการค้นหา : " + constraint);
 
+        notFoundTextView = (TextView) findViewById(R.id.search_result_not_found);
+
         foodListItemsRecyclerView = (RecyclerView) findViewById(R.id.search_result_activity_recycler_view);
         foodListItemsRecyclerView.setFocusable(false);
         foodListItemsRecyclerView.setHasFixedSize(true);
@@ -79,7 +86,14 @@ public class SearchResultActivity extends AppCompatActivity {
             }
         });
         foodListItemsRecyclerView.setAdapter(foodListRecyclerViewAdapter);
-        foods = DBUtils.searchByCharSequence(foodListRecyclerViewAdapter, foods, constraint);
+        foods = DBUtils.searchByCharSequence(foodListRecyclerViewAdapter, foods, constraint, new QueryListener() {
+            @Override
+            public void onQueryDone() {
+                if(foods.size() == 0){
+                    notFoundTextView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     @Override

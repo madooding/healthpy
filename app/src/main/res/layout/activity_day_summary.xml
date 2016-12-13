@@ -117,6 +117,18 @@
                 android:focusable="false"
                 android:id="@+id/day_summary_recycler_view">
             </android.support.v7.widget.RecyclerView>
+            <TextView
+                android:id="@+id/day_summary_not_found"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:text="ไม่มีรายการบันทึกของวันนี้"
+                android:textSize="22sp"
+                android:lineSpacingExtra="12sp"
+                android:textColor="@color/colorSubStandardGrey"
+                android:textAlignment="center"
+                fontPath="DB HelvethaicaMon X.ttf"/>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

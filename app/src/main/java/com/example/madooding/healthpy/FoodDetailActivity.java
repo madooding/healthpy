@@ -218,7 +218,7 @@ public class FoodDetailActivity
                     if(food_info.getCalories() + appEnv.getSumEatenCalories() > appEnv.getRecommendedCalories()){
                         new AlertDialog.Builder(FoodDetailActivity.this)
                                 .setTitle("คำเตือน")
-                                .setMessage("หากคุณรับประทาน \"" +food_info.getName() + "\" จะทำให้เกินจำนวนแคลอรี่\n\n\nที่คุณควรได้รับต่อวัน (" + appEnv.getRecommendedCalories() + " Kcal.) คุณแน่ใจที่รับประทานหรือไม่ ?")
+                                .setMessage("หากคุณรับประทาน \"" +food_info.getName() + "\" จะทำให้ได้รับพลังงานเกินจำนวน\n\n\nที่คุณควรได้รับต่อวัน (" + appEnv.getRecommendedCalories() + " Kcal.) คุณแน่ใจที่รับประทานหรือไม่ ?")
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         intent.putExtra("food_info", food_info);

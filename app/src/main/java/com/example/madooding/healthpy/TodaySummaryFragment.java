@@ -33,7 +33,7 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class TodaySummaryFragment extends Fragment {
-    private TextView description;
+    private TextView description, notFoundTextView;
     private RecyclerView eatenListView;
     private PieChart pieChart;
     private TextView caloriesRatio;
@@ -63,6 +63,7 @@ public class TodaySummaryFragment extends Fragment {
 
         pieChart = (PieChart) view.findViewById(R.id.today_summary_pie_chart);
         caloriesRatio = (TextView) view.findViewById(R.id.eaten_summary_calories_ratio);
+        notFoundTextView = (TextView) view.findViewById(R.id.today_summary_not_found);
         // enable hole and configure
         pieChart.setDrawHoleEnabled(true);
         pieChart.setHoleRadius(90);
@@ -97,6 +98,11 @@ public class TodaySummaryFragment extends Fragment {
                 DBUtils.deleteEatingItem(foodListItemMinimal.getObjectId());
                 appEnv.subtractEatenCalories(foodListItemMinimal.getCalories());
                 caloriesRatio.setText(appEnv.getSumEatenCalories() + "/" + appEnv.getRecommendedCalories());
+                if(appEnv.getTodayEatenFoodList().size() == 0){
+                    notFoundTextView.setVisibility(View.VISIBLE);
+                }else{
+                    notFoundTextView.setVisibility(View.GONE);
+                }
                 try {
                     renderPiechart();
                 } catch (Exception e) {
@@ -105,6 +111,11 @@ public class TodaySummaryFragment extends Fragment {
             }
         });
         eatenListView.setAdapter(eatenSummaryRecyclerViewAdapter);
+        if(appEnv.getTodayEatenFoodList().size() == 0){
+            notFoundTextView.setVisibility(View.VISIBLE);
+        }else{
+            notFoundTextView.setVisibility(View.GONE);
+        }
 
     }
 
@@ -120,6 +131,12 @@ public class TodaySummaryFragment extends Fragment {
                 renderPiechart();
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+
+            if(appEnv.getTodayEatenFoodList().size() == 0){
+                notFoundTextView.setVisibility(View.VISIBLE);
+            }else{
+                notFoundTextView.setVisibility(View.GONE);
             }
 //            Toast.makeText(getContext(), "Eaten Calories Summary : " + appEnv.getSumEatenCalories() + " Kilo Calories", Toast.LENGTH_SHORT).show();
         }

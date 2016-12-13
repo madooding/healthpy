@@ -5,6 +5,8 @@ import android.text.format.DateFormat;
 import android.util.Log;
 
 import com.example.madooding.healthpy.adapter.FoodListRecyclerViewAdapter;
+import com.example.madooding.healthpy.adapter.SearchAutoCompleteAdapter;
+import com.example.madooding.healthpy.listener.QueryListener;
 import com.example.madooding.healthpy.model.CarouselItem;
 import com.example.madooding.healthpy.model.FoodListItem;
 import com.example.madooding.healthpy.model.FoodListItemMinimal;
@@ -330,6 +332,8 @@ public class DBUtils {
         final String[] s = new String[1];
         ParseQuery<ParseObject> query = ParseQuery.getQuery(ObjectCollections.FOOD_DATA);
         query.whereContains("name", str);
+        query.addAscendingOrder("calories");
+        query.setLimit(SearchAutoCompleteAdapter.MAX_RESULT);
         List<ParseObject> objects = null;
         try {
             objects = query.find();
@@ -346,9 +350,10 @@ public class DBUtils {
         return foods;
     }
 
-    public static List<FoodListItem> searchByCharSequence(final FoodListRecyclerViewAdapter adapter, final List<FoodListItem> items, String str){
+    public static List<FoodListItem> searchByCharSequence(final FoodListRecyclerViewAdapter adapter, final List<FoodListItem> items, String str, final QueryListener listener){
         ParseQuery<ParseObject> query = ParseQuery.getQuery(ObjectCollections.FOOD_DATA);
         query.whereContains("name", str);
+        query.addAscendingOrder("calories");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
@@ -361,6 +366,7 @@ public class DBUtils {
                         }
                     }
                 }
+                listener.onQueryDone();
                 adapter.notifyDataSetChanged();
             }
         });

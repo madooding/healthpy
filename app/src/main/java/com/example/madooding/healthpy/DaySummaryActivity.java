@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +33,7 @@ public class DaySummaryActivity extends AppCompatActivity {
 
     private PieChart pieChart;
     private TextView caloriesRatio;
-    private TextView description;
+    private TextView description, notFoundTextView;
     private AppEnv appEnv = AppEnv.getInstance();
     private RecyclerView eatenListView;
     private LinearLayoutManager eatenListViewLayoutManager;
@@ -62,6 +63,8 @@ public class DaySummaryActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.day_summary_toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(dateStr);
+
+        notFoundTextView = (TextView) findViewById(R.id.day_summary_not_found);
         if(dateStr.equals((String)DateFormat.format("dd/MM/yyyy", new Date(System.currentTimeMillis())))){
             eatingList = appEnv.getTodayEatenFoodList();
             eatingCalories = appEnv.getSumEatenCalories();
@@ -127,6 +130,10 @@ public class DaySummaryActivity extends AppCompatActivity {
             }
         });
         eatenListView.setAdapter(eatenSummaryRecyclerViewAdapter);
+
+        if(eatingList.size() == 0){
+            notFoundTextView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void renderPiechart() throws Exception{

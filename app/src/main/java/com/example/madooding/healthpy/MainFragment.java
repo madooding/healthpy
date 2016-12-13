@@ -104,7 +104,7 @@ public class MainFragment extends Fragment implements Observer{
         //Toast.makeText(getContext(), "ข้าว " + DBUtils.searchByCharSequence("ข้าว").size(), Toast.LENGTH_SHORT).show();
 
         searchBox = (DelayAutoCompleteTextView) view.findViewById(R.id.search_box);
-        searchBox.setThreshold(4);
+        searchBox.setThreshold(3);
         searchBox.setAdapter(new SearchAutoCompleteAdapter(getContext()));
         searchBox.setLoadingIndicator(
                 (android.widget.ProgressBar) view.findViewById(R.id.pb_loading_indicator));
@@ -121,7 +121,9 @@ public class MainFragment extends Fragment implements Observer{
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if(i == EditorInfo.IME_ACTION_SEARCH){
-                    callSearchResultActivity(searchBox.getText().toString());
+                    if(searchBox.getText().toString().length() > 0) {
+                        callSearchResultActivity(searchBox.getText().toString());
+                    }
                     return true;
                 }
                 return false;

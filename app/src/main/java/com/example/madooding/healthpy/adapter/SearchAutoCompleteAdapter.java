@@ -23,7 +23,7 @@ import java.util.List;
 
 public class SearchAutoCompleteAdapter extends BaseAdapter implements Filterable{
 
-    private static final int MAX_RESULT = 6;
+    public static final int MAX_RESULT = 8;
     private Context context;
     private List<FoodListItem> foodListItems = new ArrayList<FoodListItem>();
 
