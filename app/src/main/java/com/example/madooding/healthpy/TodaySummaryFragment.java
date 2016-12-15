@@ -90,6 +90,7 @@ public class TodaySummaryFragment extends Fragment {
         eatenListView.setHasFixedSize(true);
         eatenListViewLayoutManager = new LinearLayoutManager(getContext());
         eatenListView.setLayoutManager(eatenListViewLayoutManager);
+        eatenListView.setNestedScrollingEnabled(false);
 
         eatenSummaryRecyclerViewAdapter = new EatenSummaryRecyclerViewAdapter(getContext(), appEnv.getTodayEatenFoodList(), new EatenSummaryRecyclerViewAdapter.OnItemDeleteListener(){
             @Override

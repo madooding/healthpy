@@ -107,6 +107,7 @@
                 android:text="ไม่มีรายการบันทึกของวันนี้"
                 android:textSize="22sp"
                 android:lineSpacingExtra="12sp"
+                android:padding="@dimen/activity_horizontal_margin"
                 android:textColor="@color/colorSubStandardGrey"
                 android:textAlignment="center"
                 fontPath="DB HelvethaicaMon X.ttf"/>

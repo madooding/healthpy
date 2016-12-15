@@ -130,6 +130,7 @@ public class DaySummaryActivity extends AppCompatActivity {
             }
         });
         eatenListView.setAdapter(eatenSummaryRecyclerViewAdapter);
+        eatenListView.setNestedScrollingEnabled(false);
 
         if(eatingList.size() == 0){
             notFoundTextView.setVisibility(View.VISIBLE);

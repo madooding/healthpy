@@ -131,6 +131,7 @@ public class FoodListActivity extends AppCompatActivity {
             }
         });
         foodListItemsRecyclerView.setAdapter(foodListItemsRecyclerViewAdapter);
+        foodListItemsRecyclerView.setNestedScrollingEnabled(false);
         switch (action) {
             case RequestCode.CALL_ACTIVITY_WITH_CATEGORY_TAG:
                 foodListItems = DBUtils.getFoodDataByObjectTag(foodListItemsRecyclerViewAdapter, foodListItems, foodsCategory.getLinker());

@@ -63,9 +63,9 @@ public class EatenSummaryRecyclerViewAdapter extends RecyclerView.Adapter<EatenS
                 public void onClick(View view) {
                     ViewHolder.this.swipeLayout.close(true);
                     listener.onItemDelete(position, item);
-                    EatenSummaryRecyclerViewAdapter.this.list.remove(item);
-                    EatenSummaryRecyclerViewAdapter.this.notifyItemRemoved(position);
-
+                    int i = EatenSummaryRecyclerViewAdapter.this.list.indexOf(item);
+                    EatenSummaryRecyclerViewAdapter.this.list.remove(i);
+                    EatenSummaryRecyclerViewAdapter.this.notifyItemRemoved(i);
                 }
             });
         }

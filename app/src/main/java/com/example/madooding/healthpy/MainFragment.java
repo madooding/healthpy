@@ -172,6 +172,7 @@ public class MainFragment extends Fragment implements Observer{
             }
         });
         foodListItemsRecyclerView.setAdapter(foodListItemsRecyclerViewAdapter);
+        foodListItemsRecyclerView.setNestedScrollingEnabled(false);
 
 
 

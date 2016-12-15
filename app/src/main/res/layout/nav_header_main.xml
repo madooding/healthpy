@@ -28,7 +28,7 @@
 
         <LinearLayout
             android:paddingLeft="8dp"
-            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/imageView"
@@ -39,12 +39,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="26sp"
+                android:lineSpacingExtra="10sp"
                 android:text="Android Studio"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
             <TextView
                 android:id="@+id/textView"
-                android:layout_marginTop="-10dp"
+                android:layout_marginTop="-8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="android.studio@android.com"

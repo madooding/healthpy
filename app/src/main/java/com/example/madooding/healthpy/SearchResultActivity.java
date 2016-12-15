@@ -86,6 +86,7 @@ public class SearchResultActivity extends AppCompatActivity {
             }
         });
         foodListItemsRecyclerView.setAdapter(foodListRecyclerViewAdapter);
+        foodListItemsRecyclerView.setNestedScrollingEnabled(false);
         foods = DBUtils.searchByCharSequence(foodListRecyclerViewAdapter, foods, constraint, new QueryListener() {
             @Override
             public void onQueryDone() {
