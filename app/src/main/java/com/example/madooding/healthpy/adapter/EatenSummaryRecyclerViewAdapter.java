@@ -64,8 +64,10 @@ public class EatenSummaryRecyclerViewAdapter extends RecyclerView.Adapter<EatenS
                     ViewHolder.this.swipeLayout.close(true);
                     listener.onItemDelete(position, item);
                     int i = EatenSummaryRecyclerViewAdapter.this.list.indexOf(item);
-                    EatenSummaryRecyclerViewAdapter.this.list.remove(i);
-                    EatenSummaryRecyclerViewAdapter.this.notifyItemRemoved(i);
+                    EatenSummaryRecyclerViewAdapter.this.list.remove(getAdapterPosition());
+                    EatenSummaryRecyclerViewAdapter.this.notifyItemRemoved(getAdapterPosition());
+                    notifyItemRangeChanged(getAdapterPosition(), EatenSummaryRecyclerViewAdapter.this.list.size());
+                    notifyDataSetChanged();
                 }
             });
         }

@@ -1,7 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="@color/appBGcolor"
     tools:ignore="MissingPrefix"
     tools:context="com.example.madooding.healthpy.TodaySummaryFragment">
@@ -9,12 +9,12 @@
     <!-- TODO: Update blank fragment layout -->
     <android.support.v4.widget.NestedScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:fillViewport="true"
         android:fadeScrollbars="true">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
@@ -92,8 +92,8 @@
 
 
             <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:scrollbars="vertical"
                 android:focusable="false"
                 android:id="@+id/today_summary_recycler_view">
@@ -101,7 +101,7 @@
             <TextView
                 android:id="@+id/today_summary_not_found"
                 android:visibility="gone"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:text="ไม่มีรายการบันทึกของวันนี้"
