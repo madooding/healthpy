@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_day_summary"
+    android:background="@color/appBGcolor"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix"
+    tools:context="com.example.madooding.healthpy.DaySummaryActivity">
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:paddingBottom="0dp"
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/day_summary_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:background="?attr/colorPrimary"
+            fontPath="DB HelvethaicaMon X Bd.ttf"
+            app:titleTextAppearance="@style/Toolbar.TitleText"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:fadeScrollbars="true">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:text="วันนี้คุณกินไปแล้วทั้งหมด"
+                style="@style/TextTopic"
+                android:paddingTop="26dp"
+                android:paddingBottom="26dp"
+                fontPath="DB HelvethaicaMon X Bd.ttf"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp">
+                <com.github.mikephil.charting.charts.PieChart
+                    android:layout_gravity="top"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:clickable="false"
+                    android:id="@+id/day_summary_pie_chart">
+                </com.github.mikephil.charting.charts.PieChart>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_centerInParent="true"
+                    android:layout_centerHorizontal="true">
+                    <TextView
+                        android:id="@+id/day_summary_calories_ratio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorNormalText"
+                        android:textSize="60sp"
+                        android:text="1800/2000"
+                        android:layout_margin="0dp"
+                        fontPath="DB HelvethaicaMon X Bd.ttf"/>
+                    <TextView
+                        android:layout_marginTop="-15dp"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="@color/colorNormalText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/day_summary_calories_ratio"
+                        android:textSize="32sp"
+                        android:text="กิโลแคลอรี่"
+                        fontPath="DB HelvethaicaMon X.ttf"/>
+                </LinearLayout>
+
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/day_eaten_summary_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:textSize="22sp"
+                android:lineSpacingExtra="12sp"
+                android:textColor="@color/colorSubStandardGrey"
+                android:text="* 2000 กิโลแคลอรี่ เป็นปริมาณการบริโภคต่อวันที่แนะนำสำหรับคุณ"
+                fontPath="DB HelvethaicaMon X.ttf" />
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:paddingLeft="32dp"
+                style="@style/TextTopic"
+                android:text="รายการอาหารทั้งหมด"/>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:focusable="false"
+                android:id="@+id/day_summary_recycler_view">
+            </android.support.v7.widget.RecyclerView>
+            <TextView
+                android:id="@+id/day_summary_not_found"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:text="ไม่มีรายการบันทึกของวันนี้"
+                android:textSize="22sp"
+                android:lineSpacingExtra="12sp"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:textColor="@color/colorSubStandardGrey"
+                android:textAlignment="center"
+                fontPath="DB HelvethaicaMon X.ttf"/>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

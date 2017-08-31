@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingPrefix"
+    android:layout_height="60dp">
+    <TextView
+        android:id="@+id/search_list_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:text="Hello"
+        android:textSize="24sp"
+        android:textColor="@color/colorSubStandardGrey"
+        fontPath="DB HelvethaicaMon X.ttf"/>
+
+</LinearLayout>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.example.madooding.healthpy.FoodDetailActivity"
+    tools:ignore="MissingPrefix">
+
+
+
+    <com.github.ksoichiro.android.observablescrollview.ObservableScrollView
+        android:id="@+id/food_detail_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/food_detail_image"
+                android:layout_width="match_parent"
+                android:scaleType="centerCrop"
+                android:foreground="@drawable/black_to_transparent_gradient"
+                android:layout_height="@dimen/food_detail_parallax_image_height"
+                android:src="@drawable/image_1"/>
+
+            <View
+                android:id="@+id/anchor"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/food_detail_parallax_image_height"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:orientation="vertical"
+                android:layout_below="@id/anchor"
+                android:background="@color/appBGcolor">
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="45dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/activity_horizontal_margin">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginBottom="5dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginRight="16dp"
+                                android:src="@drawable/food_detail"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingBottom="16dp"
+                                android:paddingTop="8dp"
+                                android:text="ข้อมูลเกี่ยวกับอาหาร"
+                                fontPath="DB HelvethaicaMon X Bd.ttf"
+                                style="@style/TextTopic" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/food_detail_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/food_detail_content_text_size"
+                            android:textColor="@color/colorSubStandardGrey"
+                            android:singleLine="false"
+                            android:lineSpacingExtra="16sp"
+                            android:text="\t\t\tกาแฟดำช่วยให้ระบบเผาผลาญของร่างกายเราทำงานดีจริงๆ และยังมีข้อดีกว่ากาแฟอื่นๆ นั่นคือช่วยขับไล"
+                            fontPath="DB HelvethaicaMon X.ttf"/>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"
+                    android:padding="45dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/activity_horizontal_margin">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginBottom="5dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginRight="16dp"
+                                android:src="@drawable/nutrition"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingBottom="16dp"
+                                android:paddingTop="8dp"
+                                android:text="ข้อมูลโภชนาการ"
+                                fontPath="DB HelvethaicaMon X Bd.ttf"
+                                style="@style/TextTopic" />
+                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/food_detail_calories"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="พลังงานทั้งหมด : 180 กิโลแคลลอรี่"
+                            android:textSize="@dimen/food_detail_content_text_size"
+                            android:textColor="@color/colorSubStandardGrey"
+                            fontPath="DB HelvethaicaMon X.ttf" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="คุณค่าอาหารที่ได้รับ :"
+                            android:textSize="@dimen/food_detail_content_text_size"
+                            android:textColor="@color/colorSubStandardGrey"
+                            fontPath="DB HelvethaicaMon X.ttf"/>
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:layout_gravity="top"
+                            android:layout_width="match_parent"
+                            android:layout_height="400dp"
+                            android:clickable="false"
+                            android:id="@+id/food_detail_nutrition_pie_chart">
+                        </com.github.mikephil.charting.charts.PieChart>
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/food_detail_nutrition_table"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                        </android.support.v7.widget.RecyclerView>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+        </RelativeLayout>
+    </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/food_detail_add_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/add_btn" />
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/food_detail_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:theme="@style/CustomActionBar"
+        app:elevation="0dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <android.support.v7.widget.Toolbar
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                app:elevation="0dp"
+                android:id="@+id/food_detail_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                fontPath="DB HelvethaicaMon X Bd.ttf"
+                app:titleTextAppearance="@style/Toolbar.TitleText"
+                android:title="Hello">
+            </android.support.v7.widget.Toolbar>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/food_detail_title_container">
+                <TextView
+                    android:id="@+id/food_detail_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
+                    android:textAlignment="center"
+                    android:lineSpacingExtra="32sp"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/food_detail_title_text_size"
+                    fontPath="DB HelvethaicaMon X Bd.ttf"
+                    android:text="สวัสดี"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+    </android.support.design.widget.AppBarLayout>
+
+
+
+
+</FrameLayout>
